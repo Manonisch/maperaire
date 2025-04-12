@@ -31,8 +31,8 @@ export const Marks = ({ data, filterData }: { data: { fifty: { land: any, interi
   // const [localPath, setLocalPath] = useState(d3.geoPath(projection))
   const svgRef = useRef<SVGSVGElement>(null);
 
-  const [projection] = useState(d3.geoNaturalEarth1)
-  // const [projection] = useState(d3.geoOrthographic)
+  // const [projection] = useState(d3.geoNaturalEarth1)
+  const [projection] = useState(d3.geoOrthographic)
   const unityScale = projection.scale();
   const [trick17a, trick17] = useState(0);
 
@@ -100,6 +100,7 @@ export const Marks = ({ data, filterData }: { data: { fifty: { land: any, interi
 
   const path = d3.geoPath(projection);
   const graticule = d3.geoGraticule();
+  const center as [number, number] = [1200 / 2, 600 / 2];
 
   const thePoints = getPoints({ start: getBookPosition(start), end: getBookPosition(end), positionList: filterData });
   const thePaths = getPaths({ start: getBookPosition(start), end: getBookPosition(end), positionList: filterData });
@@ -155,12 +156,21 @@ export const Marks = ({ data, filterData }: { data: { fifty: { land: any, interi
           })}
           {
             !isMoving && thePoints.map((point, index) => {
-              return (
+              const gdistance = d3.geoDistance([point.coords[1], point.coords[0]], projection.invert([1200 / 2, 600 / 2]));
+              return gdistance < 1.57 ? (
                 <>
-                  <circle key={"116+" + index} transform={`translate(${projection([point.coords[1], point.coords[0]])})`} r={5} fill={getStrokeColor(point, "#00A1E0")} opacity={0.8} stroke='#EAF8BF'><title>{`${point.bookIndex! + 1}.${point.chapterIndex} \n${point.labelName}`}</title></circle>
+                  <circle
+                    key={"116+" + index}
+                    transform={`translate(${projection([point.coords[1], point.coords[0]])})`}
+                    r={5}
+                    fill={getStrokeColor(point, "#00A1E0")}
+                    opacity={0.8}
+                    stroke='#EAF8BF'>
+                    <title>{`${point.bookIndex! + 1}.${point.chapterIndex} \n${point.labelName}`}</title>
+                  </circle>
                   {/* {projection.scale() > 1500 && <text stroke="none" fill='black' className="text-[10px] font-sans" transform={`translate(${projection([point.coords[1], point.coords[0]])})`} >{`${point.bookIndex! + 1}.${point.chapterIndex} ${point.labelName}`}</text>} */}
                 </>
-              )
+              ) : null
             })
           }
 
@@ -173,6 +183,7 @@ export const Marks = ({ data, filterData }: { data: { fifty: { land: any, interi
 };
 
 function getStrokeColor(pathEntry: FunnyEntry, defaultColor?: string) {
+
   if (pathEntry.char) {
     if (pathEntry.char === 'Laurence') {
       return '#27476E'
