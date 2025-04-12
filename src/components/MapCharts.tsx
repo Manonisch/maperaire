@@ -100,7 +100,6 @@ export const Marks = ({ data, filterData }: { data: { fifty: { land: any, interi
 
   const path = d3.geoPath(projection);
   const graticule = d3.geoGraticule();
-  const center as [number, number] = [1200 / 2, 600 / 2];
 
   const thePoints = getPoints({ start: getBookPosition(start), end: getBookPosition(end), positionList: filterData });
   const thePaths = getPaths({ start: getBookPosition(start), end: getBookPosition(end), positionList: filterData });
@@ -156,8 +155,8 @@ export const Marks = ({ data, filterData }: { data: { fifty: { land: any, interi
           })}
           {
             !isMoving && thePoints.map((point, index) => {
-              const gdistance = d3.geoDistance([point.coords[1], point.coords[0]], projection.invert([1200 / 2, 600 / 2]));
-              return gdistance < 1.57 ? (
+              const gdist = d3.geoDistance([point.coords[1], point.coords[0]], projection.invert([1200 / 2, 600 / 2]));
+              return gdist < 1.57 ? (
                 <>
                   <circle
                     key={"116+" + index}
