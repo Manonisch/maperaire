@@ -31,7 +31,7 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
           
       - name: Install Dependencies
-        run: pnpm install --frozen-lockfile --ignore-scripts
+        run: pnpm install --ignore-scripts
 
       - name: Run build via vite
         run: pnpm run build
