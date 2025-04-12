@@ -155,7 +155,11 @@ export const Marks = ({ data, filterData }: { data: { fifty: { land: any, interi
           })}
           {
             !isMoving && thePoints.map((point, index) => {
-              const gdist = d3.geoDistance([point.coords[1], point.coords[0]], projection.invert([1200 / 2, 600 / 2]));
+              if (!projection.invert) {
+                return null
+              }
+              const foo = projection.invert([600, 300]) as [number, number];
+              const gdist = d3.geoDistance([point.coords[1], point.coords[0]], foo);
               return gdist < 1.57 ? (
                 <>
                   <circle
