@@ -31,7 +31,7 @@ export function TheMapChart() {
       })}
       </select>
       <GhostPointButton handleClick={() => setShowGhostLines(s => !s)} text={showGhostLines ? 'Hide GhostLines' : 'Show GhostLines'} />
-      <span style={{ fontSize: '14px', color: '#555', textAlign: 'center', paddingInlineStart: '10px' }}>   <span style={{ fontWeight: 'semibold' }}>Move the Globe</span> by dragging with the mouse, zoom via scroll wheel. Hover on points to <span style={{ fontWeight: 'semibold' }}>see more information</span>. To <span style={{ fontWeight: 'semibold' }}>Filter</span> drag and move the handles on the bottom axis.</span>
+      <span style={{ fontSize: '14px', color: '#555', textAlign: 'center', paddingInlineStart: '10px' }}>   <span style={{ fontWeight: 'bold' }}>Move the Globe</span> by dragging with the mouse, zoom via scroll wheel. Hover on points to <span style={{ fontWeight: 'bold' }}>see more information</span>. To <span style={{ fontWeight: 'bold' }}>Filter</span> drag and move the handles on the bottom axis.</span>
     </div>
     <Marks data={worldData} filterData={queryRefs[query]} showGhostLines={showGhostLines} />
   </div>
