@@ -120,5 +120,6 @@ export const TheSlider = memo(function TheSlider({ handleChange }: { handleChang
         cursor: 'ew-resize'
       }}>{data[rightRange].bookIndex + 1 + '.' + getChapterName(data[rightRange]?.name)}</text>
     </g>
+    <text x={15} y={10} style={{ fontSize: '12px' }} fill='gray' stroke='none'>Filter Data per Chapters</text>
   </svg>
 })
