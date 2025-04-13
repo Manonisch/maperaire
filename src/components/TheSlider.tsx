@@ -1,4 +1,4 @@
-import d3 from "d3";
+import * as d3 from "d3";
 import { memo, useState, useCallback, MouseEvent } from "react";
 import { TheTicks } from "./TheTicks";
 import { getChapterList, getChapterName } from "./utils";

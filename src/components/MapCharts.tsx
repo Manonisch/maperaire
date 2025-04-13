@@ -22,9 +22,12 @@ export function TheMapChart() {
   }
 
   return <div>
-    <div className="w-full h-[40px] flex" style={{ width: '100%', height: '40px', display: 'flex' }}> <SourcesLink /> <select onChange={handleChange}>{queryArray.map(entry => {
-      return (<option key={'option' + entry[0]} value={entry[0]}>{entry[0]}</option>)
-    })}</select></div>
+    <div className="w-full h-[40px] flex" style={{ width: '100%', height: '40px', display: 'flex' }}> <SourcesLink />
+      <select onChange={handleChange}>{queryArray.map(entry => {
+        return (<option key={'option' + entry[0]} value={entry[0]}>{entry[0]}</option>)
+      })}
+      </select>
+    </div>
     <Marks data={worldData} filterData={queryRefs[query]} />
   </div>
 }

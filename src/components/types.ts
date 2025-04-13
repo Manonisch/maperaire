@@ -10,6 +10,7 @@ export interface LocLabel {
 export interface FunnyEntry extends LocLabel {
   bookIndex?: number;
   chapterIndex?: number;
+  matches?: string[];
 }
 
 export type ChapterEntry = {

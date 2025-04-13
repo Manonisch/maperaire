@@ -1,4 +1,4 @@
-import d3 from "d3";
+import * as d3 from "d3";
 import { memo, useMemo } from "react";
 import { getChapterList, getChapterName } from "./utils";
 

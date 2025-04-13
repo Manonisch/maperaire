@@ -11,9 +11,9 @@ export interface BookPosition {
 }
 
 export const queryRefs: Record<string, BookPosition[]> = {
+  default: [],
   Will: Will,
   Test: Test,
-  default: [],
 };
 
 export interface Query {
