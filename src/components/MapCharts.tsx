@@ -1,26 +1,37 @@
-import { useState, useEffect, useRef, useCallback, useMemo, memo, MouseEvent } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo, memo, MouseEvent, ChangeEvent } from "react";
 import * as d3 from 'd3';
 import versor from 'versor';
 import { w2000, w100, getPointerCoords, geoRefs, getChapterName, getChapterList, getPaths, getPoints, getRegions, useWorldData, getBookPosition, getImpliedPaths } from "./utils";
 import { bookPosition, FunnyEntry } from "./types";
 import { SourcesLink } from "./SourcesLink";
-
+import { BookPosition, queryRefs, useQuery } from "../stores/QueryStore";
 
 export function TheMapChart() {
+  const [filterData, setFilterData] = useState<BookPosition[]>([])
+
   // const filteredData = prepareFilteredData();
   const worldData = useWorldData();
+  const query = useQuery(s => s.query)
+  // const filterdata = queryRefs[query] ?? []
+  const queryArray = Object.entries(queryRefs);
+
+  const handleChange = useCallback((event: ChangeEvent<HTMLSelectElement>) => {
+    setFilterData(queryRefs[event.target.value] ?? []);
+  }, [])
 
   if (!worldData) {
     return <div>'Loading'</div>
   }
 
   return <div>
-    <div className="w-full h-[40px] flex" style={{ width: '100%', height: '40px', display: 'flex' }}> <SourcesLink /></div>
-    <Marks data={worldData} />
+    <div className="w-full h-[40px] flex" style={{ width: '100%', height: '40px', display: 'flex' }}> <SourcesLink /> <select onChange={handleChange}>{queryArray.map(entry => {
+      return (<option key={'option' + entry[0]} value={entry[0]}>{entry[0]}</option>)
+    })}</select></div>
+    <Marks data={worldData} filterData={filterData} />
   </div>
 }
 
-export const Marks = ({ data, filterData }: { data: { fifty: { land: any, interiors: any }, hundred: { land: any, interiors: any } }, filterData?: bookPosition[] }) => {
+export const Marks = memo(({ data, filterData }: { data: { fifty: { land: any, interiors: any }, hundred: { land: any, interiors: any } }, filterData?: bookPosition[] }) => {
   const [localData, setLocalData] = useState(data.fifty)
   const [worldData, setWorldData] = useState(w2000) // TODO either world1825-100 or world1825-2000
   const [isMoving, setIsMoving] = useState(false);
@@ -178,7 +189,7 @@ export const Marks = ({ data, filterData }: { data: { fifty: { land: any, interi
       <TheSlider handleChange={setRange} />
     </>
   );
-};
+});
 
 function getStrokeColor(pathEntry: FunnyEntry, defaultColor?: string) {
 
