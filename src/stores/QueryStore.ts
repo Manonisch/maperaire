@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { Will } from "../data/querys/positions_Will";
 import { Test } from "../data/querys/positions_test";
 
-type Querys = "Will" | "Test" | "";
+export type Querys = "Will" | "Test" | "";
 
 export interface BookPosition {
   bookIndex: number;

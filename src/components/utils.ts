@@ -239,25 +239,18 @@ export function getChapterList(): Chapterus[] {
   return theChapters;
 }
 
-// export const prepareFilteredData = () => {
-//   const foo: bookPosition[] = [];
-//   const books = Array.from(Bookshelf.values());
-//   books.forEach((book, index) => {
-//     const results = book.filteredResults;
-//     results.forEach((result) => {
-//       if (
-//         !foo.find(
-//           (position) =>
-//             position.bookIndex === index &&
-//             position.chapterIndex === result.chapterIndex
-//         )
-//       ) {
-//         foo.push({ bookIndex: index, chapterIndex: result.chapterIndex });
-//       }
-//     });
-//   });
-//   return foo;
-// };
+export function getStrokeColor(pathEntry: FunnyEntry, defaultColor?: string) {
+  if (pathEntry.char) {
+    if (pathEntry.char === "Laurence") {
+      return "#27476E";
+    }
+    if (pathEntry.char === "Temeraire") {
+      return "#eca400";
+    }
+  }
+
+  return defaultColor ?? "gray";
+}
 
 // MAP Data statics
 
