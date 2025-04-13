@@ -1,13 +1,33 @@
 body {
   margin: 0;
   padding: 0;  
+
 }
+
 
 #root {
   background-color: aliceblue;
   width: 100vw;
   height: 100vh;
   margin: 0;
+}
+
+.background-image{
+  width: 100vw;
+  height: 100vh;
+  margin: -10px;
+  background-image: url('./assets/dragon_squadron.svg');
+  background-size: 120px;
+  display: inline;
+  position: absolute;
+  filter: hue-rotate(-60deg) saturate(35);
+  z-index: 0;
+  opacity: 0.05;
+}
+
+.themappa{
+  z-index: 1;
+position: relative;
 }
 
 .wrapper {
