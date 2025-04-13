@@ -15,7 +15,7 @@ export function TheMapChart() {
   }
 
   return <div>
-    <div className=" w-full h-[40px] flex"> <SourcesLink /></div>
+    <div className="w-full h-[40px] flex" style={{ width: '100%', height: '40px', display: 'flex' }}> <SourcesLink /></div>
     <Marks data={worldData} />
   </div>
 }
@@ -108,7 +108,7 @@ export const Marks = ({ data, filterData }: { data: { fifty: { land: any, interi
 
   return (
     <>
-      <svg key="1" width='80vw' height='70vh' viewBox="40 0 900 500" className="d-block m-auto" stroke='#aaa' fill='white' ref={svgRef}>
+      <svg key="1" width='80vw' height='70vh' viewBox="40 0 900 500" className="d-block m-auto" stroke='#aaa' fill='white' ref={svgRef} style={{ margin: 'auto', display: 'block' }}>
         <g key="2" className="marks" >
           {/* {void projection.translate([zoomTransform.x, zoomTransform.y])} */}
           {/* {projection.rotate([MousePosition.x + 30 / 60, -MousePosition.y, 0])} */}
@@ -118,11 +118,11 @@ export const Marks = ({ data, filterData }: { data: { fifty: { land: any, interi
 
           {
             localData.land.features.map((feature: d3.GeoPermissibleObjects, index: number) => (
-              <path key={"5+" + index} className="feature" fill="#eee" d={path(feature) || undefined} />
+              <path key={"5+" + index} className="feature" fill="#eee" d={path(feature) || undefined} stroke='#bbb' />
             ))
           }
           <path key="6" className="interiors" d={path(localData.interiors) || undefined} stroke='#bbb' />
-          <path key="8" fill="none" stroke="#999" d={path(worldData) || undefined} />
+          {!isMoving && <path key="8" fill="none" stroke="#999" d={path(worldData) || undefined} />}
 
           {!isMoving && thePaths.map((pathEntry, index) => {
 
@@ -161,23 +161,18 @@ export const Marks = ({ data, filterData }: { data: { fifty: { land: any, interi
               const foo = projection.invert([600, 300]) as [number, number];
               const gdist = d3.geoDistance([point.coords[1], point.coords[0]], foo);
               return gdist < 1.57 ? (
-                <>
-                  <circle
-                    key={"116+" + index}
-                    transform={`translate(${projection([point.coords[1], point.coords[0]])})`}
-                    r={5}
-                    fill={getStrokeColor(point, "#00A1E0")}
-                    opacity={0.8}
-                    stroke='#EAF8BF'>
-                    <title>{`${point.bookIndex! + 1}.${point.chapterIndex} \n${point.labelName}`}</title>
-                  </circle>
-                  {/* {projection.scale() > 1500 && <text stroke="none" fill='black' className="text-[10px] font-sans" transform={`translate(${projection([point.coords[1], point.coords[0]])})`} >{`${point.bookIndex! + 1}.${point.chapterIndex} ${point.labelName}`}</text>} */}
-                </>
+                <circle
+                  key={"116+" + index}
+                  transform={`translate(${projection([point.coords[1], point.coords[0]])})`}
+                  r={5}
+                  fill={getStrokeColor(point, "#00A1E0")}
+                  opacity={0.8}
+                  stroke='#EAF8BF'>
+                  <title>{`${point.bookIndex! + 1}.${point.chapterIndex} \n${point.labelName}`}</title>
+                </circle>
               ) : null
             })
           }
-
-          {/* <circle transform={`translate(${projection([singlePoint[0], singlePoint[1]])})`} r={4} fill="green" /> */}
         </g>
       </svg>
       <TheSlider handleChange={setRange} />
@@ -199,8 +194,6 @@ function getStrokeColor(pathEntry: FunnyEntry, defaultColor?: string) {
   return defaultColor ?? 'gray';
 }
 
-
-
 const TheSlider = memo(function TheSlider({ handleChange }: { handleChange: ({ theStart, theEnd }: { theStart: number, theEnd: number }) => void }) {
   const height = 70;
   const width = 1500;
@@ -208,8 +201,6 @@ const TheSlider = memo(function TheSlider({ handleChange }: { handleChange: ({ t
 
   const data = getChapterList();
   const data_last = data.length == 0 ? 0 : data.length - 1;
-  const TICK_LENGTH = 6;
-  const DOUBLE_TICK_LENGTH = 18;
 
   const [onTheMove, setOnTheMove] = useState<'left' | 'right' | 'slider' | undefined>();
   const [leftSliderPos, setLeftSliderPos] = useState<number>(10);
@@ -218,16 +209,6 @@ const TheSlider = memo(function TheSlider({ handleChange }: { handleChange: ({ t
   const [rightRange, setRightRange] = useState<number>(data.length - 1);
 
   const xScale = d3.scaleLinear([0, data_last], [margin, width - margin]).clamp(true);
-
-  const ticks = useMemo(() => {
-    const numberOfTicksTarget = data.length;
-
-    return xScale.ticks(numberOfTicksTarget).map((value) => ({
-      value: (data[value] && value % 3 === 0 || data[value].chapterIndex === 0) ? data[value].bookIndex + 1 + '.' + getChapterName(data[value].name) : '',
-      xOffset: xScale(value),
-      firstChapter: data[value].chapterIndex === 0
-    }));
-  }, [xScale, data]);
 
   const handleMouseMove = useCallback((event: MouseEvent<SVGSVGElement>) => {
     if (onTheMove) {
@@ -238,21 +219,27 @@ const TheSlider = memo(function TheSlider({ handleChange }: { handleChange: ({ t
         setLeftSliderPos(event.clientX - 38)
         if (theNumber && leftRange !== theTickPos) {
           setLeftRange(theNumber);
+          // handleChange({ theStart: leftRange, theEnd: theNumber })
         }
       }
       if (onTheMove === 'right' && event.clientX - 38 > leftSliderPos) {
         setRightSliderPos(event.clientX - 38)
         if (theNumber && rightRange !== theTickPos) {
           setRightRange(theNumber);
+          // handleChange({ theStart: theNumber, theEnd: rightRange })
         }
       }
       if (onTheMove === 'slider') {
         setLeftSliderPos(leftSliderPos + event.movementX);
         setRightSliderPos(rightSliderPos + event.movementX);
+        setLeftRange(Math.round(xScale.invert(leftSliderPos + event.movementX)));
+        setRightRange(Math.round(xScale.invert(rightSliderPos + event.movementX)));
+        // handleChange({ theStart: Math.round(xScale.invert(leftSliderPos + event.movementX)), theEnd: Math.round(xScale.invert(rightSliderPos + event.movementX)) })
       }
       event.preventDefault();
     }
-  }, [xScale, rightSliderPos, leftSliderPos, leftRange, rightRange, onTheMove])
+  }, [xScale, rightSliderPos, leftSliderPos, leftRange, rightRange, onTheMove]);
+
   const handleMouseUp = useCallback((event: MouseEvent<SVGSVGElement>) => {
     if (onTheMove) {
       const theNumber = Math.round(xScale.invert(event.clientX - 38));
@@ -286,35 +273,19 @@ const TheSlider = memo(function TheSlider({ handleChange }: { handleChange: ({ t
     height={height}
     stroke="gray"
     fill="none"
-    className="d-block m-auto"
     onMouseMove={handleMouseMove}
     onMouseUp={handleMouseUp}
+    style={{ display: 'block', margin: 'auto' }}
   >
-    <line stroke="black" x1={margin} y1={20} x2={width - margin} y2={20} />
-    {/* Ticks and labels */}
-    {ticks.map(({ value, xOffset, firstChapter }, index) => (
-      <g key={"10+" + index} transform={`translate(${xOffset}, 20)`}>
-        <line y2={firstChapter ? DOUBLE_TICK_LENGTH : TICK_LENGTH} stroke="currentColor" />
-        <text
-          key={value}
-          style={{
-            fontSize: "10px",
-            textAnchor: "middle",
-            transform: firstChapter ? "translateY(45px)" : "translateY(30px)",
-          }}
-        >
-          {value}
-        </text>
-      </g>
-    ))}
-    <g id='the-element'
+    <TheTicks />
+    <g key='elem' id='the-element'
       onMouseDown={() => {
         setOnTheMove('slider');
       }}
     >
       <rect x={leftSliderPos} y={15} width={rightSliderPos - leftSliderPos} height={25} fill="blue" fillOpacity={0.2} stroke="none" />
     </g>
-    <g id='left-slider'
+    <g key='left slider' id='left-slider'
       onMouseDown={(event: MouseEvent<SVGSVGElement>) => {
         event.preventDefault();
         setOnTheMove('left')
@@ -327,7 +298,7 @@ const TheSlider = memo(function TheSlider({ handleChange }: { handleChange: ({ t
         cursor: 'ew-resize'
       }}>{data[leftRange].bookIndex + 1 + '.' + getChapterName(data[leftRange]?.name)}</text>
     </g>
-    <g id='right-slider'
+    <g key='right-slider' id='right-slider'
       onMouseDown={(event: MouseEvent<SVGSVGElement>) => {
         event.preventDefault();
         setOnTheMove('right')
@@ -341,4 +312,50 @@ const TheSlider = memo(function TheSlider({ handleChange }: { handleChange: ({ t
       }}>{data[rightRange].bookIndex + 1 + '.' + getChapterName(data[rightRange]?.name)}</text>
     </g>
   </svg>
+})
+
+const TheTicks = memo(() => {
+  const TICK_LENGTH = 6;
+  const DOUBLE_TICK_LENGTH = 18;
+  const width = 1500;
+  const margin = 10;
+
+  const data = getChapterList();
+  const data_last = data.length == 0 ? 0 : data.length - 1;
+
+  const xScale = d3.scaleLinear([0, data_last], [margin, width - margin]).clamp(true);
+
+  const ticks = useMemo(() => {
+    const numberOfTicksTarget = data.length;
+
+    return xScale.ticks(numberOfTicksTarget).map((value) => ({
+      value: (data[value] && value % 3 === 0 || data[value].chapterIndex === 0) ? data[value].bookIndex + 1 + '.' + getChapterName(data[value].name) : '',
+      xOffset: xScale(value),
+      firstChapter: data[value].chapterIndex === 0
+    }));
+  }, [xScale, data]);
+
+  return (
+    <>
+      <line stroke="black" x1={margin} y1={20} x2={width - margin} y2={20} />
+      {/* Ticks and labels */}
+      {
+        ticks.map(({ value, xOffset, firstChapter }, index) => (
+          <g key={"10+" + index} transform={`translate(${xOffset}, 20)`}>
+            <line y2={firstChapter ? DOUBLE_TICK_LENGTH : TICK_LENGTH} stroke="currentColor" />
+            <text
+              key={value}
+              style={{
+                fontSize: "10px",
+                textAnchor: "middle",
+                transform: firstChapter ? "translateY(45px)" : "translateY(30px)",
+              }}
+            >
+              {value}
+            </text>
+          </g>
+        ))
+      }
+    </>
+  )
 })
