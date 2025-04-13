@@ -6,8 +6,10 @@ import { bookPosition } from "./types";
 import { SourcesLink } from "./SourcesLink";
 import { queryRefs, Querys, useQuery } from "../stores/QueryStore";
 import { TheSlider } from "./TheSlider";
+import { GhostPointButton } from "./GhostPointButton";
 
 export function TheMapChart() {
+  const [showGhostLines, setShowGhostLines] = useState(false);
   const worldData = useWorldData();
   const query = useQuery(s => s.query)
   const chooseQuery = useQuery(s => s.chooseQuery)
@@ -23,16 +25,18 @@ export function TheMapChart() {
 
   return <div>
     <div className="w-full h-[40px] flex" style={{ width: '100%', height: '40px', display: 'flex' }}> <SourcesLink />
-      <select onChange={handleChange}>{queryArray.map(entry => {
+      <select onChange={handleChange} style={{ height: '26px', borderRadius: '6px', backgroundColor: 'oklch(70.9% 0.01 56.259)', color: 'oklch(26.8% 0.007 34.298)', margin: '2px' }}
+      >{queryArray.map(entry => {
         return (<option key={'option' + entry[0]} value={entry[0]}>{entry[0]}</option>)
       })}
       </select>
+      <GhostPointButton handleClick={() => setShowGhostLines(s => !s)} />
     </div>
-    <Marks data={worldData} filterData={queryRefs[query]} />
+    <Marks data={worldData} filterData={queryRefs[query]} showGhostLines={showGhostLines} />
   </div>
 }
 
-export const Marks = memo(({ data, filterData }: { data: { fifty: { land: any, interiors: any }, hundred: { land: any, interiors: any } }, filterData?: bookPosition[] }) => {
+export const Marks = memo(({ data, filterData, showGhostLines }: { data: { fifty: { land: any, interiors: any }, hundred: { land: any, interiors: any } }, filterData?: bookPosition[], showGhostLines?: boolean }) => {
   const [localData, setLocalData] = useState(data.fifty)
   const [worldData, setWorldData] = useState(w2000);
   const [isMoving, setIsMoving] = useState(false);
@@ -136,6 +140,8 @@ export const Marks = memo(({ data, filterData }: { data: { fifty: { land: any, i
             <>
               <path key="8" fill="none" stroke="#999" d={path(worldData) || undefined} />
 
+              {showGhostLines && <AllData projection={projection} />}
+
               {thePaths.map((pathEntry, index) => {
 
                 const positions: number[][] = []
@@ -179,7 +185,7 @@ export const Marks = memo(({ data, filterData }: { data: { fifty: { land: any, i
                     fill={getStrokeColor(point, "#00A1E0")}
                     opacity={0.8}
                     stroke='#EAF8BF'>
-                    <title>{`${point.bookIndex! + 1}.${point.chapterIndex} \n${point.labelName}`}</title>
+                    <title>{`${point.bookIndex! + 1}.${point.chapterIndex} \n${point.labelName.split(':')[1]}`}</title>
                   </circle>
                 ) : null
               })
@@ -191,3 +197,62 @@ export const Marks = memo(({ data, filterData }: { data: { fifty: { land: any, i
     </>
   );
 });
+
+const AllData = memo(({ projection }: { projection: d3.GeoProjection }) => {
+  const allPoints = getPoints();
+  const allPaths = getPaths();
+  const allImpliedPaths = getImpliedPaths();
+  const allRegions = getRegions();
+  const path = d3.geoPath(projection);
+
+  return <>
+    {allPaths.map((pathEntry, index) => {
+
+      const positions: number[][] = []
+      for (let i = 0; i < pathEntry.coords.length; i += 2) {
+        positions.push([pathEntry.coords[i + 1], pathEntry.coords[i]]);
+      }
+
+      return (<path key={"26+" + index} fill='none' stroke={getStrokeColor(pathEntry, "#B1B1D3")} opacity={0.4} d={path({
+        type: "LineString",
+        coordinates: positions
+      }) || undefined} />)
+    })}
+    {allImpliedPaths.map((pathEntry, index) => {
+
+      const positions: number[][] = []
+      for (let i = 0; i < pathEntry.coords.length; i += 2) {
+        positions.push([pathEntry.coords[i + 1], pathEntry.coords[i]]);
+      }
+
+      return (<path key={"27+" + index} fill='none' stroke={getStrokeColor(pathEntry, '#B1B1D3')} opacity={0.4} strokeDasharray='6' d={path({
+        type: "LineString",
+        coordinates: positions
+      }) || undefined} />)
+    })}
+    {allRegions.map((region, index) => {
+
+      const regional = geoRefs[region?.file ?? ''] || null
+      return (<path key={"28+" + index} fill='none' stroke='#001D4A' d={path(regional) || undefined} opacity={0.25} />)
+    })}
+    {allPoints.map((point, index) => {
+      if (!projection.invert) {
+        return null
+      }
+      const invertedProj = projection.invert([600, 300]) as [number, number];
+      const gdist = d3.geoDistance([point.coords[1], point.coords[0]], invertedProj);
+      return gdist < 1.57 ? (
+        <circle
+          key={"26+" + index}
+          transform={`translate(${projection([point.coords[1], point.coords[0]])})`}
+          r={5}
+          fill={getStrokeColor(point, "#B1B1D3")}
+          opacity={0.25}
+          stroke='none'>
+          <title>{`${point.bookIndex! + 1}.${point.chapterIndex} \n${point.labelName.split(':')[1]}`}</title>
+        </circle>
+      ) : null
+    })
+    }
+  </>
+})

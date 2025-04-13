@@ -6,7 +6,7 @@ export const SourcesLink = () => {
   const gotoOtherPage = useCallback(() => gotoPage('sources'), [gotoPage]);
 
   return (
-    <button className='w-[26px] h-[26px] rounded-[6px] bg-stone-400 text-stone-600 m-[2px] underline' onClick={gotoOtherPage}>
+    <button style={{ height: '26px', borderRadius: '6px', backgroundColor: 'oklch(70.9% 0.01 56.259)', color: 'oklch(26.8% 0.007 34.298)', margin: '2px' }} onClick={gotoOtherPage}>
       Sources
     </button>
   )
