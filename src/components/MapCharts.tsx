@@ -31,6 +31,7 @@ export function TheMapChart() {
       })}
       </select>
       <GhostPointButton handleClick={() => setShowGhostLines(s => !s)} />
+      <span style={{ fontSize: '14px', color: '#555', textAlign: 'center', paddingInlineStart: '10px' }}>   Move the Globe by dragging with the mouse, zoom via scroll wheel. To Filter drag and mouve the handles on the bottom axis</span>
     </div>
     <Marks data={worldData} filterData={queryRefs[query]} showGhostLines={showGhostLines} />
   </div>
