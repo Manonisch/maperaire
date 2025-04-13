@@ -152,7 +152,7 @@ export const Marks = memo(({ data, filterData, showGhostLines }: { data: { fifty
                 return (<path key={"17+" + index} fill='none' stroke={getStrokeColor(pathEntry, "#00A1E0")} opacity={0.8} d={path({
                   type: "LineString",
                   coordinates: positions
-                }) || undefined} />)
+                }) || undefined} ><title>{`${pathEntry.bookIndex! + 1}.${pathEntry.chapterIndex} \n${pathEntry.labelName.split(':')[1]}`}</title></path>)
               })}
               {theImpliedPaths.map((pathEntry, index) => {
 
@@ -164,12 +164,12 @@ export const Marks = memo(({ data, filterData, showGhostLines }: { data: { fifty
                 return (<path key={"7+" + index} fill='none' stroke={getStrokeColor(pathEntry, '#004966')} opacity={0.7} strokeDasharray='6' d={path({
                   type: "LineString",
                   coordinates: positions
-                }) || undefined} />)
+                }) || undefined} ><title>{`${pathEntry.bookIndex! + 1}.${pathEntry.chapterIndex} \n${pathEntry.labelName.split(':')[1]}`}</title></path>)
               })}
               {theRegions.map((region, index) => {
 
                 const regional = geoRefs[region?.file ?? ''] || null
-                return (<path key={"8+" + index} fill='none' stroke='#001D4A' d={path(regional) || undefined} />)
+                return (<path key={"8+" + index} fill='none' stroke='#001D4A' d={path(regional) || undefined} ><title>{`${region.bookIndex! + 1}.${region.chapterIndex} \n${region.labelName.split(':')[1]}`}</title></path>)
               })}
               {thePoints.map((point, index) => {
                 if (!projection.invert) {
@@ -191,6 +191,10 @@ export const Marks = memo(({ data, filterData, showGhostLines }: { data: { fifty
               })
               }
             </>)}
+
+        </g>
+        <g>
+          <text></text>
         </g>
       </svg>
       <TheSlider handleChange={setRange} />

@@ -61,10 +61,6 @@ export function SourcesView() {
         Licenses: <a href='https://github.com/d3/d3?tab=ISC-1-ov-file#'>ISC License</a>
       </li>
       <li>
-        <a href='https://github.com/tailwindlabs/tailwindcss'>TailwindCss</a> - Copyright (c) Tailwind Labs, Inc.
-        Licenses: <a href='https://github.com/tailwindlabs/tailwindcss?tab=MIT-1-ov-file#'>MIT</a>
-      </li>
-      <li>
         <a href='https://github.com/vitejs/vite'>Vite</a> - Copyright (c) 2019-present, VoidZero Inc. and Vite contributors
         Licenses: <a href='https://github.com/vitejs/vite?tab=MIT-1-ov-file#'>MIT</a>
       </li>
