@@ -166,7 +166,7 @@ export const Marks = memo(({ data, filterData, showGhostLines }: { data: { fifty
                 return (<path key={"17+" + index} fill='none' stroke={getStrokeColor(pathEntry, "#00A1E0")} strokeWidth='1.5px' opacity={0.8} d={path({
                   type: "LineString",
                   coordinates: positions
-                }) || undefined} markerEnd="url(#dragon)" markerUnits={2}><title>{`${pathEntry.bookIndex! + 1}.${pathEntry.chapterIndex} \n${pathEntry.labelName.split(':')[1]}`}</title></path>)
+                }) || undefined} markerEnd={pathEntry.char !== 'Laurence' ? "url(#dragon)" : ''} ><title>{`${pathEntry.bookIndex! + 1}.${pathEntry.chapterIndex} \n${pathEntry.labelName.split(':')[1]}`}</title></path>)
               })}
               {theImpliedPaths.map((pathEntry, index) => {
 
@@ -178,7 +178,7 @@ export const Marks = memo(({ data, filterData, showGhostLines }: { data: { fifty
                 return (<path key={"7+" + index} fill='none' stroke={getStrokeColor(pathEntry, '#004966')} strokeWidth='1.5px' opacity={0.7} strokeDasharray='6' d={path({
                   type: "LineString",
                   coordinates: positions
-                }) || undefined} markerEnd="url(#dragon)" markerUnits={2}><title>{`${pathEntry.bookIndex! + 1}.${pathEntry.chapterIndex} \n${pathEntry.labelName.split(':')[1]}`}</title></path>)
+                }) || undefined} markerEnd={pathEntry.char !== 'Laurence' ? "url(#dragon)" : ''} ><title>{`${pathEntry.bookIndex! + 1}.${pathEntry.chapterIndex} \n${pathEntry.labelName.split(':')[1]}`}</title></path>)
               })}
               {theRegions.map((region, index) => {
 
