@@ -119,6 +119,7 @@ export const Marks = memo(({ data, filterData, showGhostLines }: { data: { fifty
   const theImpliedPaths = getImpliedPaths({ start: getBookPosition(start), end: getBookPosition(end), positionList: filterData });
   const theRegions = getRegions({ start: getBookPosition(start), end: getBookPosition(end), positionList: filterData });
 
+
   return (
     <>
       <svg key="1" width='80vw' height='70vh' viewBox="40 0 900 500" className="d-block m-auto" stroke='#aaa' fill='white' ref={svgRef} style={{ margin: 'auto', display: 'block' }}>
@@ -143,7 +144,7 @@ export const Marks = memo(({ data, filterData, showGhostLines }: { data: { fifty
               {showGhostLines && <AllData projection={projection} />}
 
               {thePaths.map((pathEntry, index) => {
-
+                console.log('svg ha the following', svgRef.current, svgRef.current?.clientHeight)
                 const positions: number[][] = []
                 for (let i = 0; i < pathEntry.coords.length; i += 2) {
                   positions.push([pathEntry.coords[i + 1], pathEntry.coords[i]]);
@@ -193,8 +194,12 @@ export const Marks = memo(({ data, filterData, showGhostLines }: { data: { fifty
             </>)}
 
         </g>
-        <g>
-          <text></text>
+        <g transform={`translate(750, 495 )`}>
+          <rect fill='aliceblue' width={320} stroke='none' height={20} y={-12} />
+          <text fill='grey' stroke="none" style={{ fontSize: '8px' }}> historical country border data from <a href='https://www.openstreetmap.org/copyright' style={{ fill: 'blue' }} target="_blank" rel="noopener noreferrer">
+            OpenStreetMap
+          </a>
+            - 2025-03-30</text>
         </g>
       </svg>
       <TheSlider handleChange={setRange} />
