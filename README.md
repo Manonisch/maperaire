@@ -1,5 +1,6 @@
 # maperaire
 Interactive Map Project for the Temeraire books by Naomi Novik.
+Try it out [here](https://manonisch.github.io/maperaire/)
 
 ## Features
 - Shows a world map showcasing the (aproximated) locations mentioned over the course of the course of the books.
