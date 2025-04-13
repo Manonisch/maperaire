@@ -124,6 +124,19 @@ export const Marks = memo(({ data, filterData, showGhostLines }: { data: { fifty
   return (
     <>
       <svg key="1" width='80vw' height='70vh' viewBox="40 0 900 500" className="d-block m-auto" stroke='#aaa' fill='white' ref={svgRef} style={{ margin: 'auto', display: 'block' }}>
+
+        <defs>
+          <marker
+            id="dragon"
+            viewBox="0 0 384 621"
+            refX="150"
+            refY="300"
+            markerWidth="15"
+            markerHeight="10"
+            orient="auto">
+            <path d="M240.5,0.5c0,0 37.377,39.066 100,140c0.456,0.735 -20.796,51.43 -20,100c-23.563,11.947 -41.466,50.079 -40,50c8.798,-0.474 8.397,8.634 60,10c12.302,0.326 12.546,-3.024 20,-3c5.459,0.017 -3.892,-11.555 0,-10c4.121,1.646 6.93,7.137 11,11c5.031,4.776 10.932,8.175 11,12c0.067,3.728 -5.394,7.123 -10,11c-6.563,5.525 -13,11 -13,11c0,0 7.185,-10.115 1,-10c-7.452,0.138 -6.131,-2.386 -20,-2c-50.821,1.415 -50.092,8.599 -60,10c-1.943,0.275 12.99,34.49 40,50c-0.929,54.148 20.424,99.255 20,100c-62.502,110.014 -100,140 -100,140c0,0 10,-70 10,-90c0,-7.574 -10,-20 -10,-20c0,0 10.781,-43.333 10.781,-50c-0,-6.667 -10.781,-20 -10.781,-20c0,0 15.641,-13.333 15.641,-20c0,-6.667 -7.869,-20 -7.869,-20c-0,-0 10.431,-4.396 12.228,-11.062c1.739,-6.453 1.95,-12.545 0,-18.938c-2.034,-6.667 -20,-30 -20,-30c0,0 -9.286,-2.662 -32.332,-5.44c-12.168,-1.468 -25.234,-12.494 -39.611,-14.56c-40.308,-5.792 -48.057,-20 -68.057,-20c-20,0 -46.667,20 -60,20c-9.428,0 -40,-30 -40,-30c-0,0 26.515,22.655 40,20c16.667,-3.281 40,-26.667 60,-30c19.983,-3.331 59.789,18.602 80,20c15.323,-5.067 17.969,-10.216 29.223,-13.102c25.616,-6.569 30.777,-6.898 30.777,-6.898c0,0 17.847,-23.333 20,-30c2.153,-6.667 1.542,-14.287 0,-20.881c-1.56,-6.666 -12.617,-9.119 -12.617,-9.119c0,-0 6.704,-13.333 6.704,-20c-0,-6.667 -14.087,-20 -14.087,-20c0,0 10,-13.333 10,-20c0,-6.667 -10,-50 -10,-50c0,0 10,-12.546 10,-20c0,-13.333 -10,-90 -10,-90Z" fill='#555' />
+          </marker>
+        </defs>
         <g key="2" className="marks" style={{ cursor: 'grab' }}>
           {/* {void projection.translate([zoomTransform.x, zoomTransform.y])} */}
           {/* {projection.rotate([MousePosition.x + 30 / 60, -MousePosition.y, 0])} */}
@@ -153,7 +166,7 @@ export const Marks = memo(({ data, filterData, showGhostLines }: { data: { fifty
                 return (<path key={"17+" + index} fill='none' stroke={getStrokeColor(pathEntry, "#00A1E0")} opacity={0.8} d={path({
                   type: "LineString",
                   coordinates: positions
-                }) || undefined} ><title>{`${pathEntry.bookIndex! + 1}.${pathEntry.chapterIndex} \n${pathEntry.labelName.split(':')[1]}`}</title></path>)
+                }) || undefined} marker-mid="url(#dragon)"><title>{`${pathEntry.bookIndex! + 1}.${pathEntry.chapterIndex} \n${pathEntry.labelName.split(':')[1]}`}</title></path>)
               })}
               {theImpliedPaths.map((pathEntry, index) => {
 
@@ -165,7 +178,7 @@ export const Marks = memo(({ data, filterData, showGhostLines }: { data: { fifty
                 return (<path key={"7+" + index} fill='none' stroke={getStrokeColor(pathEntry, '#004966')} opacity={0.7} strokeDasharray='6' d={path({
                   type: "LineString",
                   coordinates: positions
-                }) || undefined} ><title>{`${pathEntry.bookIndex! + 1}.${pathEntry.chapterIndex} \n${pathEntry.labelName.split(':')[1]}`}</title></path>)
+                }) || undefined} marker-mid="url(#dragon)"><title>{`${pathEntry.bookIndex! + 1}.${pathEntry.chapterIndex} \n${pathEntry.labelName.split(':')[1]}`}</title></path>)
               })}
               {theRegions.map((region, index) => {
 
