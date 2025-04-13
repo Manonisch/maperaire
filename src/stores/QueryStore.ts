@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { Will } from "../data/querys/positions_Will";
 import { Test } from "../data/querys/positions_test";
 
-export type Querys = "Will" | "Test" | "";
+export type Querys = "Will" | "Test" | "default";
 
 export interface BookPosition {
   bookIndex: number;
@@ -22,7 +22,7 @@ export interface Query {
 }
 
 export const useQuery = create<Query>((set) => ({
-  query: "",
+  query: "default",
   chooseQuery: (query: Querys) => {
     set({ query });
   },
