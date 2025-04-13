@@ -5,7 +5,7 @@ import { getChapterList, getChapterName } from "./utils";
 export const TheTicks = memo(() => {
   const TICK_LENGTH = 6;
   const DOUBLE_TICK_LENGTH = 18;
-  const width = 1500;
+  const width = document.body.getBoundingClientRect().width - 100;
   const margin = 10;
 
   const data = getChapterList();
@@ -17,7 +17,7 @@ export const TheTicks = memo(() => {
     const numberOfTicksTarget = data.length;
 
     return xScale.ticks(numberOfTicksTarget).map((value) => ({
-      value: (data[value] && value % 3 === 0 || data[value].chapterIndex === 0) ? data[value].bookIndex + 1 + '.' + getChapterName(data[value].name) : '',
+      value: (data[value] && value % 4 === 0 || data[value].chapterIndex === 0) ? data[value].bookIndex + 1 + '.' + getChapterName(data[value].name) : '',
       xOffset: xScale(value),
       firstChapter: data[value].chapterIndex === 0
     }));

@@ -124,7 +124,7 @@ export const Marks = memo(({ data, filterData, showGhostLines }: { data: { fifty
   return (
     <>
       <svg key="1" width='80vw' height='70vh' viewBox="40 0 900 500" className="d-block m-auto" stroke='#aaa' fill='white' ref={svgRef} style={{ margin: 'auto', display: 'block' }}>
-        <g key="2" className="marks" >
+        <g key="2" className="marks" style={{ cursor: 'grab' }}>
           {/* {void projection.translate([zoomTransform.x, zoomTransform.y])} */}
           {/* {projection.rotate([MousePosition.x + 30 / 60, -MousePosition.y, 0])} */}
           <path key="3" className="sphere" d={path({ type: 'Sphere' }) || undefined} />
@@ -145,7 +145,6 @@ export const Marks = memo(({ data, filterData, showGhostLines }: { data: { fifty
               {showGhostLines && <AllData projection={projection} />}
 
               {thePaths.map((pathEntry, index) => {
-                console.log('svg ha the following', svgRef.current, svgRef.current?.clientHeight)
                 const positions: number[][] = []
                 for (let i = 0; i < pathEntry.coords.length; i += 2) {
                   positions.push([pathEntry.coords[i + 1], pathEntry.coords[i]]);

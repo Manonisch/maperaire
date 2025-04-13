@@ -5,7 +5,7 @@ import { getChapterList, getChapterName } from "./utils";
 
 export const TheSlider = memo(function TheSlider({ handleChange }: { handleChange: ({ theStart, theEnd }: { theStart: number, theEnd: number }) => void }) {
   const height = 70;
-  const width = 1500;
+  const width = document.body.getBoundingClientRect().width - 100;
   const margin = 10;
 
   const data = getChapterList();
@@ -90,7 +90,7 @@ export const TheSlider = memo(function TheSlider({ handleChange }: { handleChang
     <g key='elem' id='the-element'
       onMouseDown={() => {
         setOnTheMove('slider');
-      }}
+      }} style={{ cursor: 'grab' }}
     >
       <rect x={leftSliderPos} y={15} width={rightSliderPos - leftSliderPos} height={25} fill="blue" fillOpacity={0.2} stroke="none" />
     </g>
