@@ -9,7 +9,7 @@ function App() {
   }
 
   return (
-    <AppWrapper>
+    <AppWrapper className="wrapper">
       <Routing />
     </AppWrapper>
   )
