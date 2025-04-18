@@ -19,6 +19,11 @@ Locations and paths were manually selected by the authors best approximation dep
 
 I started the map as a base visualisation to show specific map based data from the Temeraire books. Now that the base is done I aim to add multiple interactive overlays showcasing different datasets manually queried from the books.
 
+## Other interesting stuff
+
+* [Planned Todos](OPENISSUES.md)
+* [How to prepare topojson data for maps](TECHNOTES.md)
+
 ## Sources
 
 ### The underlying world map data, as well as region boundaries were queried using the following sources:
