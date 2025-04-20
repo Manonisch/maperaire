@@ -10,7 +10,7 @@ function App() {
 
   return (
     <AppWrapper className="wrapper">
-      <div className="background-image"></div>
+      <div className="background-image" />
       <Routing />
     </AppWrapper>
   )

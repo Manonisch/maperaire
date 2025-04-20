@@ -10,6 +10,7 @@ export interface Page {
 export const usePage = create<Page>((set) => ({
   page: "map",
   gotoPage: (page: Pages) => {
+    console.log("setting the page", page);
     set({ page });
   },
 }));

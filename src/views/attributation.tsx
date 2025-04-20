@@ -1,7 +1,7 @@
 import { MapLink } from "../components/links/MapLink";
 
 export function SourcesView() {
-  return <div className="w-[80vw] h-[100vh] m-auto overflow-scroll p-[32px]">
+  return <div style={{ width: '80vw', height: '100vh', margin: 'auto', padding: '32px', zIndex: '1', position: 'relative' }}>
     <MapLink />
     <h1> Used Sources & Licenses Overview</h1>
     <h2> Interactive Data Sources </h2>

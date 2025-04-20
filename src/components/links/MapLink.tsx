@@ -6,7 +6,7 @@ export const MapLink = () => {
   const gotoOtherPage = useCallback(() => gotoPage('map'), [gotoPage]);
 
   return (
-    <button onClick={gotoOtherPage}>
+    <button style={{ height: '26px', border: 'unset', borderRadius: '6px', color: 'oklch(26.8% 0.007 34.298)', margin: '2px' }} onClick={gotoOtherPage}>
       Map
     </button>
   )
