@@ -17,7 +17,7 @@ import {
   Chapterus,
   book,
   ChapterType,
-  bookPosition,
+  BookPosition,
   FunnyEntry,
 } from "./types";
 import * as d3 from "d3";
@@ -64,10 +64,12 @@ export function getBookPosition(globalChapterIndex?: number) {
 // MAP functions
 
 export const useWorldData = () => {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<{
+    fifty: { land: any; interiors: any };
+    hundred: { land: any; interiors: any };
+  } | null>(null);
   const json110Url = "https://unpkg.com/world-atlas@2.0.2/countries-110m.json";
   const json50Url = "https://unpkg.com/world-atlas@2.0.2/countries-50m.json";
-
   useEffect(() => {
     d3.json(json110Url)
       .then((topojsonData: any) => {
@@ -89,7 +91,7 @@ export const useWorldData = () => {
           });
         });
       });
-  }, []);
+  }, [setData]);
   return data;
 };
 
@@ -135,9 +137,9 @@ function getAllCoords() {
 function isInRange(
   label: FunnyEntry,
   options?: {
-    start?: bookPosition;
-    end?: bookPosition;
-    positionList?: bookPosition[];
+    start?: BookPosition;
+    end?: BookPosition;
+    positionList?: BookPosition[];
   }
 ): boolean {
   if (
@@ -181,9 +183,9 @@ function isInRange(
 }
 
 export function getPoints(options?: {
-  start?: bookPosition;
-  end?: bookPosition;
-  positionList?: bookPosition[];
+  start?: BookPosition;
+  end?: BookPosition;
+  positionList?: BookPosition[];
 }) {
   return getAllCoords().filter(
     (label) => label.type === "point" && isInRange(label, options)
@@ -191,9 +193,9 @@ export function getPoints(options?: {
 }
 
 export function getPaths(options?: {
-  start?: bookPosition;
-  end?: bookPosition;
-  positionList?: bookPosition[];
+  start?: BookPosition;
+  end?: BookPosition;
+  positionList?: BookPosition[];
 }) {
   return getAllCoords().filter(
     (label) =>
@@ -202,9 +204,9 @@ export function getPaths(options?: {
 }
 
 export function getImpliedPaths(options?: {
-  start?: bookPosition;
-  end?: bookPosition;
-  positionList?: bookPosition[];
+  start?: BookPosition;
+  end?: BookPosition;
+  positionList?: BookPosition[];
 }) {
   return getAllCoords().filter(
     (label) =>
@@ -213,9 +215,9 @@ export function getImpliedPaths(options?: {
 }
 
 export function getRegions(options?: {
-  start?: bookPosition;
-  end?: bookPosition;
-  positionList?: bookPosition[];
+  start?: BookPosition;
+  end?: BookPosition;
+  positionList?: BookPosition[];
 }) {
   return getAllCoords().filter(
     (label) => label.type === "region" && isInRange(label, options)

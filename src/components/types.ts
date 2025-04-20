@@ -4,7 +4,7 @@ export interface LocLabel {
   type: string;
   file?: string;
   char?: string;
-  centrality?: 'implied'
+  centrality?: "implied";
 }
 
 export interface FunnyEntry extends LocLabel {
@@ -27,7 +27,12 @@ export type book = {
   chapters: ChapterEntry[];
 };
 
-export type bookPosition = { bookIndex: number; chapterIndex: number };
+export interface BookPosition {
+  bookIndex: number;
+  chapterIndex: number;
+  matches?: string[][] | string[]; //per result, save all labels as strings
+  length?: number;
+}
 
 export type ChapterType = "chapter" | "prologue" | "epilogue" | "appendix";
 

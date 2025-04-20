@@ -92,7 +92,7 @@ export const TheSlider = memo(function TheSlider({ handleChange }: { handleChang
         setOnTheMove('slider');
       }} style={{ cursor: 'grab' }}
     >
-      <rect x={leftSliderPos} y={15} width={rightSliderPos - leftSliderPos} height={25} fill="blue" fillOpacity={0.2} stroke="none" />
+      <rect x={leftSliderPos} y={15} width={rightSliderPos - leftSliderPos} height={25} fill="green" fillOpacity={0.2} stroke="none" />
     </g>
     <g key='left slider' id='left-slider'
       onMouseDown={(event: MouseEvent<SVGSVGElement>) => {
@@ -100,7 +100,7 @@ export const TheSlider = memo(function TheSlider({ handleChange }: { handleChang
         setOnTheMove('left')
       }}
       transform={`translate(${leftSliderPos}, 15)`}>
-      <line y2={30} stroke='blue' strokeWidth={'5px'} />
+      <line y2={30} stroke='#427c42' strokeWidth={'6px'} />
       <text style={{
         fontSize: "10px",
         textAnchor: "middle",
@@ -113,7 +113,7 @@ export const TheSlider = memo(function TheSlider({ handleChange }: { handleChang
         setOnTheMove('right')
       }}
       transform={`translate(${rightSliderPos}, 15)`}>
-      <line y2={30} stroke='blue' strokeWidth={'5px'} />
+      <line y2={30} stroke='#427c42' strokeWidth={'6px'} />
       <text style={{
         fontSize: "10px",
         textAnchor: "middle",
