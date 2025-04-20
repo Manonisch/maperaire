@@ -1,4 +1,4 @@
-import { MapLink } from "../components/MapLink";
+import { MapLink } from "../components/links/MapLink";
 
 export function SourcesView() {
   return <div className="w-[80vw] h-[100vh] m-auto overflow-scroll p-[32px]">

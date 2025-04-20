@@ -1,9 +1,14 @@
 body {
   margin: 0;
   padding: 0;  
-
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
+button, select {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    text-wrap: nowrap;
+    background-color: oklch(86.9% 0.005 56.366);
+}
 
 #root {
   background-color: #e8dfd2;
