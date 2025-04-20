@@ -2,8 +2,18 @@ import * as d3 from "d3";
 import { memo, useState, useCallback, MouseEvent } from "react";
 import { TheTicks } from "./TheTicks";
 import { getChapterList, getChapterName } from "./utils";
+import { useSliderStore } from "../stores/SliderStore";
 
-export const TheSlider = memo(function TheSlider({ handleChange }: { handleChange: ({ theStart, theEnd }: { theStart: number, theEnd: number }) => void }) {
+export const TheSlider = memo(function TheSlider() {
+
+  const setEnd = useSliderStore(s => s.setEnd)
+  const setStart = useSliderStore(s => s.setStart)
+
+  const handleChange = useCallback(({ theStart, theEnd }: { theStart: number, theEnd: number }) => {
+    setStart(theStart);
+    setEnd(theEnd);
+  }, [])
+
   const height = 70;
   const width = document.body.getBoundingClientRect().width - 100;
   const margin = 10;
