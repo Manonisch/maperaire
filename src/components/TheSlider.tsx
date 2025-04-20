@@ -38,14 +38,14 @@ export const TheSlider = memo(function TheSlider() {
         setLeftSliderPos(event.clientX - 38)
         if (theNumber && leftRange !== theTickPos) {
           setLeftRange(theNumber);
-          // handleChange({ theStart: leftRange, theEnd: theNumber })
+          handleChange({ theStart: leftRange, theEnd: theNumber })
         }
       }
       if (onTheMove === 'right' && event.clientX - 38 > leftSliderPos) {
         setRightSliderPos(event.clientX - 38)
         if (theNumber && rightRange !== theTickPos) {
           setRightRange(theNumber);
-          // handleChange({ theStart: theNumber, theEnd: rightRange })
+          handleChange({ theStart: theNumber, theEnd: rightRange })
         }
       }
       if (onTheMove === 'slider') {
@@ -53,7 +53,7 @@ export const TheSlider = memo(function TheSlider() {
         setRightSliderPos(rightSliderPos + event.movementX);
         setLeftRange(Math.round(xScale.invert(leftSliderPos + event.movementX)));
         setRightRange(Math.round(xScale.invert(rightSliderPos + event.movementX)));
-        // handleChange({ theStart: Math.round(xScale.invert(leftSliderPos + event.movementX)), theEnd: Math.round(xScale.invert(rightSliderPos + event.movementX)) })
+        handleChange({ theStart: Math.round(xScale.invert(leftSliderPos + event.movementX)), theEnd: Math.round(xScale.invert(rightSliderPos + event.movementX)) })
       }
       event.preventDefault();
     }

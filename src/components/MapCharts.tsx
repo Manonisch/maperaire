@@ -107,8 +107,10 @@ export const Marks = memo(() => {
 
 export const BookMapParts = memo(function BookMapParts({ isMoving, projection, path }: { isMoving: boolean, projection: d3.GeoProjection, path: any }) {
   const query = useQuery(s => s.query)
+
   const end = useSliderStore(s => s.end);
   const start = useSliderStore(s => s.start);
+  
   const selectedFoodOptions = useFoodMapStore(s => s.selectedOptions);
   const ghostLinesEnabled = useWorldDataStore(s => s.ghostLinesEnabled);
 
@@ -193,7 +195,6 @@ export const BaseMap = memo(function BaseMap({ path, isMoving }: { path: any, is
     return <></>
   }
 
-  console.log('rerendering basemap')
   return (
     <>
       {/* {void projection.translate([zoomTransform.x, zoomTransform.y])} */}
