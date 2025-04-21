@@ -73,7 +73,7 @@ export const Marks = memo(() => {
       .on('end', () => {
 
         // TODO: by passing in coordinates we can move rotate the mape to center the area
-        // projection.rotate([137, -64, 0]); 
+        // projection.rotate([137, -64, 0]);
 
         console.log('stopped')
         setIsMoving(false);
@@ -103,7 +103,7 @@ export const Marks = memo(() => {
         </defs>
         <g key="2" className="marks" style={{ cursor: 'grab' }}>
           <BaseMap path={path} isMoving={isMoving} />
-          <BookMapParts isMoving={isMoving} projection={projection} path={path} />
+          <BookMapParts projection={projection} path={path} />
         </g>
         <OSMLink />
       </svg>
@@ -114,14 +114,14 @@ export const Marks = memo(() => {
 
 export const FoodBubbles = () => {
 
-  // Given a position and all (filtered) data at this one position, 
+  // Given a position and all (filtered) data at this one position,
   // each data should be added to a bubble
-  // bubbles should be subject to the specified center force 
+  // bubbles should be subject to the specified center force
 
   const size = 2 // depend on number of same data points at position
   const centerX = 0 // should be the x coordinate the bubble is attached to //static per datapoint!
   const centerY = 0 // should be the x coordinate the bubble is attached to //static per datapoint!
-  const age = 0 // counts up for each chapter in animation, set back to 0 when new datapoint is added to size 
+  const age = 0 // counts up for each chapter in animation, set back to 0 when new datapoint is added to size
 
 
   const center = d3.forceCenter(centerX, centerY);
@@ -150,7 +150,7 @@ export const FoodBubbles = () => {
   </>
 }
 
-export const BookMapParts = memo(function BookMapParts({ isMoving, projection, path }: { isMoving: boolean, projection: d3.GeoProjection, path: any }) {
+export const BookMapParts = memo(function BookMapParts({ projection, path }: { projection: d3.GeoProjection, path: any }) {
   const query = useQuery(s => s.query)
 
   const end = useSliderStore(s => s.end);
@@ -166,52 +166,51 @@ export const BookMapParts = memo(function BookMapParts({ isMoving, projection, p
   const theImpliedPaths = getImpliedPaths({ start: getBookPosition(start), end: getBookPosition(end), positionList: usedFilterData });
   const theRegions = getRegions({ start: getBookPosition(start), end: getBookPosition(end), positionList: usedFilterData });
 
-  return !isMoving ? (
-    <>
-      {ghostLinesEnabled && <AllData projection={projection} />}
-      {thePaths.map((pathEntry, index) => {
-        const positions: number[][] = []
-        for (let i = 0; i < pathEntry.coords.length; i += 2) {
-          positions.push([pathEntry.coords[i + 1], pathEntry.coords[i]]);
-        }
-        return (<path key={"17+" + index} fill='none' stroke={getStrokeColor(pathEntry, "#699aaa")} strokeWidth='1.5px' opacity={0.8} d={path({
-          type: "LineString",
-          coordinates: positions
-        }) || undefined} markerEnd={pathEntry.char !== 'Laurence' ? "url(#dragon)" : ''} ><title>{`${pathEntry.bookIndex! + 1}.${pathEntry.chapterIndex} \n${pathEntry.labelName.split(':')[1]}`}</title></path>)
-      })}
-      {theImpliedPaths.map((pathEntry, index) => {
-        const positions: number[][] = []
-        for (let i = 0; i < pathEntry.coords.length; i += 2) {
-          positions.push([pathEntry.coords[i + 1], pathEntry.coords[i]]);
-        }
-        return (<path key={"7+" + index} fill='none' stroke={getStrokeColor(pathEntry, '#699aaa')} strokeWidth='1.5px' opacity={0.7} strokeDasharray='6' d={path({
-          type: "LineString",
-          coordinates: positions
-        }) || undefined} markerEnd={pathEntry.char !== 'Laurence' ? "url(#dragon)" : ''} ><title>{`${pathEntry.bookIndex! + 1}.${pathEntry.chapterIndex} \n${pathEntry.labelName.split(':')[1]}`}</title></path>)
-      })}
-      {theRegions.map((region, index) => {
-        const regional = geoRefs[region?.file ?? ''] || null
-        return (<path key={"8+" + index} fill='none' stroke='#6d654b' d={path(regional) || undefined}><title>{`${region.bookIndex! + 1}.${region.chapterIndex} \n${region.labelName.split(':')[1]}`}</title></path>)
-      })}
-      {thePoints.map((point, index) => {
-        if (!projection.invert) {
-          return null
-        }
-        const invertedProj = projection.invert([600, 300]) as [number, number];
-        const gdist = d3.geoDistance([point.coords[1], point.coords[0]], invertedProj);
-        return gdist < 1.57 ? (
-          <circle
-            key={"116+" + index}
-            transform={`translate(${projection([point.coords[1], point.coords[0]])})`}
-            r={5}
-            fill={getStrokeColor(point, "#699aaa")}
-            opacity={1}
-            stroke='#e6edd0'
-          >
-            <title>{`${point.bookIndex! + 1}.${point.chapterIndex} \n${point.labelName.split(':')[1]}`}</title>
-          </circle>
-        ) : null
-      })
+  return <>
+    {ghostLinesEnabled && <AllData projection={projection} />}
+    {thePaths.map((pathEntry, index) => {
+      const positions: number[][] = []
+      for (let i = 0; i < pathEntry.coords.length; i += 2) {
+        positions.push([pathEntry.coords[i + 1], pathEntry.coords[i]]);
       }
-    </>) : null
+      return (<path key={"17+" + index} fill='none' stroke={getStrokeColor(pathEntry, "#699aaa")} strokeWidth='1.5px' opacity={0.8} d={path({
+        type: "LineString",
+        coordinates: positions
+      }) || undefined} markerEnd={pathEntry.char !== 'Laurence' ? "url(#dragon)" : ''} ><title>{`${pathEntry.bookIndex! + 1}.${pathEntry.chapterIndex} \n${pathEntry.labelName.split(':')[1]}`}</title></path>)
+    })}
+    {theImpliedPaths.map((pathEntry, index) => {
+      const positions: number[][] = []
+      for (let i = 0; i < pathEntry.coords.length; i += 2) {
+        positions.push([pathEntry.coords[i + 1], pathEntry.coords[i]]);
+      }
+      return (<path key={"7+" + index} fill='none' stroke={getStrokeColor(pathEntry, '#699aaa')} strokeWidth='1.5px' opacity={0.7} strokeDasharray='6' d={path({
+        type: "LineString",
+        coordinates: positions
+      }) || undefined} markerEnd={pathEntry.char !== 'Laurence' ? "url(#dragon)" : ''} ><title>{`${pathEntry.bookIndex! + 1}.${pathEntry.chapterIndex} \n${pathEntry.labelName.split(':')[1]}`}</title></path>)
+    })}
+    {theRegions.map((region, index) => {
+      const regional = geoRefs[region?.file ?? ''] || null
+      return (<path key={"8+" + index} fill='none' stroke='#6d654b' d={path(regional) || undefined}><title>{`${region.bookIndex! + 1}.${region.chapterIndex} \n${region.labelName.split(':')[1]}`}</title></path>)
+    })}
+    {thePoints.map((point, index) => {
+      if (!projection.invert) {
+        return null
+      }
+      const invertedProj = projection.invert([600, 300]) as [number, number];
+      const gdist = d3.geoDistance([point.coords[1], point.coords[0]], invertedProj);
+      return gdist < 1.57 ? (
+        <circle
+          key={"116+" + index}
+          transform={`translate(${projection([point.coords[1], point.coords[0]])})`}
+          r={5}
+          fill={getStrokeColor(point, "#699aaa")}
+          opacity={1}
+          stroke='#e6edd0'
+        >
+          <title>{`${point.bookIndex! + 1}.${point.chapterIndex} \n${point.labelName.split(':')[1]}`}</title>
+        </circle>
+      ) : null
+    })
+    }
+  </>
 })
