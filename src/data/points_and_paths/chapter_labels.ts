@@ -61,13 +61,16 @@ const chapter_labels = {
           povLabels: ["pov:Laurence"],
           locLabels: [
             {
-              labelName: "loc:Funchal Madeira",
+              labelName: "loc:Funchal",
               coords: [32.65402730556132, -16.893450591392497],
               type: "point",
             },
             {
               labelName: "loc:to aerial command",
-              coords: [32.65402730556132, -16.893450591392497, 44.348432, -11.248860, 49.080004, -6.099727, 50.458805, -2.018098, 51.35638, 0.5261731],
+              coords: [
+                32.65402730556132, -16.893450591392497, 44.348432, -11.24886,
+                49.080004, -6.099727, 50.458805, -2.018098, 51.35638, 0.5261731,
+              ],
               type: "path",
               centrality: "implied",
             },
@@ -156,15 +159,6 @@ const chapter_labels = {
                 -4.545349,
               ],
               type: "path",
-            },
-            {
-              labelName: "loc:North Sea off Aberdeen",
-              coords: [
-                56.920231, -4.545349, 57.1917222, -1.7452138, 56.920231,
-                -4.545349,
-              ],
-              type: "path",
-              centrality: "implied",
             },
           ],
         },
@@ -384,7 +378,7 @@ const chapter_labels = {
               centrality: "implied",
             },
             {
-              labelName: "loc:Madeira",
+              labelName: "loc:Funchal",
               coords: [32.65402730556132, -16.893450591392497],
               type: "point",
             },
@@ -723,7 +717,7 @@ const chapter_labels = {
               type: "point",
             },
             {
-              labelName: "loc: xian to tianshi",
+              labelName: "loc:xian to tianshi",
               coords: [34.296387, 108.9467331, 34.5793171, 105.6455582],
               type: "path",
             },
@@ -733,7 +727,7 @@ const chapter_labels = {
               type: "point",
             },
             {
-              labelName: "loc: to Gobi",
+              labelName: "loc:to Gobi",
               coords: [34.5793171, 105.6455582, 37.356476, 104.0979631],
               type: "path",
             },
@@ -743,7 +737,7 @@ const chapter_labels = {
               type: "point",
             },
             {
-              labelName: "loc: to Jiayu Gate",
+              labelName: "loc:to Jiayu Gate",
               coords: [37.356476, 104.0979631, 39.744868, 98.202137],
               type: "path",
             },
@@ -753,7 +747,7 @@ const chapter_labels = {
               type: "point",
             },
             {
-              labelName: "loc: to Yumen",
+              labelName: "loc:to Yumen",
               coords: [39.744868, 98.202137, 40.267765, 97.013069],
               type: "path",
             },
@@ -783,7 +777,7 @@ const chapter_labels = {
               type: "point",
             },
             {
-              labelName: "loc: to Taklamakan",
+              labelName: "loc:to Taklamakan",
               coords: [40.116873, 94.572277, 37.891684, 84.307108],
               type: "path",
             },
@@ -840,7 +834,7 @@ const chapter_labels = {
           povLabels: ["pov:Laurence"],
           locLabels: [
             {
-              labelName: "loc: between samarkand - baghdad",
+              labelName: "loc:between samarkand - baghdad",
               coords: [
                 39.676526, 73.903004, 39.821458, 66.92606, 36.259052, 57.024839,
                 34.60432, 50.749375, 35.602937, 51.302824, 34.291121, 47.072386,
@@ -1318,7 +1312,7 @@ const chapter_labels = {
           povLabels: ["pov:Laurence"],
           locLabels: [
             {
-              labelName: "loc: to tsitsikamma",
+              labelName: "loc:to tsitsikamma",
               coords: [-33.8994269, 18.4333631, -34.036371, 24.296486],
               type: "path",
               centrality: "implied",
@@ -1343,7 +1337,7 @@ const chapter_labels = {
               type: "point",
             },
             {
-              labelName: "loc: to northwest past paarl",
+              labelName: "loc:to northwest past paarl",
               coords: [-33.8994269, 18.4333631, -33.59857, 18.855375],
               type: "path",
               centrality: "implied",
@@ -1363,7 +1357,7 @@ const chapter_labels = {
           povLabels: ["pov:Laurence"],
           locLabels: [
             {
-              labelName: "loc: to central africa",
+              labelName: "loc:to central africa",
               coords: [-33.59857, 18.855375, -31.35683, 21.11984],
               type: "path",
               centrality: "implied",
@@ -1383,7 +1377,7 @@ const chapter_labels = {
           povLabels: ["pov:Laurence"],
           locLabels: [
             {
-              labelName: "loc: to central",
+              labelName: "loc:to central",
               coords: [-31.35683, 21.11984, -3.994113, 24.349548],
               type: "path",
               centrality: "implied",
@@ -1468,7 +1462,7 @@ const chapter_labels = {
               type: "point",
             },
             {
-              labelName: "loc: to London",
+              labelName: "loc:to London",
               coords: [51.1278758, 1.3134027, 51.5128751, -0.1256161],
               type: "path",
               centrality: "implied",
@@ -1578,13 +1572,13 @@ const chapter_labels = {
               labelName: "loc:Pen y Fan",
               coords: [51.883781, -3.435671],
               type: "point",
-              char: 'Temeraire'
+              char: "Temeraire",
             },
             {
               labelName: "loc:Dover Channel",
               coords: [51.041143, 1.46561],
               type: "point",
-              char: 'Laurence'
+              char: "Laurence",
             },
           ],
         },
@@ -1599,7 +1593,7 @@ const chapter_labels = {
               labelName: "loc:Pen y Fan",
               coords: [51.883781, -3.435671],
               type: "point",
-              char: 'Temeraire'
+              char: "Temeraire",
             },
           ],
         },
@@ -1611,17 +1605,17 @@ const chapter_labels = {
           povLabels: ["pov:Laurence"],
           locLabels: [
             {
-              labelName: "loc: to Dover",
+              labelName: "loc:to Dover",
               coords: [51.041143, 1.46561, 51.1278758, 1.3134027],
               type: "path",
               centrality: "implied",
-              char: 'Laurence'
+              char: "Laurence",
             },
             {
               labelName: "loc:Dover",
               coords: [51.1278758, 1.3134027],
               type: "point",
-              char: 'Laurence'
+              char: "Laurence",
             },
           ],
         },
@@ -1636,13 +1630,13 @@ const chapter_labels = {
               labelName: "loc:Pen y Fan",
               coords: [51.883781, -3.435671],
               type: "point",
-              char: 'Temeraire'
+              char: "Temeraire",
             },
             {
               labelName: "loc:to Abergavenny",
               coords: [51.883781, -3.435671, 51.822913, -3.02269],
               type: "path",
-              char: 'Temeraire'
+              char: "Temeraire",
             },
           ],
         },
@@ -1657,67 +1651,67 @@ const chapter_labels = {
               labelName: "loc:Pen y Fan",
               coords: [51.883781, -3.435671],
               type: "point",
-              char: 'Laurence'
+              char: "Laurence",
             },
             {
               labelName: "loc:to Llerchhyd",
               coords: [51.883781, -3.435671, 51.77665, -3.293517],
               type: "path",
               centrality: "implied",
-              char: 'Laurence'
+              char: "Laurence",
             },
             {
               labelName: "loc:Llerchhyd",
               coords: [51.77665, -3.293517],
               type: "point",
-              char: 'Laurence'
+              char: "Laurence",
             },
             {
               labelName: "loc:to Monmouthshire",
               coords: [51.77665, -3.293517, 51.750983, -2.867763],
               type: "path",
               centrality: "implied",
-              char: 'Laurence'
+              char: "Laurence",
             },
             {
               labelName: "loc:Monmouthshire",
               coords: [51.750983, -2.867763],
               file: "export_MonmouthShire.geojson",
               type: "region",
-              char: 'Laurence'
+              char: "Laurence",
             },
             {
               labelName: "loc:to Pen-y-Clawdd",
               coords: [51.750983, -2.867763, 51.765969, -2.794745],
               type: "path",
               centrality: "implied",
-              char: 'Laurence'
+              char: "Laurence",
             },
             {
               labelName: "loc:Pen-y-Clawdd",
               coords: [51.765969, -2.794745],
               type: "point",
-              char: 'Laurence'
+              char: "Laurence",
             },
             {
               labelName: "loc:to LLandogo",
               coords: [51.765969, -2.794745, 51.733923, -2.686194],
               type: "path",
               centrality: "implied",
-              char: 'Laurence'
+              char: "Laurence",
             },
             {
               labelName: "loc:LLandogo",
               coords: [51.733923, -2.686194],
               type: "point",
-              char: 'Laurence'
+              char: "Laurence",
             },
             {
               labelName: "loc:to Richmond",
               coords: [51.733923, -2.686194, 51.455027, -0.320432],
               type: "path",
               centrality: "implied",
-              char: 'Laurence'
+              char: "Laurence",
             },
             {
               labelName: "loc:near Richmond",
@@ -1738,20 +1732,20 @@ const chapter_labels = {
               coords: [51.455027, -0.320432, 51.520667, 0.189035],
               type: "path",
               centrality: "implied",
-              char: 'Laurence'
+              char: "Laurence",
             },
             {
               labelName: "loc:Rainham",
               coords: [51.520667, 0.189035],
               type: "point",
-              char: 'Laurence'
+              char: "Laurence",
             },
             {
               labelName: "loc:to Richmond",
               coords: [51.520667, 0.189035, 51.455027, -0.320432],
               type: "path",
               centrality: "implied",
-              char: 'Laurence'
+              char: "Laurence",
             },
             {
               labelName: "loc:near Richmond",
@@ -1862,7 +1856,7 @@ const chapter_labels = {
               labelName: "loc:London",
               coords: [51.5128751, -0.1256161],
               type: "point",
-              char: 'Laurence'
+              char: "Laurence",
             },
           ],
         },
@@ -1970,7 +1964,7 @@ const chapter_labels = {
               type: "point",
             },
             {
-              labelName: "loc: to central england",
+              labelName: "loc:to central england",
               coords: [54.949534, -2.67327, 53.515486, -1.448631],
               type: "path",
               centrality: "implied",
@@ -1981,7 +1975,7 @@ const chapter_labels = {
               type: "region",
             },
             {
-              labelName: "loc: to cumbria",
+              labelName: "loc:to cumbria",
               coords: [53.515486, -1.448631, 54.558673, -2.816875],
               type: "path",
               centrality: "implied",
@@ -1992,8 +1986,8 @@ const chapter_labels = {
               type: "region",
             },
             {
-              labelName: "loc: to cross fell",
-              coords: [ 54.558673, -2.816875, 54.702774, -2.487212],
+              labelName: "loc:to cross fell",
+              coords: [54.558673, -2.816875, 54.702774, -2.487212],
               type: "path",
               centrality: "implied",
             },
@@ -2003,7 +1997,7 @@ const chapter_labels = {
               type: "point",
             },
             {
-              labelName: "loc: to Howick Hall",
+              labelName: "loc:to Howick Hall",
               coords: [54.702774, -2.487212, 55.450933, -1.6098841],
               type: "path",
               centrality: "implied",
@@ -2014,7 +2008,7 @@ const chapter_labels = {
               type: "point",
             },
             {
-              labelName: "loc: to Allendale Estate",
+              labelName: "loc:to Allendale Estate",
               coords: [55.450933, -1.609884, 53.1537181, -0.9011467],
               type: "path",
               centrality: "implied",
@@ -2024,9 +2018,9 @@ const chapter_labels = {
               coords: [53.1537181, -0.9011467],
               type: "point",
             },
-             {
-              labelName: "loc: to Derbyshire",
-              coords: [53.1537181, -0.9011467, 53.196819, -1.590480],
+            {
+              labelName: "loc:to Derbyshire",
+              coords: [53.1537181, -0.9011467, 53.196819, -1.59048],
               type: "path",
               centrality: "implied",
             },
@@ -2045,8 +2039,8 @@ const chapter_labels = {
           povLabels: ["pov:Laurence", "pov:Temeraire"],
           locLabels: [
             {
-              labelName: "loc: to North Seaton",
-              coords: [53.196819, -1.590480, 55.17968, -1.525595],
+              labelName: "loc:to North Seaton",
+              coords: [53.196819, -1.59048, 55.17968, -1.525595],
               type: "path",
               centrality: "implied",
             },
@@ -2070,7 +2064,7 @@ const chapter_labels = {
               type: "point",
             },
             {
-              labelName: "loc: to Coast off",
+              labelName: "loc:to Coast off",
               coords: [51.1278758, 1.3134027, 51.108152, 1.344111],
               type: "path",
               centrality: "implied",
@@ -2159,7 +2153,7 @@ const chapter_labels = {
               labelName: "loc:to mountain range",
               coords: [-33.799521, 151.004003, -33.682315, 150.652547],
               type: "path",
-              centrality: 'implied'
+              centrality: "implied",
             },
             {
               labelName:
@@ -2172,7 +2166,7 @@ const chapter_labels = {
               coords: [-33.682315, 150.652547, -33.579444, 150.638292],
               type: "path",
             },
-             {
+            {
               labelName: "loc:further along the mountain range",
               coords: [-33.579444, 150.638292, -33.549079, 150.564919],
               type: "path",
@@ -2195,7 +2189,7 @@ const chapter_labels = {
               labelName: "loc:to australian outback",
               coords: [-33.560905, 150.603454, -33.451995, 150.52527],
               type: "path",
-              centrality: 'implied'
+              centrality: "implied",
             },
             {
               labelName: "loc:somewhere in the australian outback",
@@ -2206,7 +2200,7 @@ const chapter_labels = {
               labelName: "loc:to beyond",
               coords: [-33.451995, 150.52527, -33.484204, 150.129743],
               type: "path",
-              centrality: 'implied'
+              centrality: "implied",
             },
             {
               labelName:
@@ -2217,8 +2211,8 @@ const chapter_labels = {
             {
               labelName: "loc:river towards sydney",
               coords: [
-                -33.484204, 150.129743, -33.551522, 150.517626, -33.571597, 150.561841, -33.502702,
-                150.527907,-33.573825, 150.492199
+                -33.484204, 150.129743, -33.551522, 150.517626, -33.571597,
+                150.561841, -33.502702, 150.527907, -33.573825, 150.492199,
               ],
               type: "path",
             },
@@ -2244,7 +2238,10 @@ const chapter_labels = {
             },
             {
               labelName: "loc:north west",
-              coords: [-33.573825, 150.492199, -33.511605, 150.535204, -32.93695, 149.168858,],
+              coords: [
+                -33.573825, 150.492199, -33.511605, 150.535204, -32.93695,
+                149.168858,
+              ],
               type: "path",
             },
             {
@@ -2309,11 +2306,10 @@ const chapter_labels = {
           povLabels: ["pov:Laurence", "pov:Temeraire"],
           locLabels: [
             {
-              labelName:
-                "loc:to salt lake",
+              labelName: "loc:to salt lake",
               coords: [-29.643562, 140.998704, -28.928565, 137.767777],
               type: "path",
-              centrality: 'implied'
+              centrality: "implied",
             },
             {
               labelName: "loc:Salt lake",
@@ -2540,7 +2536,10 @@ const chapter_labels = {
             },
             {
               labelName: "loc:to the island - north of cape horn",
-              coords: [-54.505159, -74.19531, -51.752848, -76.017208, -49.456976, -75.587170],
+              coords: [
+                -54.505159, -74.19531, -51.752848, -76.017208, -49.456976,
+                -75.58717,
+              ],
               type: "path",
             },
           ],
@@ -2554,7 +2553,7 @@ const chapter_labels = {
           locLabels: [
             {
               labelName: "loc:the island - north of cape horn",
-              coords: [-49.456976, -75.587170],
+              coords: [-49.456976, -75.58717],
               type: "point",
             },
           ],
@@ -2568,9 +2567,9 @@ const chapter_labels = {
           locLabels: [
             {
               labelName: "loc:to Talcahuano",
-              coords: [ -49.456976, -75.587170, -43.352955, -74.171435],
+              coords: [-49.456976, -75.58717, -43.352955, -74.171435],
               type: "path",
-              centrality: 'implied'
+              centrality: "implied",
             },
             {
               labelName: "loc:South of Talcahuano",
@@ -2590,7 +2589,7 @@ const chapter_labels = {
               labelName: "loc:to Talcahuano",
               coords: [-43.352955, -74.171435, -36.73243, -73.123168],
               type: "path",
-              centrality: 'implied'
+              centrality: "implied",
             },
             {
               labelName: "loc:Talcahuano",
@@ -2625,11 +2624,16 @@ const chapter_labels = {
               coords: [-36.73243, -73.123168, -36.111421, -71.503125],
               type: "path",
             },
-             {
+            {
               labelName: "loc:to Matarani",
-              coords: [-36.111421, -71.503125,  -34.412434, -70.865346, -30.790211, -70.395698, -27.377991, -69.308093, -24.218414, -68.714854, -20.816846, -68.541826, -17.949193, -69.481122, -17.000667, -72.093152],
+              coords: [
+                -36.111421, -71.503125, -34.412434, -70.865346, -30.790211,
+                -70.395698, -27.377991, -69.308093, -24.218414, -68.714854,
+                -20.816846, -68.541826, -17.949193, -69.481122, -17.000667,
+                -72.093152,
+              ],
               type: "path",
-              centrality: 'implied'
+              centrality: "implied",
             },
             {
               labelName: "loc:Matarani (Lake Titicaca)",
@@ -2697,7 +2701,10 @@ const chapter_labels = {
           locLabels: [
             {
               labelName: "loc:north from cusco",
-              coords: [-13.528514, -71.956074, -12.123256, -71.103081, -10.798207, -71.211245, -9.400601, -70.819153],
+              coords: [
+                -13.528514, -71.956074, -12.123256, -71.103081, -10.798207,
+                -71.211245, -9.400601, -70.819153,
+              ],
               type: "path",
             },
           ],
@@ -2711,7 +2718,19 @@ const chapter_labels = {
           locLabels: [
             {
               labelName: "loc:along the Ucayali",
-              coords: [-9.400601, -70.819153, -8.873805, -72.693794, -8.069177, -74.594926, -7.461161, -74.952737, -6.893151, -75.117330, -6.187523, -75.137009, -5.812450, -74.686664, -5.233020, -74.289368, -5.098112, -74.044592, -4.688482, -73.555039, -4.363922, -73.419581, -3.491391, -72.917074, -3.407447, -71.931939, -3.815105, -71.535482, -3.823097, -70.318079, -4.358346, -69.781460, -3.863053, -69.393013, -3.471405, -69.288893, -3.271521, -67.939338, -2.579630, -67.282581, -2.665403, -65.319515, -3.930362, -63.269401, -3.404678, -60.179995, -2.281365, -55.225554, -0.730127, -51.025670, -0.146434, -49.231821],
+              coords: [
+                -9.400601, -70.819153, -8.873805, -72.693794, -8.069177,
+                -74.594926, -7.461161, -74.952737, -6.893151, -75.11733,
+                -6.187523, -75.137009, -5.81245, -74.686664, -5.23302,
+                -74.289368, -5.098112, -74.044592, -4.688482, -73.555039,
+                -4.363922, -73.419581, -3.491391, -72.917074, -3.407447,
+                -71.931939, -3.815105, -71.535482, -3.823097, -70.318079,
+                -4.358346, -69.78146, -3.863053, -69.393013, -3.471405,
+                -69.288893, -3.271521, -67.939338, -2.57963, -67.282581,
+                -2.665403, -65.319515, -3.930362, -63.269401, -3.404678,
+                -60.179995, -2.281365, -55.225554, -0.730127, -51.02567,
+                -0.146434, -49.231821,
+              ],
               type: "path",
             },
             {
@@ -2728,7 +2747,7 @@ const chapter_labels = {
               labelName: "loc:to Rio",
               coords: [-1.375252, -48.444116, -22.937822, -43.224983],
               type: "path",
-              centrality: 'implied'
+              centrality: "implied",
             },
             {
               labelName: "loc:Rio",
@@ -2770,7 +2789,7 @@ const chapter_labels = {
             },
             {
               labelName: "loc:to Rio",
-              coords: [ -23.21822, -44.727518, -22.937822, -43.224983,],
+              coords: [-23.21822, -44.727518, -22.937822, -43.224983],
               type: "path",
             },
             {
@@ -2826,18 +2845,17 @@ const chapter_labels = {
               file: "export_Chikuzen.geojson",
               type: "region",
             },
-             {
+            {
               labelName: "loc:Chikuzen Province (Northern Kyushu)",
               coords: [33.465625, 130.586307],
               type: "point",
-              char: 'Laurence'
-
+              char: "Laurence",
             },
             {
               labelName: "loc:south west off Kyushu",
               coords: [33.659556, 129.880909],
               type: "point",
-              char: 'Temeraire'
+              char: "Temeraire",
             },
           ],
         },
@@ -2852,26 +2870,26 @@ const chapter_labels = {
               labelName: "loc:Chikuzen Province (Northern Kyushu)",
               coords: [33.465625, 130.586307],
               type: "point",
-              char: 'Laurence'
+              char: "Laurence",
             },
             {
               labelName: "loc:south west off Kyushu",
               coords: [33.659556, 129.880909],
               type: "point",
-              char: 'Temeraire'
+              char: "Temeraire",
             },
             {
               labelName: "loc:south west off Kyushu",
               coords: [33.659556, 129.880909, 33.709464, 130.402719],
               type: "path",
-              centrality: 'implied',
-              char: 'Temeraire'
+              centrality: "implied",
+              char: "Temeraire",
             },
             {
               labelName: "loc:western coast of Kyushu",
               coords: [33.709464, 130.402719],
               type: "point",
-              char: 'Temeraire'
+              char: "Temeraire",
             },
           ],
         },
@@ -2886,13 +2904,13 @@ const chapter_labels = {
               labelName: "loc:Chikuzen Province (Northern Kyushu)",
               coords: [33.465625, 130.586307],
               type: "point",
-              char: 'Laurence'              
+              char: "Laurence",
             },
             {
               labelName: "loc:western coast off Kyushu",
               coords: [33.659556, 129.880909],
               type: "point",
-              char: 'Temeraire'
+              char: "Temeraire",
             },
           ],
         },
@@ -2907,33 +2925,33 @@ const chapter_labels = {
               labelName: "loc:to Nagassaki Harbours",
               coords: [33.659556, 129.880909, 33.709464, 130.402719],
               type: "path",
-              centrality: 'implied',
-              char: 'Temeraire'
+              centrality: "implied",
+              char: "Temeraire",
             },
             {
               labelName: "loc:Nagasaki Harbour",
               coords: [32.712055, 129.837076],
               type: "point",
-              char: 'Temeraire'
+              char: "Temeraire",
             },
             {
-              labelName: "loc: southwest",
+              labelName: "loc:southwest",
               coords: [33.465625, 130.586307, 33.419153, 130.648562],
               type: "path",
-              centrality: 'implied',
-              char: 'Laurence'
+              centrality: "implied",
+              char: "Laurence",
             },
             {
               labelName: "loc:southwest towards Nagasaki",
               coords: [33.419153, 130.648562],
               type: "point",
-              char: 'Laurence'
+              char: "Laurence",
             },
             {
               labelName: "loc:Chikugo River towards Ariake Sea",
               coords: [33.419153, 130.648562, 33.370542, 130.728511],
               type: "path",
-              char: 'Laurence'
+              char: "Laurence",
             },
           ],
         },
@@ -2948,13 +2966,13 @@ const chapter_labels = {
               labelName: "loc:Nagasaki Harbour",
               coords: [32.712055, 129.837076],
               type: "point",
-              char: 'Temeraire'
+              char: "Temeraire",
             },
             {
               labelName: "loc:halfway to Ariake Sea along the river",
               coords: [33.370542, 130.728511, 33.307314, 130.482041],
               type: "path",
-              char: 'Laurence'
+              char: "Laurence",
             },
           ],
         },
@@ -2966,45 +2984,48 @@ const chapter_labels = {
           povLabels: ["pov:Laurence", "pov:Temeraire"],
           locLabels: [
             {
-              labelName: "loc: to Ariake Sea",
+              labelName: "loc:to Ariake Sea",
               coords: [33.307314, 130.482041, 33.267511, 130.419849],
               type: "path",
-              centrality: 'implied',
-              char: 'Laurence'
+              centrality: "implied",
+              char: "Laurence",
             },
             {
               labelName: "loc:in Chikugo Province (south to ariake)",
               coords: [33.267511, 130.419849],
               type: "point",
-              char: 'Laurence'
+              char: "Laurence",
             },
             {
               labelName: "loc:Nagasaki Harbour",
               coords: [32.712055, 129.837076],
               type: "point",
-              char: 'Temeraire'
+              char: "Temeraire",
             },
             {
               labelName: "loc:Ariake Sea Shore amd across",
               coords: [
-                33.267511, 130.419849, 33.14699, 130.31712, 32.958142, 130.254044, 32.893635,
-                130.138767,
+                33.267511, 130.419849, 33.14699, 130.31712, 32.958142,
+                130.254044, 32.893635, 130.138767,
               ],
               type: "path",
-              char: 'Laurence'
+              char: "Laurence",
             },
             {
               labelName: "loc:South of Tara, Ariaka Sea",
               coords: [32.893635, 130.138767, 32.73899, 129.828027],
               type: "path",
-              char: 'Laurence'
+              char: "Laurence",
             },
             {
-              labelName: "loc: to North Nagasaki",
-              coords: [32.712055, 129.837076, 32.721007, 129.765570, 32.73899, 129.828027],
+              labelName: "loc:to North Nagasaki",
+              coords: [
+                32.712055, 129.837076, 32.721007, 129.76557, 32.73899,
+                129.828027,
+              ],
               type: "path",
-              centrality: 'implied',
-              char: 'Temeraire'
+              centrality: "implied",
+              char: "Temeraire",
             },
             {
               labelName: "loc:North Nagasaki Bay",
@@ -3021,10 +3042,10 @@ const chapter_labels = {
           povLabels: ["pov:Laurence", "pov:Temeraire"],
           locLabels: [
             {
-              labelName: "loc: to North Nagasaki",
+              labelName: "loc:to North Nagasaki",
               coords: [32.73899, 129.828027, 32.712055, 129.837076],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
               labelName: "loc:Nagasaki Harbour",
@@ -3042,7 +3063,14 @@ const chapter_labels = {
           locLabels: [
             {
               labelName: "loc:Nagasaki to TienSing",
-              coords: [32.712055, 129.837076 , 32.712539, 129.816921, 32.726891, 129.748988, 32.723319, 129.467266, 32.629823, 129.094953, 32.515622, 128.929062, 32.478513, 128.594780, 32.701615, 126.160485, 34.409900, 123.707149, 37.451162, 123.289842, 38.234472, 122.531307, 38.371838, 120.430750, 38.463271, 118.796983, 38.970964, 117.591789],
+              coords: [
+                32.712055, 129.837076, 32.712539, 129.816921, 32.726891,
+                129.748988, 32.723319, 129.467266, 32.629823, 129.094953,
+                32.515622, 128.929062, 32.478513, 128.59478, 32.701615,
+                126.160485, 34.4099, 123.707149, 37.451162, 123.289842,
+                38.234472, 122.531307, 38.371838, 120.43075, 38.463271,
+                118.796983, 38.970964, 117.591789,
+              ],
               type: "path",
             },
             {
@@ -3121,10 +3149,10 @@ const chapter_labels = {
               type: "point",
             },
             {
-              labelName: "loc: to village",
+              labelName: "loc:to village",
               coords: [34.296387, 108.9467331, 34.804237, 108.234407],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
               labelName: "loc:village beyond Xian",
@@ -3146,10 +3174,10 @@ const chapter_labels = {
               type: "point",
             },
             {
-              labelName: "loc: to village",
+              labelName: "loc:to village",
               coords: [34.804237, 108.234407, 33.889699, 108.327199],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
               labelName: "loc:Blue Crane Mountain (Fantasy)",
@@ -3166,21 +3194,21 @@ const chapter_labels = {
           povLabels: ["pov:Laurence", "pov:Temeraire"],
           locLabels: [
             {
-              labelName: "loc: to xian",
+              labelName: "loc:to xian",
               coords: [33.889699, 108.327199, 34.296387, 108.9467331],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
               labelName: "loc:Xian",
               coords: [34.296387, 108.9467331],
               type: "point",
             },
-             {
-              labelName: "loc: to xian",
-              coords: [ 34.296387, 108.9467331, 39.9168038, 116.3945872],
+            {
+              labelName: "loc:to xian",
+              coords: [34.296387, 108.9467331, 39.9168038, 116.3945872],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
               labelName: "loc:Peking",
@@ -3197,10 +3225,14 @@ const chapter_labels = {
           povLabels: ["pov:Laurence", "pov:Temeraire"],
           locLabels: [
             {
-              labelName: "loc: to Moscow",
-              coords: [ 39.9168038, 116.3945872, 51.109480, 102.551935,54.782322, 97.191282, 56.289712, 69.069550, 57.102363, 55.156693, 55.696149, 37.610418],
+              labelName: "loc:to Moscow",
+              coords: [
+                39.9168038, 116.3945872, 51.10948, 102.551935, 54.782322,
+                97.191282, 56.289712, 69.06955, 57.102363, 55.156693, 55.696149,
+                37.610418,
+              ],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
               labelName: "loc:Moscow",
@@ -3227,10 +3259,10 @@ const chapter_labels = {
               type: "path",
             },
             {
-              labelName: "loc: to Vyazma",
-              coords: [ 54.571538, 33.196605, 55.202352, 34.312252],
+              labelName: "loc:to Vyazma",
+              coords: [54.571538, 33.196605, 55.202352, 34.312252],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
               labelName: "loc:Vyazma",
@@ -3247,10 +3279,10 @@ const chapter_labels = {
           povLabels: ["pov:Laurence", "pov:Temeraire"],
           locLabels: [
             {
-              labelName: "loc: to Vyazma",
-              coords: [ 55.202352, 34.312252, 55.505081, 35.797352],
+              labelName: "loc:to Vyazma",
+              coords: [55.202352, 34.312252, 55.505081, 35.797352],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
               labelName: "loc:Shevardino",
@@ -3291,10 +3323,10 @@ const chapter_labels = {
           povLabels: ["pov:Laurence", "pov:Temeraire"],
           locLabels: [
             {
-              labelName: "loc: to Moscow",
-              coords: [ 55.057427, 38.904122, 55.696149, 37.610418],
+              labelName: "loc:to Moscow",
+              coords: [55.057427, 38.904122, 55.696149, 37.610418],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
               labelName: "loc:Moscow",
@@ -3302,10 +3334,10 @@ const chapter_labels = {
               type: "point",
             },
             {
-              labelName: "loc: to Maloslavoyarets",
-              coords: [ 55.696149, 37.610418, 54.954939, 36.657223],
+              labelName: "loc:to Maloslavoyarets",
+              coords: [55.696149, 37.610418, 54.954939, 36.657223],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
               labelName: "loc:near Maloslavoyarets",
@@ -3313,10 +3345,10 @@ const chapter_labels = {
               type: "point",
             },
             {
-              labelName: "loc: to breeding Grounds",
-              coords: [ 54.954939, 36.657223, 54.604623, 35.9394],
+              labelName: "loc:to breeding Grounds",
+              coords: [54.954939, 36.657223, 54.604623, 35.9394],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
               labelName: "loc:breeding Grounds along the Ugra River",
@@ -3324,10 +3356,10 @@ const chapter_labels = {
               type: "point",
             },
             {
-              labelName: "loc: to Kaluga",
-              coords: [ 54.604623, 35.9394, 54.519283, 36.245061],
+              labelName: "loc:to Kaluga",
+              coords: [54.604623, 35.9394, 54.519283, 36.245061],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
               labelName: "loc:Kaluga",
@@ -3349,10 +3381,10 @@ const chapter_labels = {
           povLabels: ["pov:Laurence", "pov:Temeraire"],
           locLabels: [
             {
-              labelName: "loc: Kaluga to Berezyna",
+              labelName: "loc:Kaluga to Berezyna",
               coords: [54.519283, 36.245061, 54.400117, 30.414147],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
               labelName: "loc:racing to Berezyna",
@@ -3376,10 +3408,13 @@ const chapter_labels = {
           povLabels: ["pov:Laurence", "pov:Temeraire"],
           locLabels: [
             {
-              labelName: "loc: to Vilna",
-              coords: [54.31616911106623, 28.355991696544912, 54.685723714564006, 25.289958144315573],
+              labelName: "loc:to Vilna",
+              coords: [
+                54.31616911106623, 28.355991696544912, 54.685723714564006,
+                25.289958144315573,
+              ],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
               labelName: "loc:Vilna (Vilnius)",
@@ -3452,16 +3487,18 @@ const chapter_labels = {
           povLabels: ["pov:Temeraire"],
           locLabels: [
             {
-              labelName: "loc: south of Vilnius",
-              coords: [54.685723714564006, 25.289958144315573, 54.629641, 25.286678],
+              labelName: "loc:south of Vilnius",
+              coords: [
+                54.685723714564006, 25.289958144315573, 54.629641, 25.286678,
+              ],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
               labelName: "loc:south of Vilnius",
               coords: [54.629641, 25.286678],
               type: "point",
-              char: 'Temeraire'
+              char: "Temeraire",
             },
           ],
         },
@@ -3473,10 +3510,13 @@ const chapter_labels = {
           povLabels: ["pov:Laurence"],
           locLabels: [
             {
-              labelName: "loc: to the alps",
-              coords: [54.685723714564006, 25.289958144315573, 51.642951, 21.843736, 48.542427, 14.057243,  46.519231, 10.864209],
+              labelName: "loc:to the alps",
+              coords: [
+                54.685723714564006, 25.289958144315573, 51.642951, 21.843736,
+                48.542427, 14.057243, 46.519231, 10.864209,
+              ],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
               labelName: "loc:somewhere in the alps, northern italy",
@@ -3499,11 +3539,11 @@ const chapter_labels = {
           labels: ["Chapter"],
           povLabels: ["pov:Laurence", "pov:Temeraire"],
           locLabels: [
-             {
-              labelName: "loc: taken towards camp",
+            {
+              labelName: "loc:taken towards camp",
               coords: [45.56549, 7.023871, 45.540819, 5.174167],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
               labelName: "loc:camp in eastern france",
@@ -3519,11 +3559,11 @@ const chapter_labels = {
           labels: ["Chapter"],
           povLabels: ["pov:Laurence", "pov:Temeraire"],
           locLabels: [
-             {
-              labelName: "loc: to FontaineBleau",
+            {
+              labelName: "loc:to FontaineBleau",
               coords: [45.540819, 5.174167, 48.403871, 2.70031],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
               labelName: "loc:Paris, Fontainebleau",
@@ -3554,10 +3594,10 @@ const chapter_labels = {
           povLabels: ["pov:Laurence"],
           locLabels: [
             {
-              labelName: "loc: to Dover",
+              labelName: "loc:to Dover",
               coords: [48.403871, 2.70031, 51.1278758, 1.3134027],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
               labelName: "loc:Dover",
@@ -3574,7 +3614,7 @@ const chapter_labels = {
           povLabels: ["pov:Laurence"],
           locLabels: [
             {
-              labelName: "loc:Dover Covert",
+              labelName: "loc:Dover",
               coords: [51.1278758, 1.3134027],
               type: "point",
             },
@@ -3588,7 +3628,7 @@ const chapter_labels = {
           povLabels: ["pov:Laurence"],
           locLabels: [
             {
-              labelName: "loc:Dover Covert",
+              labelName: "loc:Dover",
               coords: [51.1278758, 1.3134027],
               type: "point",
             },
@@ -3602,11 +3642,15 @@ const chapter_labels = {
           povLabels: ["pov:Laurence"],
           locLabels: [
             {
-              labelName: "loc: to Berlin",
-              coords: [51.1278758, 1.3134027, 53.698676, 6.647515, 53.884147, 10.352379, 52.460041, 13.340527],
+              labelName: "loc:to Berlin",
+              coords: [
+                51.1278758, 1.3134027, 53.698676, 6.647515, 53.884147,
+                10.352379, 52.460041, 13.340527,
+              ],
               type: "path",
-              centrality: 'implied',
-            },            {
+              centrality: "implied",
+            },
+            {
               labelName: "loc:battle by Berlin",
               coords: [52.460041, 13.340527],
               type: "point",
@@ -3626,10 +3670,10 @@ const chapter_labels = {
               type: "point",
             },
             {
-              labelName: "loc: to Dresden",
+              labelName: "loc:to Dresden",
               coords: [52.496812, 13.408252, 51.042193, 13.745111],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
               labelName: "loc:Dresden",
@@ -3637,10 +3681,10 @@ const chapter_labels = {
               type: "point",
             },
             {
-              labelName: "loc: to Leipzig",
+              labelName: "loc:to Leipzig",
               coords: [51.042193, 13.745111, 51.326734, 12.375716],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
               labelName: "loc:Leipzig",
@@ -3648,24 +3692,24 @@ const chapter_labels = {
               type: "point",
             },
             {
-              labelName: "loc: to Lützen",
+              labelName: "loc:to Lützen",
               coords: [51.326734, 12.375716, 51.221962, 12.080603],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
-              labelName: "loc: Lützen",
+              labelName: "loc:Lützen",
               coords: [51.221962, 12.080603],
               type: "point",
             },
             {
-              labelName: "loc: to valley",
+              labelName: "loc:to valley",
               coords: [51.221962, 12.080603, 51.267272, 13.122891],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
-              labelName: "loc: valley 100 miles from Leipzig",
+              labelName: "loc:valley 100 miles from Leipzig",
               coords: [51.267272, 13.122891],
               type: "point",
             },
@@ -3679,28 +3723,28 @@ const chapter_labels = {
           povLabels: ["pov:Laurence", "pov:Temeraire"],
           locLabels: [
             {
-              labelName: "loc: valley 100 miles from Leipzig",
+              labelName: "loc:valley 100 miles from Leipzig",
               coords: [51.267272, 13.122891],
               type: "point",
             },
             {
-              labelName: "loc: to Dresden",
+              labelName: "loc:to Dresden",
               coords: [51.267272, 13.122891, 51.042193, 13.745111],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
-              labelName: "loc: Dresden",
+              labelName: "loc:Dresden",
               coords: [51.042193, 13.745111],
               type: "point",
             },
             {
-              labelName: "loc: retreat",
+              labelName: "loc:retreat",
               coords: [51.042193, 13.745111, 51.151452, 13.440877],
               type: "path",
             },
             {
-              labelName: "loc: retreated from Dresden",
+              labelName: "loc:retreated from Dresden",
               coords: [51.151452, 13.440877],
               type: "point",
             },
@@ -3714,7 +3758,7 @@ const chapter_labels = {
           povLabels: ["pov:Laurence"],
           locLabels: [
             {
-              labelName: "loc: retreated from Dresden",
+              labelName: "loc:retreated from Dresden",
               coords: [51.151452, 13.440877],
               type: "point",
             },
@@ -3728,10 +3772,10 @@ const chapter_labels = {
           povLabels: ["pov:Laurence", "pov:Temeraire"],
           locLabels: [
             {
-              labelName: "loc: to Reichenbach Camp",
+              labelName: "loc:to Reichenbach Camp",
               coords: [51.151452, 13.440877, 51.163299, 14.746983],
               type: "path",
-              centrality: 'implied',
+              centrality: "implied",
             },
             {
               labelName: "loc:Reichenbach camp",
@@ -3779,7 +3823,7 @@ const chapter_labels = {
               labelName: "loc:near to Fontainebleau",
               coords: [51.163299, 14.746983, 48.403871, 2.70031],
               type: "path",
-              centrality: 'implied'
+              centrality: "implied",
             },
             {
               labelName: "loc:Paris, Fontainebleau",
@@ -3790,7 +3834,7 @@ const chapter_labels = {
               labelName: "loc:to Rochefort",
               coords: [48.403871, 2.70031, 45.942201, -0.953657],
               type: "path",
-              centrality: 'implied'
+              centrality: "implied",
             },
             {
               labelName: "loc:Rochefort Harbour",
@@ -3801,7 +3845,7 @@ const chapter_labels = {
               labelName: "loc:to Allendale Estate",
               coords: [45.942201, -0.953657, 53.1537181, -0.9011467],
               type: "path",
-              centrality: 'implied'
+              centrality: "implied",
             },
             {
               labelName: "loc:Allendale Estate - Nottinghamshire",

@@ -2,12 +2,12 @@ import * as d3 from "d3";
 import { memo } from "react";
 import { getPoints, getPaths, getImpliedPaths, getRegions, getStrokeColor, geoRefs } from "../utils";
 
-export const AllData = memo(({ projection }: { projection: d3.GeoProjection }) => {
+export const AllData = memo(({ projection, path }: { projection: d3.GeoProjection, path: any }) => {
   const allPoints = getPoints();
   const allPaths = getPaths();
   const allImpliedPaths = getImpliedPaths();
   const allRegions = getRegions();
-  const path = d3.geoPath(projection);
+  // const path = d3.geoPath(projection);
 
   return <>
     {allPaths.map((pathEntry, index) => {

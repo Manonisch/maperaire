@@ -116,7 +116,7 @@ export function getPointerCoords<E, Ev>(
   }
 }
 
-function getAllCoords() {
+export function getAllCoords() {
   const books = chapter_labels.books as book[];
 
   const theLocLabels: FunnyEntry[] = [];
@@ -131,6 +131,30 @@ function getAllCoords() {
       theLocLabels.push(...localLabels);
     });
   });
+
+  return theLocLabels;
+}
+
+export function getAllFirstElementOnly() {
+  const books = chapter_labels.books as book[];
+
+  const theLocLabels: FunnyEntry[] = [];
+  books.forEach((book, bookI) => {
+    book.chapters.forEach((chapter) => {
+      const labello = chapter.locLabels;
+      const localLabels: FunnyEntry[] = [chapter.locLabels[0]];
+      if (localLabels.length > 0) {
+        localLabels.forEach((entry) => {
+          if (entry) {
+            entry.chapterIndex = chapter.index;
+            entry.bookIndex = bookI;
+          }
+        });
+      }
+      theLocLabels.push(...localLabels);
+    });
+  });
+
   return theLocLabels;
 }
 
