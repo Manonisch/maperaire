@@ -7,10 +7,13 @@
 - [ ] Query Map Food (QMF)
 - [ ] QMF - show result groups on map (different matches)
 - [ ] QMF - show result frequency on map (per chapter vs total)
-- [ ] QMF - Show match legend
+- [x] QMF - Show match legend
 - [ ] QMF - Individual match icons
-- [ ] QMF - Filter by individual matches/match groups
+- [x] QMF - Filter by individual matches
+- [ ] QMF - Filter by individual match Groups
+- [ ] QMF - Filter by meta matches
 - [ ] QMF - bidirectional higlighting (match in Agenda + points on card)
+- [ ] QMF - Animated Story following (reveal locations and automatic semantic zoom)
 - [ ] Other Map types (naturalEarth1, flat map)
 - [ ] Automatic, animated region zooming on filtering
 - [ ] Query Map Dragon Types (QMDT)

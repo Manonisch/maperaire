@@ -3,13 +3,13 @@ Interactive Map Project for the Temeraire books by Naomi Novik.
 Try it out [here](https://manonisch.github.io/maperaire/)
 
 ## Features
-- Shows a world map showcasing the (aproximated) locations mentioned over the course of the course of the books.
+- Shows a world map showcasing the (aproximated) locations mentioned over the course of the books.
 - Implied routes taken to get characters from named places in the book to the next are added as dashed lines
 - Simple Tooltip while hovering over routes and points
 
 Available Filter Methods
 - On a per chapter basis via the bottom chapter slider bar.
-- Depending on pre-filtered queries via the select in the topbar (experimental, TBD)
+- Depending on pre-filtered queries via the select in the topbar.
 
 ## Note
 

@@ -1,8 +1,8 @@
 import * as d3 from "d3";
 import { memo, useState, useCallback, MouseEvent } from "react";
 import { TheTicks } from "./TheTicks";
-import { getChapterList, getChapterName } from "./utils";
-import { useSliderStore } from "../stores/SliderStore";
+import { getChapterList, getChapterName } from "../utils";
+import { useSliderStore } from "../../stores/SliderStore";
 
 export const TheSlider = memo(function TheSlider() {
 

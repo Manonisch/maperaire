@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import { memo } from "react";
-import { getPoints, getPaths, getImpliedPaths, getRegions, getStrokeColor, geoRefs } from "./utils";
+import { getPoints, getPaths, getImpliedPaths, getRegions, getStrokeColor, geoRefs } from "../utils";
 
 export const AllData = memo(({ projection }: { projection: d3.GeoProjection }) => {
   const allPoints = getPoints();

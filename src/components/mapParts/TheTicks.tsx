@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import { memo, useMemo } from "react";
-import { getChapterList, getChapterName } from "./utils";
+import { getChapterList, getChapterName } from "../utils";
 
 export const TheTicks = memo(() => {
   const TICK_LENGTH = 6;
