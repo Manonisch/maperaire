@@ -17,7 +17,9 @@ Locations and paths were manually selected by the authors best approximation dep
 
 ## Coming Soon
 
-I started the map as a base visualisation to show specific map based data from the Temeraire books. Now that the base is done I aim to add multiple interactive overlays showcasing different datasets manually queried from the books.
+I started this map, as a base visualisation to show specific map based data from the Temeraire books. Now that the base is done, I aim to add multiple interactive overlays showcasing different datasets manually queried from the books. 
+
+The current project is the 'Food' project, exploring which foods were explicitly mentioned to be devoured by Temeraire during the course of the service. The projects base visualisation and base filter mechanisms have been added and will now be enhanced with extra visualisation features.
 
 ## Other interesting stuff
 
