@@ -12,7 +12,7 @@ import { prepareFood } from "./foodQuery/foodUtils";
 import { useSliderStore } from "../stores/SliderStore";
 import { useWorldDataStore } from "../stores/WorldDataStore";
 import { BaseMap, OSMLink } from "./mapParts/BaseMap";
-import { FunnyEntry } from "./types";
+import { BookPosition, FunnyEntry } from "./types";
 
 export function TheMapChart() {
   const query = useQuery(s => s.query)
@@ -42,6 +42,8 @@ export const Marks = memo(() => {
     let r0 = projection.rotate();
     let q0 = versor(r0);
 
+    let zoomEndTimeout = setTimeout(() => {});
+
     const zoomBehaviour = d3.zoom<SVGSVGElement, unknown>()
       .scaleExtent([1, 30])
       .on('start', (ev: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
@@ -53,9 +55,14 @@ export const Marks = memo(() => {
         r0 = projection.rotate();
         q0 = versor(r0);
         setIsMoving(true);
+        clearTimeout(zoomEndTimeout);
       })
       .on('zoom', (ev: d3.D3ZoomEvent<Element, unknown>) => {
-        // if (!projection) return;
+        if (!isMoving) {
+          clearTimeout(zoomEndTimeout);
+          setIsMoving(true);
+        }
+
         var scale = ev.transform.k * unityScale;
         projection.scale(scale);
         const coords = getPointerCoords(ev.sourceEvent.target, ev);
@@ -70,10 +77,13 @@ export const Marks = memo(() => {
         trick17(Math.random());
       })
       .on('end', () => {
-
         // TODO: by passing in coordinates we can move rotate the mape to center the area
         // projection.rotate([137, -64, 0]);
-        setIsMoving(false);
+
+        clearTimeout(zoomEndTimeout);
+        zoomEndTimeout = setTimeout(() => {
+          setIsMoving(false);
+        }, 500);
       })
     d3.select(svgRef.current).call((sel) => zoomBehaviour(sel));
   }, [svgRef, projection]);
@@ -209,6 +219,123 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
   const theImpliedPaths = getImpliedPaths({ start, end, positionList });
   const theRegions = getRegions({ start, end, positionList });
 
+  const allKindsOfFood = getAllKindsOfFood(queryRefs.Food);
+  const foodColors = getFoodColors(allKindsOfFood);
+
+  const points = getAllFirstElementOnly()
+    .filter(entry => entry && !isBehindGlobe(entry, projection));
+  const foodPoints = mapFoodToPointsOnSameCoordinates(points, queryRefs.Food);
+  const foodCircles = makeFoodCircles(foodPoints, foodColors);
+
+  function getFoodColors(foods: string[]): Record<string, string> {
+    const palette = d3.schemeCategory10;
+    const result: Record<string, string> = {};
+    foods.forEach((food, index) => {
+      result[food] = palette[index % palette.length];
+    });
+    return result;
+  }
+
+  function getAllKindsOfFood(foodPoints: BookPosition[]): string[] {
+    const allKindsOfFood = foodPoints.flatMap(foodPoint => {
+      const m = foodPoint.matches;
+      if (isStringArrayArray(m)) {
+        return m.map(mm => mm[0]);
+      } else {
+        return [];
+      }
+    });
+    const uniqueFoods = new Set(allKindsOfFood);
+    return Array.from(uniqueFoods).sort();
+  }
+
+  function makeFoodCircles(foodPoints: FoodPoint[], foodColors: Record<string, string>) {
+    return foodPoints.map((foodPoint, pointIndex) => {
+      const [x, y] = projection([foodPoint.x, foodPoint.y]) ?? [0, 0];
+      const n = foodPoint.foods.length;
+
+      const bb = [x, y, x, y]; // unused
+
+      const g = <g>{foodPoint.foods.map((food, foodIndex) => {
+        const angle = (foodIndex / n) * 2 * Math.PI;
+        const radius = 10;
+        const ringRadius = Math.max(radius + 5, 0.5 * radius * 1 / Math.sin(0.5 * Math.PI / n)); // N-Eck äusserer Radius
+        const cx = x + ringRadius * Math.cos(angle);
+        const cy = y + ringRadius * Math.sin(angle);
+
+        updateBoundingBox(bb, cx - radius, cy - radius, cx + radius, cy + radius);
+
+        return <circle
+          key={`${foodIndex}.${pointIndex}.food`}
+          cx={cx}
+          cy={cy}
+          r={radius}
+          fill={foodColors[food]}
+          opacity={0.5}
+          stroke="#000000"
+        >
+          <title>{food}</title>
+        </circle>
+      })}</g>;
+
+      return g;
+    });
+  }
+
+  function updateBoundingBox(bb: number[], x1: number, y1: number, x2: number, y2: number) {
+    bb[0] = Math.min(bb[0], x1);
+    bb[1] = Math.min(bb[1], y1);
+    bb[2] = Math.max(bb[2], x2);
+    bb[3] = Math.max(bb[3], y2);
+  }
+
+  interface FoodPoint {
+    x: number;
+    y: number;
+    locName: string;
+    foods: string[];
+  }
+
+  function mapFoodToPointsOnSameCoordinates(points: FunnyEntry[], foods: BookPosition[]) {
+    const pointMap = new Map<string, FoodPoint>();
+
+    for (const point of points) {
+      // find the food entry for this points book position
+      const food = foods.find((food) => food.bookIndex == point.bookIndex && food.chapterIndex == point.chapterIndex);
+      const matches = food?.matches;
+      if (!isStringArrayArray(matches)) {
+        continue;
+      }
+      const foodsOnPoint = matches.map(stringList => stringList[0]); // only the cow in [cow, boiled, grilled]
+      // foodsOnPoint is now a list like [cow, sheep, cow, cow, snake]
+
+      // if we have a point from another chapter on the same coordinates, just add the foods
+      // else create a new entry
+      const coord = `${point.coords[1]}.${point.coords[0]}`;
+      const entry = pointMap.get(coord);
+      if (entry) {
+        entry.foods.push(...foodsOnPoint);
+      } else {
+        pointMap.set(coord, {
+          x: point.coords[1],
+          y: point.coords[0],
+          locName: point.labelName,
+          foods: foodsOnPoint,
+        });
+      }
+    }
+
+    const result = Array.from(pointMap.values());
+    for (const entry of result) {
+      entry.foods.sort();
+    }
+    return result;
+  }
+
+  function isStringArrayArray(x: unknown): x is string[][] {
+    return !!x && Array.isArray(x) && x.every(Array.isArray) && x.every(arr => typeof arr[0] === 'string');
+  }
+
   return <>
     {ghostLinesEnabled && <AllData projection={projection} path={path} />}
     {thePaths.map((pathEntry, index) => {
@@ -236,9 +363,6 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
       return (<path key={"8+" + index} fill='none' stroke='#6d654b' d={path(regional) || undefined}><title>{`${region.bookIndex! + 1}.${region.chapterIndex} \n${region.labelName.split(':')[1]}`}</title></path>)
     })}
     {thePoints.map((point, index) => {
-      if (!projection.invert) {
-        return null
-      }
       if (isBehindGlobe(point, projection)) {
         return null
       }
@@ -256,6 +380,9 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
       </circle>
     })
     }
+    <g>
+      {foodCircles}
+    </g>
   </>
 })
 
