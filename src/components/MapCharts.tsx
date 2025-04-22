@@ -194,18 +194,20 @@ export const Marks = memo(() => {
 export const BookMapParts = memo(function BookMapParts({ projection, path }: { projection: d3.GeoProjection, path: any }) {
   const query = useQuery(s => s.query)
 
-  const end = useSliderStore(s => s.end);
-  const start = useSliderStore(s => s.start);
+  const sliderStart = useSliderStore(s => s.start);
+  const sliderEnd = useSliderStore(s => s.end);
+  const start = getBookPosition(sliderStart);
+  const end = getBookPosition(sliderEnd);
 
   const selectedFoodOptions = useFoodMapStore(s => s.selectedOptions);
   const ghostLinesEnabled = useWorldDataStore(s => s.ghostLinesEnabled);
 
-  const usedFilterData = query === 'Food' ? prepareFood(queryRefs[query], selectedFoodOptions) : queryRefs[query];
+  const positionList = query === 'Food' ? prepareFood(queryRefs[query], selectedFoodOptions) : queryRefs[query];
 
-  const thePoints = getPoints({ start: getBookPosition(start), end: getBookPosition(end), positionList: usedFilterData });
-  const thePaths = getPaths({ start: getBookPosition(start), end: getBookPosition(end), positionList: usedFilterData });
-  const theImpliedPaths = getImpliedPaths({ start: getBookPosition(start), end: getBookPosition(end), positionList: usedFilterData });
-  const theRegions = getRegions({ start: getBookPosition(start), end: getBookPosition(end), positionList: usedFilterData });
+  const thePoints = getPoints({ start, end, positionList });
+  const thePaths = getPaths({ start, end, positionList });
+  const theImpliedPaths = getImpliedPaths({ start, end, positionList });
+  const theRegions = getRegions({ start, end, positionList });
 
   return <>
     {ghostLinesEnabled && <AllData projection={projection} path={path} />}
