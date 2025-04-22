@@ -13,6 +13,7 @@ import { useSliderStore } from "../stores/SliderStore";
 import { useWorldDataStore } from "../stores/WorldDataStore";
 import { BaseMap, OSMLink } from "./mapParts/BaseMap";
 import { BookPosition, FunnyEntry } from "./types";
+import { foodGroups, groupFoods } from "./foodQuery/foodtypes";
 
 export function TheMapChart() {
   const query = useQuery(s => s.query)
@@ -307,20 +308,22 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
         continue;
       }
       const foodsOnPoint = matches.map(stringList => stringList[0]); // only the cow in [cow, boiled, grilled]
-      // foodsOnPoint is now a list like [cow, sheep, cow, cow, snake]
+      // foodsOnPoint is now a list like [cow, sheep, beef, cattle, snake]
+      const foodCatsOnPoint = foodsOnPoint.map(food => groupFoods[food])
+      // foodCatsOnPoint is now a list like [cow, sheep, cow, cow, snake]
 
       // if we have a point from another chapter on the same coordinates, just add the foods
       // else create a new entry
       const coord = `${point.coords[1]}.${point.coords[0]}`;
       const entry = pointMap.get(coord);
       if (entry) {
-        entry.foods.push(...foodsOnPoint);
+        entry.foods.push(...foodCatsOnPoint);
       } else {
         pointMap.set(coord, {
           x: point.coords[1],
           y: point.coords[0],
           locName: point.labelName,
-          foods: foodsOnPoint,
+          foods: foodCatsOnPoint,
         });
       }
     }

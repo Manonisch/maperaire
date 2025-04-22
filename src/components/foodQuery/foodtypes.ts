@@ -177,3 +177,11 @@ export const foodGroups = new Map([
   ["yam", ["local yam"]],
   ["yellow fruit", ["small yellow fruits"]],
 ]);
+
+const groupFoods: Record<string, string> = {};
+for (const [group, foods] of foodGroups.entries()) {
+  for (const food of foods) {
+    groupFoods[food] = group;
+  }
+}
+export { groupFoods };
