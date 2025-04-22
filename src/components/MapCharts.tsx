@@ -240,9 +240,11 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
       if (isBehindGlobe(point, projection)) {
         return null
       }
+      const [x, y] = projection([point.coords[1], point.coords[0]]) ?? [0, 0];
       return <circle
         key={"116+" + index}
-        transform={`translate(${projection([point.coords[1], point.coords[0]])})`}
+        cx={x}
+        cy={y}
         r={5}
         fill={getStrokeColor(point, "#699aaa")}
         opacity={1}
