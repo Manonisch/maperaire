@@ -12,6 +12,7 @@ import { prepareFood } from "./foodQuery/foodUtils";
 import { useSliderStore } from "../stores/SliderStore";
 import { useWorldDataStore } from "../stores/WorldDataStore";
 import { BaseMap, OSMLink } from "./mapParts/BaseMap";
+import { FunnyEntry } from "./types";
 
 export function TheMapChart() {
   const query = useQuery(s => s.query)
@@ -236,21 +237,26 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
       if (!projection.invert) {
         return null
       }
-      const invertedProj = projection.invert([600, 300]) as [number, number];
-      const gdist = d3.geoDistance([point.coords[1], point.coords[0]], invertedProj);
-      return gdist < 1.57 ? (
-        <circle
-          key={"116+" + index}
-          transform={`translate(${projection([point.coords[1], point.coords[0]])})`}
-          r={5}
-          fill={getStrokeColor(point, "#699aaa")}
-          opacity={1}
-          stroke='#e6edd0'
-        >
-          <title>{`${point.bookIndex! + 1}.${point.chapterIndex} \n${point.labelName.split(':')[1]}`}</title>
-        </circle>
-      ) : null
+      if (isBehindGlobe(point, projection)) {
+        return null
+      }
+      return <circle
+        key={"116+" + index}
+        transform={`translate(${projection([point.coords[1], point.coords[0]])})`}
+        r={5}
+        fill={getStrokeColor(point, "#699aaa")}
+        opacity={1}
+        stroke='#e6edd0'
+      >
+        <title>{`${point.bookIndex! + 1}.${point.chapterIndex} \n${point.labelName.split(':')[1]}`}</title>
+      </circle>
     })
     }
   </>
 })
+
+function isBehindGlobe(point: FunnyEntry, projection: d3.GeoProjection) {
+  const invertedProj = projection.invert?.([600, 300]) as [number, number];
+  const gdist = d3.geoDistance([point.coords[1], point.coords[0]], invertedProj);
+  return gdist >= 1.57;
+}
