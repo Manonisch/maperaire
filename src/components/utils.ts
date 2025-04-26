@@ -141,7 +141,6 @@ export function getAllFirstElementOnly() {
   const theLocLabels: FunnyEntry[] = [];
   books.forEach((book, bookI) => {
     book.chapters.forEach((chapter) => {
-      const labello = chapter.locLabels;
       const localLabels: FunnyEntry[] = [chapter.locLabels[0]];
       if (localLabels.length > 0) {
         localLabels.forEach((entry) => {

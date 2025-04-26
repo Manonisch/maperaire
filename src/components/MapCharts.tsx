@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, memo } from "react";
 import * as d3 from 'd3';
 import versor from 'versor';
-import { getPointerCoords, geoRefs, getPaths, getPoints, getRegions, getBookPosition, getImpliedPaths, getStrokeColor, getAllCoords, getAllFirstElementOnly } from "./utils";
+import { getPointerCoords, geoRefs, getPaths, getPoints, getRegions, getBookPosition, getImpliedPaths, getStrokeColor } from "./utils";
 import { queryRefs, useQuery } from "../stores/QueryStore";
 import { TheSlider } from "./mapParts/TheSlider";
 import { FoodOverlay } from "./foodQuery/FoodOverlay";
