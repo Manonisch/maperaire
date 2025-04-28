@@ -1,7 +1,7 @@
 import { foodGroups } from "./foodtypes";
-import { BookPosition } from "../types";
+import { ChapterQueryResults } from "../types";
 
-export function prepareFood(usedFilterData: BookPosition[], selectedFoodOptions: string[]) {
+export function prepareFood(usedFilterData: ChapterQueryResults[], selectedFoodOptions: string[]) {
   let allFoodItems: string[] = [];
   selectedFoodOptions.forEach((option) => {
     allFoodItems = allFoodItems.concat(foodGroups.get(option) ?? []);

@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import { Food } from "../data/querys/positions_food_final";
-import { BookPosition } from "../components/types";
+import { ChapterQueryResults } from "../components/types";
 
 export type Querys = "default" | "Food";
 
-export const queryRefs: Record<string, BookPosition[]> = {
+export const queryRefs: Record<string, ChapterQueryResults[]> = {
   default: [],
   Food: Food,
 };

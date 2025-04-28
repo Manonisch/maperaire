@@ -17,7 +17,7 @@ import {
   Chapterus,
   book,
   ChapterType,
-  BookPosition,
+  ChapterQueryResults,
   FunnyEntry,
 } from "./types";
 import * as d3 from "d3";
@@ -141,16 +141,32 @@ export function getAllFirstElementOnly() {
   const theLocLabels: FunnyEntry[] = [];
   books.forEach((book, bookI) => {
     book.chapters.forEach((chapter) => {
-      const localLabels: FunnyEntry[] = [chapter.locLabels[0]];
-      if (localLabels.length > 0) {
-        localLabels.forEach((entry) => {
-          if (entry) {
-            entry.chapterIndex = chapter.index;
-            entry.bookIndex = bookI;
-          }
-        });
+      // if a locLabel has no startParagraph, it won't have a match (food) and then we not gonna need it
+      const filteredLocLabels = chapter.locLabels.filter(label => !!label.startParagraph)
+      const localLabel: FunnyEntry = { ...filteredLocLabels[0] };
+      localLabel.chapterIndex = chapter.index;
+      localLabel.bookIndex = bookI;
+      theLocLabels.push(localLabel);
+    });
+  });
+
+  return theLocLabels;
+}
+
+export function getAllLocations() {
+  const books = chapter_labels.books as book[];
+
+  const theLocLabels: FunnyEntry[] = [];
+  books.forEach((book, bookI) => {
+    book.chapters.forEach((chapter) => {
+      // if a locLabel has no startParagraph, it won't have a match (food) and then we not gonna need it
+      const filteredLocLabels = chapter.locLabels.filter(label => !!label.startParagraph)
+      for (const localLabelus of filteredLocLabels) {  
+        const localLabel: FunnyEntry = { ...localLabelus };
+        localLabel.chapterIndex = chapter.index;
+        localLabel.bookIndex = bookI;
+        theLocLabels.push(localLabel);
       }
-      theLocLabels.push(...localLabels);
     });
   });
 
@@ -160,9 +176,9 @@ export function getAllFirstElementOnly() {
 function isInRange(
   label: FunnyEntry,
   options?: {
-    start?: BookPosition;
-    end?: BookPosition;
-    positionList?: BookPosition[];
+    start?: ChapterQueryResults;
+    end?: ChapterQueryResults;
+    positionList?: ChapterQueryResults[];
   }
 ): boolean {
   if (
@@ -206,9 +222,9 @@ function isInRange(
 }
 
 export function getPoints(options?: {
-  start?: BookPosition;
-  end?: BookPosition;
-  positionList?: BookPosition[];
+  start?: ChapterQueryResults;
+  end?: ChapterQueryResults;
+  positionList?: ChapterQueryResults[];
 }) {
   return getAllCoords().filter(
     (label) => label.type === "point" && isInRange(label, options)
@@ -216,9 +232,9 @@ export function getPoints(options?: {
 }
 
 export function getPaths(options?: {
-  start?: BookPosition;
-  end?: BookPosition;
-  positionList?: BookPosition[];
+  start?: ChapterQueryResults;
+  end?: ChapterQueryResults;
+  positionList?: ChapterQueryResults[];
 }) {
   return getAllCoords().filter(
     (label) =>
@@ -227,9 +243,9 @@ export function getPaths(options?: {
 }
 
 export function getImpliedPaths(options?: {
-  start?: BookPosition;
-  end?: BookPosition;
-  positionList?: BookPosition[];
+  start?: ChapterQueryResults;
+  end?: ChapterQueryResults;
+  positionList?: ChapterQueryResults[];
 }) {
   return getAllCoords().filter(
     (label) =>
@@ -238,9 +254,9 @@ export function getImpliedPaths(options?: {
 }
 
 export function getRegions(options?: {
-  start?: BookPosition;
-  end?: BookPosition;
-  positionList?: BookPosition[];
+  start?: ChapterQueryResults;
+  end?: ChapterQueryResults;
+  positionList?: ChapterQueryResults[];
 }) {
   return getAllCoords().filter(
     (label) => label.type === "region" && isInRange(label, options)

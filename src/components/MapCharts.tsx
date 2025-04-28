@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, memo } from "react";
 import * as d3 from 'd3';
 import versor from 'versor';
-import { getPointerCoords, geoRefs, getPaths, getPoints, getRegions, getBookPosition, getImpliedPaths, getStrokeColor } from "./utils";
+import { getPointerCoords, geoRefs, getPaths, getPoints, getRegions, getBookPosition, getImpliedPaths, getStrokeColor, getAllFirstElementOnly } from "./utils";
 import { queryRefs, useQuery } from "../stores/QueryStore";
 import { TheSlider } from "./mapParts/TheSlider";
 import { FoodOverlay } from "./foodQuery/FoodOverlay";
@@ -12,7 +12,7 @@ import { prepareFood } from "./foodQuery/foodUtils";
 import { useSliderStore } from "../stores/SliderStore";
 import { useWorldDataStore } from "../stores/WorldDataStore";
 import { BaseMap, OSMLink } from "./mapParts/BaseMap";
-import { BookPosition, FunnyEntry } from "./types";
+import { ChapterQueryResults, FunnyEntry } from "./types";
 import { foodGroups, groupFoods } from "./foodQuery/foodtypes";
 
 export function TheMapChart() {
@@ -43,7 +43,7 @@ export const Marks = memo(() => {
     let r0 = projection.rotate();
     let q0 = versor(r0);
 
-    let zoomEndTimeout = setTimeout(() => {});
+    let zoomEndTimeout = setTimeout(() => { });
 
     const zoomBehaviour = d3.zoom<SVGSVGElement, unknown>()
       .scaleExtent([1, 30])
@@ -223,6 +223,14 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
   const allKindsOfFood = getAllKindsOfFood(queryRefs.Food);
   const foodColors = getFoodColors(allKindsOfFood);
 
+  // TODO: what we need:
+
+  // Global: Structure should be calculated once for all foods, needs to be filterable by chapter and data should then be accessible with a filtered query, like:
+
+  // getFoodsOnMap ( startChapterIndex, EndChapterIndex ) => Coordinate Elements (Points or Paths)??, food for each element, with amount (maybe with age)
+
+
+
   const points = getAllFirstElementOnly()
     .filter(entry => entry && !isBehindGlobe(entry, projection));
   const foodPoints = mapFoodToPointsOnSameCoordinates(points, queryRefs.Food);
@@ -237,7 +245,7 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
     return result;
   }
 
-  function getAllKindsOfFood(foodPoints: BookPosition[]): string[] {
+  function getAllKindsOfFood(foodPoints: ChapterQueryResults[]): string[] {
     const allKindsOfFood = foodPoints.flatMap(foodPoint => {
       const m = foodPoint.matches;
       if (isStringArrayArray(m)) {
@@ -297,19 +305,58 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
     foods: string[];
   }
 
-  function mapFoodToPointsOnSameCoordinates(points: FunnyEntry[], foods: BookPosition[]) {
+
+  function handleFoodToElemMapping(points: FunnyEntry[], foods: ChapterQueryResults[]) {
+    const pointss = points.filter(funny => funny.type === 'point');
+    const pointsresult = mapFoodToPointsOnSameCoordinates(pointss, foods);
+
+    const paths = points.filter(funny => funny.type === 'path');
+    const pathresults = mapFoodToPointsOnSameCoordinates(paths, foods);
+  }
+
+
+  type FoodPath = {
+    coords: number[];
+    locName: string;
+    foods: string[];
+  }
+
+  function findMatchesInSameChapter(loclabel: FunnyEntry, results: ChapterQueryResults[]): string[][] | undefined {
+    const chapter = results.find((chapter) => chapter.bookIndex == loclabel.bookIndex && chapter.chapterIndex == loclabel.chapterIndex);
+    const matches = chapter?.matches;
+    if (!isStringArrayArray(matches)) {
+      return;
+    }
+    return matches;
+  }
+
+  //TODO: 1. Matches are per paragraph, chapters are used for filtering and age only
+  //TODO: 2. We only need one function at this point, for both points and paragraphs
+  function mapFoodToPathsOnSameCoordinates(paths: FunnyEntry[], foodMatches: ChapterQueryResults[]) {
+    const pathMap = new Map<string, FoodPath>();
+
+    for (const path of paths) {
+      // if foodResults are in same chapter as this path
+      const matches = findMatchesInSameChapter(path, foodMatches);
+      if (!matches) {
+        continue;
+      }
+      const foods = matches.flatMap(foods => foods.map(food => groupFoods[food])).filter(x => x)
+
+      
+    }
+  }
+
+  function mapFoodToPointsOnSameCoordinates(points: FunnyEntry[], foodMatches: ChapterQueryResults[]) {
     const pointMap = new Map<string, FoodPoint>();
 
     for (const point of points) {
       // find the food entry for this points book position
-      const food = foods.find((food) => food.bookIndex == point.bookIndex && food.chapterIndex == point.chapterIndex);
-      const matches = food?.matches;
-      if (!isStringArrayArray(matches)) {
+      const matches = findMatchesInSameChapter(point, foodMatches);
+      if (!matches) {
         continue;
       }
-      const foodsOnPoint = matches.map(stringList => stringList[0]); // only the cow in [cow, boiled, grilled]
-      // foodsOnPoint is now a list like [cow, sheep, beef, cattle, snake]
-      const foodCatsOnPoint = foodsOnPoint.map(food => groupFoods[food])
+      const foodCatsOnPoint = matches.flatMap(foods => foods.map(food => groupFoods[food])).filter(x => x)
       // foodCatsOnPoint is now a list like [cow, sheep, cow, cow, snake]
 
       // if we have a point from another chapter on the same coordinates, just add the foods
