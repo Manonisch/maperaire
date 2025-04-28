@@ -260,7 +260,7 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
 
   function makeFoodCircles(foodPoints: FoodPoint[], foodColors: Record<string, string>) {
     return foodPoints.map((foodPoint, pointIndex) => {
-      const [x, y] = projection([foodPoint.x, foodPoint.y]) ?? [0, 0];
+      const [x, y] = projection([foodPoint.coords[1], foodPoint.coords[0]]) ?? [0, 0];
       const n = foodPoint.foods.length;
 
       const bb = [x, y, x, y]; // unused
@@ -299,8 +299,7 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
   }
 
   interface FoodPoint {
-    x: number;
-    y: number;
+    coords: number[];
     locName: string;
     foods: string[];
   }
@@ -314,13 +313,12 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
     const pathresults = mapFoodToPointsOnSameCoordinates(paths, foods);
   }
 
-
-  type FoodPath = {
-    coords: number[];
-    locName: string;
-    foods: string[];
-  }
-
+  /**
+   * todo this makes little sense for positioning
+   * @param loclabel 
+   * @param results 
+   * @returns 
+   */
   function findMatchesInSameChapter(loclabel: FunnyEntry, results: ChapterQueryResults[]): string[][] | undefined {
     const chapter = results.find((chapter) => chapter.bookIndex == loclabel.bookIndex && chapter.chapterIndex == loclabel.chapterIndex);
     const matches = chapter?.matches;
@@ -335,6 +333,7 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
     const pointMap = new Map<string, FoodPoint>();
 
     for (const point of points) {
+
       // find the food entry for this points book position
       const matches = findMatchesInSameChapter(point, foodMatches);
       if (!matches) {
@@ -345,14 +344,16 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
 
       // if we have a point from another chapter on the same coordinates, just add the foods
       // else create a new entry
-      const coord = `${point.coords[1]}.${point.coords[0]}`;
-      const entry = pointMap.get(coord);
+      let coordString = '';
+      for (let i = 0; i < point.coords.length; i++) {
+        coordString += point.coords[i]
+      }
+      const entry = pointMap.get(coordString);
       if (entry) {
         entry.foods.push(...foodCatsOnPoint);
       } else {
-        pointMap.set(coord, {
-          x: point.coords[1],
-          y: point.coords[0],
+        pointMap.set(coordString, {
+          coords: [...point.coords],
           locName: point.labelName,
           foods: foodCatsOnPoint,
         });

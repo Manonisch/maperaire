@@ -31,11 +31,17 @@ export type book = {
   chapters: ChapterEntry[];
 };
 
+
+export interface outputResult {
+  paragraphIndex: number,
+  labels: string[]
+}
+
 // per chapter, stores all found mathches/results
 export interface ChapterQueryResults {
   bookIndex: number;
   chapterIndex: number;
-  matches?: string[][] | string[]; //per result, save all labels as strings
+  matches?: outputResult[] | string[]; //per result, save all labels as strings
   length?: number;
 }
 
