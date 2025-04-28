@@ -331,22 +331,6 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
   }
 
   //TODO: 1. Matches are per paragraph, chapters are used for filtering and age only
-  //TODO: 2. We only need one function at this point, for both points and paragraphs
-  function mapFoodToPathsOnSameCoordinates(paths: FunnyEntry[], foodMatches: ChapterQueryResults[]) {
-    const pathMap = new Map<string, FoodPath>();
-
-    for (const path of paths) {
-      // if foodResults are in same chapter as this path
-      const matches = findMatchesInSameChapter(path, foodMatches);
-      if (!matches) {
-        continue;
-      }
-      const foods = matches.flatMap(foods => foods.map(food => groupFoods[food])).filter(x => x)
-
-      
-    }
-  }
-
   function mapFoodToPointsOnSameCoordinates(points: FunnyEntry[], foodMatches: ChapterQueryResults[]) {
     const pointMap = new Map<string, FoodPoint>();
 
