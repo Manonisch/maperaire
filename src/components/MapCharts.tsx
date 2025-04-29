@@ -229,8 +229,6 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
 
   // getFoodsOnMap ( startChapterIndex, EndChapterIndex ) => Coordinate Elements (Points or Paths)??, food for each element, with amount (maybe with age)
 
-
-
   const points = getAllFirstElementOnly()
     .filter(entry => entry && !isBehindGlobe(entry, projection));
   const foodPoints = mapFoodToPointsOnSameCoordinates(points, queryRefs.Food);
@@ -248,8 +246,8 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
   function getAllKindsOfFood(foodPoints: ChapterQueryResults[]): string[] {
     const allKindsOfFood = foodPoints.flatMap(foodPoint => {
       const m = foodPoint.matches;
-      if (isStringArrayArray(m)) {
-        return m.map(mm => mm[0]);
+      if (m) {
+        return m.flatMap(mm => mm.labels);
       } else {
         return [];
       }
@@ -304,47 +302,46 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
     foods: string[];
   }
 
-
-  function handleFoodToElemMapping(points: FunnyEntry[], foods: ChapterQueryResults[]) {
-    const pointss = points.filter(funny => funny.type === 'point');
-    const pointsresult = mapFoodToPointsOnSameCoordinates(pointss, foods);
-
-    const paths = points.filter(funny => funny.type === 'path');
-    const pathresults = mapFoodToPointsOnSameCoordinates(paths, foods);
-  }
-
   /**
-   * todo this makes little sense for positioning
+   * Returns results as lists per map point/path
    * @param loclabel 
    * @param results 
-   * @returns 
+   * @returns list of lists of matches for this point only
    */
-  function findMatchesInSameChapter(loclabel: FunnyEntry, results: ChapterQueryResults[]): string[][] | undefined {
+  function findMatchesInSamePoint(loclabel: FunnyEntry, results: ChapterQueryResults[]): string[][] | undefined {
     const chapter = results.find((chapter) => chapter.bookIndex == loclabel.bookIndex && chapter.chapterIndex == loclabel.chapterIndex);
-    const matches = chapter?.matches;
+    const actual = chapter?.matches?.filter(match => match.paragraphIndex >= loclabel.startParagraph! && match.paragraphIndex <= loclabel.endParagraph!)
+
+    const matches = actual?.map(act => { return act.labels })
+
     if (!isStringArrayArray(matches)) {
       return;
     }
     return matches;
   }
 
+
+
   //TODO: 1. Matches are per paragraph, chapters are used for filtering and age only
   function mapFoodToPointsOnSameCoordinates(points: FunnyEntry[], foodMatches: ChapterQueryResults[]) {
     const pointMap = new Map<string, FoodPoint>();
 
-    for (const point of points) {
+    const pointsToConsider = points.filter(point => !!point.startParagraph && !!point.endParagraph)
+    for (const point of pointsToConsider) {
 
       // find the food entry for this points book position
-      const matches = findMatchesInSameChapter(point, foodMatches);
+      const matches = findMatchesInSamePoint(point, foodMatches);
       if (!matches) {
         continue;
       }
+
       const foodCatsOnPoint = matches.flatMap(foods => foods.map(food => groupFoods[food])).filter(x => x)
       // foodCatsOnPoint is now a list like [cow, sheep, cow, cow, snake]
 
       // if we have a point from another chapter on the same coordinates, just add the foods
       // else create a new entry
       let coordString = '';
+      //append all coordinates to an identifiable string, for lookup
       for (let i = 0; i < point.coords.length; i++) {
         coordString += point.coords[i]
       }
@@ -423,6 +420,10 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
 
 function isBehindGlobe(point: FunnyEntry, projection: d3.GeoProjection) {
   const invertedProj = projection.invert?.([600, 300]) as [number, number];
-  const gdist = d3.geoDistance([point.coords[1], point.coords[0]], invertedProj);
-  return gdist >= 1.57;
+  if (point.coords) {
+    const gdist = d3.geoDistance([point.coords[1], point.coords[0]], invertedProj);
+    return gdist >= 1.57;
+
+  }
+  return true
 }

@@ -141,15 +141,16 @@ export function getAllFirstElementOnly() {
   const theLocLabels: FunnyEntry[] = [];
   books.forEach((book, bookI) => {
     book.chapters.forEach((chapter) => {
-      // if a locLabel has no startParagraph, it won't have a match (food) and then we not gonna need it
-      const filteredLocLabels = chapter.locLabels.filter(label => !!label.startParagraph)
-      const localLabel: FunnyEntry = { ...filteredLocLabels[0] };
-      localLabel.chapterIndex = chapter.index;
-      localLabel.bookIndex = bookI;
-      theLocLabels.push(localLabel);
+      // if a locLabel has no endParagraph, it won't have a match (food) and then we are not going to need it
+      const filteredLocLabels = chapter.locLabels.filter(label => label.endParagraph)
+      filteredLocLabels.forEach(loccer => {
+        const foo: FunnyEntry = { ...loccer };
+        foo.chapterIndex = chapter.index;
+        foo.bookIndex = bookI;
+        theLocLabels.push(foo);
+      });
     });
   });
-
   return theLocLabels;
 }
 
@@ -161,7 +162,7 @@ export function getAllLocations() {
     book.chapters.forEach((chapter) => {
       // if a locLabel has no startParagraph, it won't have a match (food) and then we not gonna need it
       const filteredLocLabels = chapter.locLabels.filter(label => !!label.startParagraph)
-      for (const localLabelus of filteredLocLabels) {  
+      for (const localLabelus of filteredLocLabels) {
         const localLabel: FunnyEntry = { ...localLabelus };
         localLabel.chapterIndex = chapter.index;
         localLabel.bookIndex = bookI;

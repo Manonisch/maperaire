@@ -41,7 +41,7 @@ export interface outputResult {
 export interface ChapterQueryResults {
   bookIndex: number;
   chapterIndex: number;
-  matches?: outputResult[] | string[]; //per result, save all labels as strings
+  matches?: outputResult[]; //per result, save all labels as strings
   length?: number;
 }
 
