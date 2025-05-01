@@ -112,7 +112,7 @@ export const Marks = memo(() => {
         <g key="2" className="marks" style={{ cursor: 'grab' }}>
           <BaseMap path={path} isMoving={isMoving} />
           <BookMapParts projection={projection} path={path} />
-          <FoodVisualisation projection={projection} />
+          <FoodVisualisation projection={projection} path={path} />
         </g>
         <OSMLink />
       </svg>
@@ -360,23 +360,25 @@ export const FoodVisualisation = memo(({ projection, path }: { projection: d3.Ge
 })
 
 function FoodPathVis({ foodPoints, projection, path }: { foodPoints: FoodPoint[], projection: d3.GeoProjection, path: any }) {
-  return <g>{foodPoints.map(point => <PathVis pathElement={path} pathData={point} />)}</g>
+  return <g>{foodPoints.map(pathData => <PathVis pathElement={svgPathElement(pathData.coords, path)} pathData={pathData} />)}</g>
 }
 
-function svgPath(coords: number[], path: any) {
-  const pathElement = createElement<{ d: any }, SVGPathElement>('path', { d: path({
-    type: "LineString",
-    coordinates: coords
-  }) || undefined });
-
+function svgPathElement(coords: number[], path: any) {
+  const positions: number[][] = []
+  for (let i = 0; i < coords.length; i += 2) {
+    positions.push([coords[i + 1], coords[i]]);
+  }
+  const d = path({ type: "LineString", coordinates: positions }) || '';
+  const pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  pathElement.setAttribute('d', d);
   return pathElement;
 }
 
-function PathVis({ pathElement, pathData }: { pathElement: ReactElement<SVGPathElement>, pathData: FoodPoint }) {
+function PathVis({ pathElement, pathData }: { pathElement: SVGPathElement, pathData: FoodPoint }) {
   const foodElems = pathData.foods;
   const foodLength = foodElems.length;
   const totalLength = pathElement.getTotalLength();
-  const distanceIncrements = totalLength / foodLength;
+  const distanceIncrements = totalLength / (foodLength + 1);
 
   return foodElems.map((elem, i) => {
     const pos = pathElement.getPointAtLength(distanceIncrements * (1 + i))
@@ -384,12 +386,12 @@ function PathVis({ pathElement, pathData }: { pathElement: ReactElement<SVGPathE
       key={`poof${i}`}
       cx={pos.x}
       cy={pos.y}
-      r={3 + elem[1]}
+      r={3}
       fill={'grey'}
       opacity={0.5}
       stroke="#000000"
     >
-      <title>{elem[0]}</title>
+      <title>{elem}</title>
     </circle>
   })
 
