@@ -152,27 +152,6 @@ export function updateBoundingBox(bb: number[], x1: number, y1: number, x2: numb
   bb[3] = Math.max(bb[3], y2);
 }
 
-//TODO: this should be called once in the beginning and saved as a static value for later usage 
-export function getAllRelevantElementsOnly() {
-  const books = chapter_labels.books as book[];
-
-  const theLocLabels: FunnyEntry[] = [];
-  books.forEach((book, bookI) => {
-    book.chapters.forEach((chapter) => {
-      // if a locLabel has no endParagraph, it won't have a match (food) and then we are not going to need it
-      const filteredLocLabels = chapter.locLabels.filter(label => label.endParagraph)
-      filteredLocLabels.forEach(loccer => {
-        const foo: FunnyEntry = { ...loccer };
-        foo.chapterIndex = chapter.index;
-        foo.bookIndex = bookI;
-        theLocLabels.push(foo);
-      });
-    });
-  });
-
-  return theLocLabels;
-}
-
 export function getAllLocations() {
   const books = chapter_labels.books as book[];
 

@@ -1,6 +1,12 @@
 import { countedFoodPoint, foodGroups, FoodPoint, groupFoods } from "./foodtypes";
 import { ChapterQueryResults, FunnyEntry } from "../types";
 
+
+// TODO:!
+// - connect circles and pathcircles to normal filtering mechanisms from the slider
+// - get those fucking shitty icons to substitute the ugly path circles
+// - make everything that can be static, static and move to global state?
+
 export function prepareFood(usedFilterData: ChapterQueryResults[], selectedFoodOptions: string[]) {
   let allFoodItems: string[] = [];
   selectedFoodOptions.forEach((option) => {
@@ -8,7 +14,7 @@ export function prepareFood(usedFilterData: ChapterQueryResults[], selectedFoodO
   });
   const resultData = usedFilterData?.filter(filterItem => {
     if (filterItem.matches) {
-      const localMatches = filterItem.matches as string[][]
+      const localMatches = filterItem.matches.map(m => m.labels);
 
       const reducedMatches: string[] = localMatches.reduce(
         (accumulator, currentValue) => accumulator.concat(currentValue),
