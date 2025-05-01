@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, memo } from "react";
+import { useState, useEffect, useRef, memo, useCallback } from "react";
 import * as d3 from 'd3';
 import versor from 'versor';
 import { getPointerCoords, geoRefs, getPaths, getPoints, getRegions, getBookPosition, getImpliedPaths, getStrokeColor, getAllRelevantElementsOnly, isBehindGlobe, updateBoundingBox } from "./utils";
@@ -275,10 +275,10 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
   </>
 })
 
-export const FoodVisualisation = memo(({ projection }: { projection: d3.GeoProjection }) => {
+export const FoodVisualisation = ({ projection }: { projection: d3.GeoProjection }) => {
 
 
-  function makeFoodCircles(foodPoints: FoodPoint[], foodColors: Record<string, string>) {
+  const makeFoodCircles = useCallback((foodPoints: FoodPoint[], foodColors: Record<string, string>) => {
 
     const groupedFoodPoints = countFoodInPoint(foodPoints);
 
@@ -327,7 +327,7 @@ export const FoodVisualisation = memo(({ projection }: { projection: d3.GeoProje
 
       return g;
     });
-  }
+  }, [projection]);
 
   const allKindsOfFood = getAllKindsOfFood(queryRefs.Food);
   const foodColors = getFoodColors(allKindsOfFood);
@@ -359,7 +359,7 @@ export const FoodVisualisation = memo(({ projection }: { projection: d3.GeoProje
       {/* {foodPaths} */}
     </g>
   </g>
-})
+}
 
 function PathVis({ path, pathData }: { path: SVGPathElement, pathData: FoodPoint }) {
   const foodElems = pathData.foods;
