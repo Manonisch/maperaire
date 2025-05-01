@@ -400,11 +400,22 @@ function PathVis({ pathElement, pathData, d }: { pathElement?: SVGPathElement, p
 
   return foodElems.map((elem, i) => {
     const pos = pathLengthLookup.getPointAtLength(distanceIncrements * (1 + i), true);
+
+
+    //TODO: THIS NEEDS TO BE STATIC!
+    const randomOffset = Math.random() * 10;
+    let rotatepoo = Math.PI * 0.5
+    if (i % 2 === 0) {
+      rotatepoo = Math.PI * -0.5
+    }
+    const x = pos.x + randomOffset * Math.cos(pos.angle + rotatepoo);
+    const y = pos.y + randomOffset * Math.sin(pos.angle + rotatepoo);
+
     console.log('pos', pos)
     return <circle
       key={`poof${i}`}
-      cx={pos.x}
-      cy={pos.y}
+      cx={x}
+      cy={y}
       r={3}
       fill={'grey'}
       opacity={0.5}
