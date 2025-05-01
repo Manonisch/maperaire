@@ -11,6 +11,18 @@ export interface ItemParentGroup {
   children: ItemGroup[];
 }
 
+export interface FoodPoint {
+  coords: number[];
+  locName: string;
+  foods: string[];
+  type: string;
+}
+
+export interface countedFoodPoint extends Omit<FoodPoint, 'foods'> {
+  countedFood: Map<string, number>
+}
+
+
 export const parentGroups = new Map([
   ["birds", ["birds", "cassowary", "penguin"]],
   [

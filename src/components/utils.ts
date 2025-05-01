@@ -135,7 +135,25 @@ export function getAllCoords() {
   return theLocLabels;
 }
 
-export function getAllFirstElementOnly() {
+export function isBehindGlobe(point: FunnyEntry, projection: d3.GeoProjection) {
+  const invertedProj = projection.invert?.([600, 300]) as [number, number];
+  if (point.coords) {
+    const gdist = d3.geoDistance([point.coords[1], point.coords[0]], invertedProj);
+    return gdist >= 1.57;
+
+  }
+  return true
+}
+
+export function updateBoundingBox(bb: number[], x1: number, y1: number, x2: number, y2: number) {
+  bb[0] = Math.min(bb[0], x1);
+  bb[1] = Math.min(bb[1], y1);
+  bb[2] = Math.max(bb[2], x2);
+  bb[3] = Math.max(bb[3], y2);
+}
+
+//TODO: this should be called once in the beginning and saved as a static value for later usage 
+export function getAllRelevantElementsOnly() {
   const books = chapter_labels.books as book[];
 
   const theLocLabels: FunnyEntry[] = [];
@@ -151,6 +169,7 @@ export function getAllFirstElementOnly() {
       });
     });
   });
+
   return theLocLabels;
 }
 

@@ -1,19 +1,19 @@
 import { useState, useEffect, useRef, memo } from "react";
 import * as d3 from 'd3';
 import versor from 'versor';
-import { getPointerCoords, geoRefs, getPaths, getPoints, getRegions, getBookPosition, getImpliedPaths, getStrokeColor, getAllFirstElementOnly } from "./utils";
+import { getPointerCoords, geoRefs, getPaths, getPoints, getRegions, getBookPosition, getImpliedPaths, getStrokeColor, getAllRelevantElementsOnly, isBehindGlobe, updateBoundingBox } from "./utils";
 import { queryRefs, useQuery } from "../stores/QueryStore";
 import { TheSlider } from "./mapParts/TheSlider";
 import { FoodOverlay } from "./foodQuery/FoodOverlay";
 import { AllData } from "./mapParts/GhostLines";
 import { TopBar } from "./Topbar";
 import { useFoodMapStore } from "../stores/FoodMapStore";
-import { prepareFood } from "./foodQuery/foodUtils";
+import { countFoodInPoint, getAllKindsOfFood, mapFoodToPointsOnSameCoordinates, prepareFood } from "./foodQuery/foodUtils";
 import { useSliderStore } from "../stores/SliderStore";
 import { useWorldDataStore } from "../stores/WorldDataStore";
 import { BaseMap, OSMLink } from "./mapParts/BaseMap";
 import { ChapterQueryResults, FunnyEntry } from "./types";
-import { foodGroups, groupFoods } from "./foodQuery/foodtypes";
+import { countedFoodPoint, foodGroups, FoodPoint, groupFoods } from "./foodQuery/foodtypes";
 
 export function TheMapChart() {
   const query = useQuery(s => s.query)
@@ -112,6 +112,7 @@ export const Marks = memo(() => {
         <g key="2" className="marks" style={{ cursor: 'grab' }}>
           <BaseMap path={path} isMoving={isMoving} />
           <BookMapParts projection={projection} path={path} />
+          <FoodVisualisation projection={projection} />
         </g>
         <OSMLink />
       </svg>
@@ -220,153 +221,12 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
   const theImpliedPaths = getImpliedPaths({ start, end, positionList });
   const theRegions = getRegions({ start, end, positionList });
 
-  const allKindsOfFood = getAllKindsOfFood(queryRefs.Food);
-  const foodColors = getFoodColors(allKindsOfFood);
 
   // TODO: what we need:
 
   // Global: Structure should be calculated once for all foods, needs to be filterable by chapter and data should then be accessible with a filtered query, like:
 
   // getFoodsOnMap ( startChapterIndex, EndChapterIndex ) => Coordinate Elements (Points or Paths)??, food for each element, with amount (maybe with age)
-
-  const points = getAllFirstElementOnly()
-    .filter(entry => entry && !isBehindGlobe(entry, projection));
-  const foodPoints = mapFoodToPointsOnSameCoordinates(points, queryRefs.Food);
-  const foodCircles = makeFoodCircles(foodPoints, foodColors);
-
-  function getFoodColors(foods: string[]): Record<string, string> {
-    const palette = d3.schemeCategory10;
-    const result: Record<string, string> = {};
-    foods.forEach((food, index) => {
-      result[food] = palette[index % palette.length];
-    });
-    return result;
-  }
-
-  function getAllKindsOfFood(foodPoints: ChapterQueryResults[]): string[] {
-    const allKindsOfFood = foodPoints.flatMap(foodPoint => {
-      const m = foodPoint.matches;
-      if (m) {
-        return m.flatMap(mm => mm.labels);
-      } else {
-        return [];
-      }
-    });
-    const uniqueFoods = new Set(allKindsOfFood);
-    return Array.from(uniqueFoods).sort();
-  }
-
-  function makeFoodCircles(foodPoints: FoodPoint[], foodColors: Record<string, string>) {
-    return foodPoints.map((foodPoint, pointIndex) => {
-      const [x, y] = projection([foodPoint.coords[1], foodPoint.coords[0]]) ?? [0, 0];
-      const n = foodPoint.foods.length;
-
-      const bb = [x, y, x, y]; // unused
-
-      const g = <g>{foodPoint.foods.map((food, foodIndex) => {
-        const angle = (foodIndex / n) * 2 * Math.PI;
-        const radius = 10;
-        const ringRadius = Math.max(radius + 5, 0.5 * radius * 1 / Math.sin(0.5 * Math.PI / n)); // N-Eck äusserer Radius
-        const cx = x + ringRadius * Math.cos(angle);
-        const cy = y + ringRadius * Math.sin(angle);
-
-        updateBoundingBox(bb, cx - radius, cy - radius, cx + radius, cy + radius);
-
-        return <circle
-          key={`${foodIndex}.${pointIndex}.food`}
-          cx={cx}
-          cy={cy}
-          r={radius}
-          fill={foodColors[food]}
-          opacity={0.5}
-          stroke="#000000"
-        >
-          <title>{food}</title>
-        </circle>
-      })}</g>;
-
-      return g;
-    });
-  }
-
-  function updateBoundingBox(bb: number[], x1: number, y1: number, x2: number, y2: number) {
-    bb[0] = Math.min(bb[0], x1);
-    bb[1] = Math.min(bb[1], y1);
-    bb[2] = Math.max(bb[2], x2);
-    bb[3] = Math.max(bb[3], y2);
-  }
-
-  interface FoodPoint {
-    coords: number[];
-    locName: string;
-    foods: string[];
-  }
-
-  /**
-   * Returns results as lists per map point/path
-   * @param loclabel 
-   * @param results 
-   * @returns list of lists of matches for this point only
-   */
-  function findMatchesInSamePoint(loclabel: FunnyEntry, results: ChapterQueryResults[]): string[][] | undefined {
-    const chapter = results.find((chapter) => chapter.bookIndex == loclabel.bookIndex && chapter.chapterIndex == loclabel.chapterIndex);
-    const actual = chapter?.matches?.filter(match => match.paragraphIndex >= loclabel.startParagraph! && match.paragraphIndex <= loclabel.endParagraph!)
-
-    const matches = actual?.map(act => { return act.labels })
-
-    if (!isStringArrayArray(matches)) {
-      return;
-    }
-    return matches;
-  }
-
-
-
-  //TODO: 1. Matches are per paragraph, chapters are used for filtering and age only
-  function mapFoodToPointsOnSameCoordinates(points: FunnyEntry[], foodMatches: ChapterQueryResults[]) {
-    const pointMap = new Map<string, FoodPoint>();
-
-    const pointsToConsider = points.filter(point => !!point.startParagraph && !!point.endParagraph)
-    for (const point of pointsToConsider) {
-
-      // find the food entry for this points book position
-      const matches = findMatchesInSamePoint(point, foodMatches);
-      if (!matches) {
-        continue;
-      }
-
-      const foodCatsOnPoint = matches.flatMap(foods => foods.map(food => groupFoods[food])).filter(x => x)
-      // foodCatsOnPoint is now a list like [cow, sheep, cow, cow, snake]
-
-      // if we have a point from another chapter on the same coordinates, just add the foods
-      // else create a new entry
-      let coordString = '';
-      //append all coordinates to an identifiable string, for lookup
-      for (let i = 0; i < point.coords.length; i++) {
-        coordString += point.coords[i]
-      }
-      const entry = pointMap.get(coordString);
-      if (entry) {
-        entry.foods.push(...foodCatsOnPoint);
-      } else {
-        pointMap.set(coordString, {
-          coords: [...point.coords],
-          locName: point.labelName,
-          foods: foodCatsOnPoint,
-        });
-      }
-    }
-
-    const result = Array.from(pointMap.values());
-    for (const entry of result) {
-      entry.foods.sort();
-    }
-    return result;
-  }
-
-  function isStringArrayArray(x: unknown): x is string[][] {
-    return !!x && Array.isArray(x) && x.every(Array.isArray) && x.every(arr => typeof arr[0] === 'string');
-  }
 
   return <>
     {ghostLinesEnabled && <AllData projection={projection} path={path} />}
@@ -412,18 +272,114 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
       </circle>
     })
     }
-    <g>
-      {foodCircles}
-    </g>
   </>
 })
 
-function isBehindGlobe(point: FunnyEntry, projection: d3.GeoProjection) {
-  const invertedProj = projection.invert?.([600, 300]) as [number, number];
-  if (point.coords) {
-    const gdist = d3.geoDistance([point.coords[1], point.coords[0]], invertedProj);
-    return gdist >= 1.57;
+export const FoodVisualisation = memo(({ projection }: { projection: d3.GeoProjection }) => {
 
+
+  function makeFoodCircles(foodPoints: FoodPoint[], foodColors: Record<string, string>) {
+
+    const groupedFoodPoints = countFoodInPoint(foodPoints);
+
+    return groupedFoodPoints.map((foodPoint, pointIndex) => {
+      const [x, y] = projection([foodPoint.coords[1], foodPoint.coords[0]]) ?? [0, 0];
+      const foodsArray = Array.from(foodPoint.countedFood.entries())
+
+      const bb = [x, y, x, y]; // unused
+
+      const g = <g>{foodsArray.map((food, foodIndex) => {
+
+        let n = 0;
+        if (foodsArray.length <= 5) {
+          n = foodsArray.length;
+        }
+        else if (foodIndex < 5) {
+          n = 5
+        }
+        else if (foodIndex < 16) {
+          n = 12
+        }
+        else if (foodIndex < 32) {
+          n = 19
+        }
+
+        const angle = (foodIndex / n) * 2 * Math.PI;
+        const radius = (5 + (food[1] * 0.3));
+        const ringRadius = Math.max(radius + 5, 0.5 * radius * 1 / Math.sin(0.5 * Math.PI / n)); // N-Eck äusserer Radius
+        const cx = x + ringRadius * Math.cos(angle);
+        const cy = y + ringRadius * Math.sin(angle);
+
+        updateBoundingBox(bb, cx - radius, cy - radius, cx + radius, cy + radius);
+
+        return <circle
+          key={`${foodIndex}.${pointIndex}.food`}
+          cx={cx}
+          cy={cy}
+          r={3 + food[1]}
+          fill={foodColors[food[0]]}
+          opacity={0.5}
+          stroke="#000000"
+        >
+          <title>{food[0]}</title>
+        </circle>
+      })}</g>;
+
+      return g;
+    });
   }
-  return true
+
+  const allKindsOfFood = getAllKindsOfFood(queryRefs.Food);
+  const foodColors = getFoodColors(allKindsOfFood);
+
+  const points = getAllRelevantElementsOnly()
+    .filter(entry => entry && !isBehindGlobe(entry, projection));
+  const foodPoints = mapFoodToPointsOnSameCoordinates(points, queryRefs.Food);
+
+
+  const foodCirclePoints = foodPoints.filter(p => p.type === 'point');
+  const foodCirclePaths = foodPoints.filter(p => p.type === 'path');
+  const foodCircles = makeFoodCircles(foodCirclePoints, foodColors);
+
+
+  function getFoodColors(foods: string[]): Record<string, string> {
+    const palette = d3.schemeCategory10;
+    const result: Record<string, string> = {};
+    foods.forEach((food, index) => {
+      result[food] = palette[index % palette.length];
+    });
+    return result;
+  }
+
+  return <g>
+    <g>
+      {foodCircles}
+    </g>
+    <g>
+      {/* {foodPaths} */}
+    </g>
+  </g>
+})
+
+function PathVis({ path, pathData }: { path: SVGPathElement, pathData: FoodPoint }) {
+  const foodElems = pathData.foods;
+  const foodLength = foodElems.length;
+  const totalLength = path.getTotalLength();
+  const distanceIncrements = totalLength / foodLength;
+
+  return foodElems.map((elem, i) => {
+    const pos = path.getPointAtLength(distanceIncrements * (1 + i))
+    return <circle
+      key={`poof${i}`}
+      cx={pos.x}
+      cy={pos.y}
+      r={3 + elem[1]}
+      fill={'grey'}
+      opacity={0.5}
+      stroke="#000000"
+    >
+      <title>{elem[0]}</title>
+    </circle>
+  })
+
 }
