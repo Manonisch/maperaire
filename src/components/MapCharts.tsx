@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, memo, useCallback } from "react";
+import { useState, useEffect, useRef, memo, useCallback, createElement, ReactSVGElement, DOMElement, SVGAttributes, SVGProps, ReactElement } from "react";
 import * as d3 from 'd3';
 import versor from 'versor';
 import { getPointerCoords, geoRefs, getPaths, getPoints, getRegions, getBookPosition, getImpliedPaths, getStrokeColor, getAllRelevantElementsOnly, isBehindGlobe, updateBoundingBox } from "./utils";
@@ -275,7 +275,7 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
   </>
 })
 
-export const FoodVisualisation = ({ projection }: { projection: d3.GeoProjection }) => {
+export const FoodVisualisation = memo(({ projection, path }: { projection: d3.GeoProjection, path: any }) => {
 
 
   const makeFoodCircles = useCallback((foodPoints: FoodPoint[], foodColors: Record<string, string>) => {
@@ -352,23 +352,34 @@ export const FoodVisualisation = ({ projection }: { projection: d3.GeoProjection
   }
 
   return <g>
-    <g>
+    {/* <g>
       {foodCircles}
-    </g>
-    <g>
-      {/* {foodPaths} */}
-    </g>
+    </g> */}
+    <FoodPathVis foodPoints={foodCirclePaths} projection={projection} path={path} />
   </g>
+})
+
+function FoodPathVis({ foodPoints, projection, path }: { foodPoints: FoodPoint[], projection: d3.GeoProjection, path: any }) {
+  return <g>{foodPoints.map(point => <PathVis pathElement={path} pathData={point} />)}</g>
 }
 
-function PathVis({ path, pathData }: { path: SVGPathElement, pathData: FoodPoint }) {
+function svgPath(coords: number[], path: any) {
+  const pathElement = createElement<{ d: any }, SVGPathElement>('path', { d: path({
+    type: "LineString",
+    coordinates: coords
+  }) || undefined });
+
+  return pathElement;
+}
+
+function PathVis({ pathElement, pathData }: { pathElement: ReactElement<SVGPathElement>, pathData: FoodPoint }) {
   const foodElems = pathData.foods;
   const foodLength = foodElems.length;
-  const totalLength = path.getTotalLength();
+  const totalLength = pathElement.getTotalLength();
   const distanceIncrements = totalLength / foodLength;
 
   return foodElems.map((elem, i) => {
-    const pos = path.getPointAtLength(distanceIncrements * (1 + i))
+    const pos = pathElement.getPointAtLength(distanceIncrements * (1 + i))
     return <circle
       key={`poof${i}`}
       cx={pos.x}
