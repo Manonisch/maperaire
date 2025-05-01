@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, memo, useCallback, createElement, ReactSVGElement, DOMElement, SVGAttributes, SVGProps, ReactElement } from "react";
+import { useState, useEffect, useRef, memo, useCallback } from "react";
 import * as d3 from 'd3';
 import versor from 'versor';
 import { getPointerCoords, geoRefs, getPaths, getPoints, getRegions, getBookPosition, getImpliedPaths, getStrokeColor, getAllRelevantElementsOnly, isBehindGlobe, updateBoundingBox } from "./utils";
@@ -12,8 +12,8 @@ import { countFoodInPoint, getAllKindsOfFood, mapFoodToPointsOnSameCoordinates, 
 import { useSliderStore } from "../stores/SliderStore";
 import { useWorldDataStore } from "../stores/WorldDataStore";
 import { BaseMap, OSMLink } from "./mapParts/BaseMap";
-import { ChapterQueryResults, FunnyEntry } from "./types";
-import { countedFoodPoint, foodGroups, FoodPoint, groupFoods } from "./foodQuery/foodtypes";
+import { FoodPoint } from "./foodQuery/foodtypes";
+import { getPathLengthFromD, getPathLengthLookup } from 'svg-getpointatlength'
 
 export function TheMapChart() {
   const query = useQuery(s => s.query)
@@ -360,28 +360,47 @@ export const FoodVisualisation = memo(({ projection, path }: { projection: d3.Ge
 })
 
 function FoodPathVis({ foodPoints, projection, path }: { foodPoints: FoodPoint[], projection: d3.GeoProjection, path: any }) {
-  return <g>{foodPoints.map(pathData => <PathVis pathElement={svgPathElement(pathData.coords, path)} pathData={pathData} />)}</g>
+  return <g>{foodPoints.map(pathData => <PathVis d={getD(pathData.coords, path)} pathData={pathData} />)}</g>
 }
 
-function svgPathElement(coords: number[], path: any) {
+// function svgPathElement(coords: number[], path: any) {
+//   const positions: number[][] = []
+//   for (let i = 0; i < coords.length; i += 2) {
+//     positions.push([coords[i + 1], coords[i]]);
+//   }
+//   const d = path({ type: "LineString", coordinates: positions }) || '';
+//   const pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+//   pathElement.setAttribute('d', d);
+//   return pathElement;
+// }
+
+function getD(coords: number[], path: any) {
   const positions: number[][] = []
   for (let i = 0; i < coords.length; i += 2) {
     positions.push([coords[i + 1], coords[i]]);
   }
-  const d = path({ type: "LineString", coordinates: positions }) || '';
-  const pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-  pathElement.setAttribute('d', d);
-  return pathElement;
+  return path({ type: "LineString", coordinates: positions }) || '';
 }
 
-function PathVis({ pathElement, pathData }: { pathElement: SVGPathElement, pathData: FoodPoint }) {
+function PathVis({ pathElement, pathData, d }: { pathElement?: SVGPathElement, pathData: FoodPoint, d: string }) {
   const foodElems = pathData.foods;
   const foodLength = foodElems.length;
-  const totalLength = pathElement.getTotalLength();
+
+  console.log('what is d', d)
+
+  if (!d) {
+    return null;
+  }
+
+  const pathLengthLookup = getPathLengthLookup(d)
+
+  const totalLength = pathLengthLookup.totalLength;
+  // const totalLength = pathElement.getTotalLength();
   const distanceIncrements = totalLength / (foodLength + 1);
 
   return foodElems.map((elem, i) => {
-    const pos = pathElement.getPointAtLength(distanceIncrements * (1 + i))
+    const pos = pathLengthLookup.getPointAtLength(distanceIncrements * (1 + i), true);
+    console.log('pos', pos)
     return <circle
       key={`poof${i}`}
       cx={pos.x}
