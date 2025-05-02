@@ -1,5 +1,6 @@
-import { countedFoodPoint, foodGroups, FoodPoint, groupFoods } from "./foodtypes";
+import { countedFoodPoint, FoodPoint } from "./foodtypes";
 import { ChapterQueryResults, FunnyEntry } from "../types";
+import { foodGroups, groupFoods } from "./FoodStatics";
 
 export function prepareFood(usedFilterData: ChapterQueryResults[], selectedFoodOptions: string[]) {
   let allFoodItems: string[] = [];

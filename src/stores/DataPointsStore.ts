@@ -1,8 +1,11 @@
 import { create } from "zustand";
-import { book, FunnyEntry } from "../components/types";
+import { book, ChapterQueryResults, FunnyEntry } from "../components/types";
 import chapter_labels from "../data/points_and_paths/chapter_labels";
 import { Querys } from "./QueryStore";
 import { GlobalChapterInterval } from "./SliderStore";
+
+//this is the data from the querystory, reduced to already only have grouped labels
+export const MinimalGroupedData: ChapterQueryResults[] = [];
 
 interface DataPointStoreStates {
   allRelevantElements: FunnyEntry[],
@@ -18,6 +21,7 @@ interface RelevantData {
 interface DataPointStoreActions {
   storeAllRelevantElements: () => void;
   updateRelevantData: (query: Querys, filter: Filter, slider: GlobalChapterInterval) => void;
+  minimalizeDataSet: (dataSet: ChapterQueryResults[], minimalizer: Map<string, string[]>[]) => void;
 }
 
 interface Filter {
@@ -60,7 +64,16 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
       // filter decides which "food groups / food preparations" are relevant (all or some)
       // relevant "foods" are mapped on points and paths
     }
-  }
+  },
+  minimalizeDataSet: (dataSet, minimalizer) => {
+    //Minimize data for all set minimalizers
+    const combMin = combineAndReverseMinimalizers(minimalizer);
+    const minimizedData = minimizeDataSet(dataSet, combMin);
+
+    //clear the array
+    MinimalGroupedData.splice(0, MinimalGroupedData.length);
+    MinimalGroupedData.push(...minimizedData);
+  },
 
 }));
 
@@ -76,3 +89,29 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
 // RENAMING TODOs
 // * rename Query* to Topic, because Query in DragonReader is the actual text search pattern
 //   and the Maperaire "Query" is a fixed list of Topics to work on
+
+
+
+function combineAndReverseMinimalizers(minimalizer: Map<string, string[]>[]): Map<string, string> {
+  const combinedMinimalizer = new Map();
+  minimalizer.forEach(minime => {
+    minime.forEach((values: string[], key) => {
+      values.forEach(value => {
+        combinedMinimalizer.set(value, key);
+      });
+    })
+  })
+  return combinedMinimalizer;
+}
+
+function minimizeDataSet(dataSet: ChapterQueryResults[], minimizer: Map<string, string>): ChapterQueryResults[] {
+  return dataSet.map(dataEntry => {
+    const matches = dataEntry.matches?.map((match) => {
+      const labels = match.labels.map(label => {
+        return minimizer.get(label) ?? label;
+      })
+      return { ...match, labels };
+    })
+    return { ...dataEntry, matches };
+  })
+}
