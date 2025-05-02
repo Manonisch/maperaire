@@ -10,7 +10,7 @@ interface DataPointStoreStates {
   storeAllRelevantElements: () => void
 }
 
-export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreActions>((set, get) => ({
+export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreActions>((set) => ({
   allRelevantElements: [],
   storeAllRelevantElements: () => {
     const books = chapter_labels.books as book[];

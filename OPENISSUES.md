@@ -1,23 +1,39 @@
-# NEXT Session
 
-- [ ] function (point, food) draws spiral of food symbols around it
-- [ ] function (point, food) draws spiral of food symbols with variable size around it
-- [ ] add paragraphIndexes to food data
-- [ ] add paragraphIndexes to position data
-- [ ] function (path, food) draws symbols along it (evenly spaced)
+// - get those fucking shitty icons to substitute the ugly path circles
+// 
+
+
+# NEXT
+- [ ] food map should only show with 
+- [ ] connect circles and pathcircles to normal filtering mechanisms from the slider
+- [ ] connect circles and pathcircles to filtering mechanisms from food legend
+
+- [ ] make everything that can be static, static and move to global state -> PERFORMANCE, Precalculate and cache
+
+
+# Todos
+- [ ] QMF - bidirectional higlighting (match in Agenda + points on card) (copied, see below)
+- [ ] colorize the foodz (idea: use food parent groups)
+- [ ] Use icons instead of circles for path foods
+- [ ] Concept: How to display the individual points on far zoom
+
+- [ ] QMF - Filter by meta matches (food preparation) in a tiered legend, preparation uses different color scale
+
+- [x] function (point, food) draws spiral of food symbols around it
+- [x] function (point, food) draws spiral of food symbols with variable size around it
+- [x] add paragraphIndexes to food data
+- [x] add paragraphIndexes to position data
+- [x] function (path, food) draws symbols along it (evenly spaced)
 - [ ] function (path, food) checks if symbols fit along the path or path needs to be treated as point
-- [ ] function that is mapping for all places (points, paths, etc, but not names!)
+- [x] function that is mapping for all places (points, paths, etc, but not names!)
       all foods that are associated with them, returns a list of all places with their foods attached
 - [ ] show food symbols in legend
 - [ ] food legend, maybe add hints about food preparation
 - [ ] add ancient map typography
-- [ ] colorize the foodz
-- [ ] QMF - bidirectional higlighting (match in Agenda + points on card) (copied, see below)
 
-# Todos
 - [ ] Region objects need to be rewound to accept fill 
 - [ ] Better Tooltips
-- [ ] Allow processing point meta information (single query result labels)
+- [ ] Allow processing for point meta information (single query result labels)
 
 # FeatureList to add
 - [ ] Query Map Food (QMF)

@@ -98,7 +98,7 @@ export const parentGroups = new Map([
   ],
   ["nuts and so", ["chestnuts", "cocoa nuts", "mushroom", "roots"]],
   [
-    "spices & other",
+    "condiments",
     ["spices", "cardamom", "pepper", "tumeric", "anise", "sugar"],
   ],
   ["special", ["blood", "liver", "meat", "ice"]],
