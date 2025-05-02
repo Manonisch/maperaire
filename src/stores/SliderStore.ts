@@ -1,5 +1,10 @@
 import { create } from "zustand";
 
+export interface GlobalChapterInterval {
+  start: number;
+  end: number;
+}
+
 interface SliderStoreState {
   end?: number;
   start?: number;

@@ -6,7 +6,7 @@ interface FoodMapAction {
 }
 
 interface FoodMapState {
-  selectedOptions: string[];
+  selectedOptions: string[]; // empty if none is selected
 }
 
 export const useFoodMapStore = create<FoodMapAction & FoodMapState>(

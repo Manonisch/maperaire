@@ -3,12 +3,12 @@
 export interface LocLabel {
   labelName: string;
   coords: number[];
-  type: string;
+  type: string; // point, path, region
   file?: string;
   char?: string;
   centrality?: "implied";
   startParagraph?: number;
-  endParagraph?: number;
+  endParagraph?: number; // no endParagraph -> no attached data
 }
 
 export interface FunnyEntry extends LocLabel {
