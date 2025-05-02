@@ -25,23 +25,8 @@ interface DataPointStoreActions {
   minimalizeDataSet: (dataSet: ChapterQueryResults[], minimalizer: Map<string, string[]>[]) => void;
 }
 
-const example1 = [
-  ['cow', 'fox'],
-  ['boiled'],
-];
-
-const example2 = [
-  ['cow', 'boiled'],
-  ['fox'],
-];
-
-const example3 = [
-  ['cow', 'fox'],
-  ['boiled', 'roasted'],
-];
-
 interface FilterConfig {
-  filter?: string[][] // [string OR string] AND [string OR string]
+  filter: string[][] // [string OR string] AND [string OR string]
 }
 
 export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreActions>((set) => ({
@@ -67,31 +52,26 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
 
   relevantData: {},
 
-  updateRelevantData(query: Querys, filter: Filter, chapterInterval: GlobalChapterInterval) {
-    // chapter_labels
-    // MinimalGroupedData - food data
-
-    // GLOSSARY:
-    // * points and paths = FunnyEntry = LocLabel
+  updateRelevantData(query: Querys, filters: FilterConfig, chapterInterval: GlobalChapterInterval) {
     if (query === 'default') {
       // chapterInterval decides which points and paths and regions are considered
     } else if (query === 'Food') {
+
+      const hasFilter = !!filters.filter?.length;
+      // filter decides which "food groups / food preparations" are relevant (all or some)
+      const filteredData = hasFilter ? filterDataSet(MinimalGroupedData, filters) : MinimalGroupedData
+
       // get all locations
       // chapterInterval decides which points and paths and regions are considered
+      // THESE SHOULD BE ENOUGH TO RETURN TO DRAW THE FILTERED BASEMAP
       const locations = transformBooksToLocations(chapter_labels.books as book[])
         .filter(location => isInRange(location, {
-            start: getBookPosition(chapterInterval.start),
-            end: getBookPosition(chapterInterval.end),
-            // TODO positionList is also interesting
-          })
+          start: getBookPosition(chapterInterval.start),
+          end: getBookPosition(chapterInterval.end),
+          positionList: hasFilter ? filteredData : []
+        })
         );
-
-      // Gegeben: MinimalGroupedData
-      // filter decides which "food groups / food preparations" are relevant (all or some)
-
       // relevant "foods" are mapped on points and paths
-
-
     }
   },
   minimalizeDataSet: (dataSet, minimalizer) => {
@@ -103,7 +83,6 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
     MinimalGroupedData.splice(0, MinimalGroupedData.length);
     MinimalGroupedData.push(...minimizedData);
   },
-
 }));
 
 // query - dragonreader query pattern (\bdragon\S*\b)
@@ -119,13 +98,24 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
 // * rename Query* to Topic, because Query in DragonReader is the actual text search pattern
 //   and the Maperaire "Query" is a fixed list of Topics to work on
 
-function filterDataSet(dataSet: ChapterQueryResults[], filter: Filter): ChapterQueryResults[] {
-  const newDataSet = []
 
-  return dataSet.filter(dataEntry => {
+// [string OR string] AND [string OR string]
+function filterDataSet(dataSet: ChapterQueryResults[], filter: FilterConfig): ChapterQueryResults[] {
+  const filteredByChapter = dataSet.filter(dataEntry => {
     return dataEntry.matches?.some(result => { // these are results!
-      return result.labels.some(label => filter.filter?.includes(label));
+      return filter.filter.every(singleFilter => {
+        return result.labels.some(label => singleFilter.includes(label))
+      });
     })
+  });
+
+  return filteredByChapter.map(dataEntry => {
+    const matches = dataEntry.matches?.filter(result => {
+      return filter.filter.every(singleFilter => {
+        return result.labels.some(label => singleFilter.includes(label))
+      });
+    })
+    return { ...dataEntry, matches }
   })
 }
 

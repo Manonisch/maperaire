@@ -4,6 +4,7 @@ import { GhostPointButton } from "./GhostPointButton";
 import { SourcesLink } from "./links/SourcesLink";
 import { useWorldDataStore } from "../stores/WorldDataStore";
 import { useDataPointsStore } from "../stores/DataPointsStore";
+import { useFoodMapStore, useSliderStore } from "../stores";
 
 export const TopBar = memo(() => {
   const [ghostyLines, setGhostyLines] = useState(false)
@@ -36,6 +37,25 @@ export const TopBar = memo(() => {
       fontSize: '14px', color: '#555', paddingInlineStart: '10px', padding: '4px',
       background: 'antiquewhite',
       margin: '2px'
-    }}>   <span style={{ fontWeight: 'bold' }}>Move the Globe</span> by dragging with the mouse, zoom via scroll wheel. Hover on points to <span style={{ fontWeight: 'bold' }}>see more information</span>. To <span style={{ fontWeight: 'bold' }}>Filter</span> drag and move the handles on the bottom axis.</span>
+    }}>
+      <span style={{ fontWeight: 'bold' }}>Move the Globe</span>
+      by dragging with the mouse, zoom via scroll wheel. Hover on points to
+      <span style={{ fontWeight: 'bold' }}>see more information</span>.
+      To <span style={{ fontWeight: 'bold' }}>Filter</span>
+      drag and move the handles on the bottom axis.
+    </span>
+    <TriggerUpdateRelevantData />
   </div>
 })
+
+//TODO: JUST FOR TESTING
+const TriggerUpdateRelevantData = () => {
+  const updateRelevantData = useDataPointsStore(s => s.updateRelevantData);
+  const query = useQuery(s => s.query);
+  const filter = useFoodMapStore(s => s.selectedOptions)
+  const sliderEnd = useSliderStore(s => s.end)
+  const sliderStart = useSliderStore(s => s.start)
+
+  updateRelevantData(query, { filter: [filter].filter(x => x.length) }, { end: sliderEnd ?? 0, start: sliderStart ?? 0 })
+  return <></>
+}

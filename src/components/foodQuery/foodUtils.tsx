@@ -1,27 +1,24 @@
 import { countedFoodPoint, FoodPoint } from "./foodtypes";
 import { ChapterQueryResults, FunnyEntry } from "../types";
-import { foodGroups, groupFoods } from "./FoodStatics";
+import { groupFoods } from "./FoodStatics";
 
-export function prepareFood(usedFilterData: ChapterQueryResults[], selectedFoodOptions: string[]) {
-  let allFoodItems: string[] = [];
-  selectedFoodOptions.forEach((option) => {
-    allFoodItems = allFoodItems.concat(foodGroups.get(option) ?? []);
-  });
-  const resultData = usedFilterData?.filter(filterItem => {
-    if (filterItem.matches) {
-      const localMatches = filterItem.matches.map(m => m.labels);
+
+//TODO: WE WILL NOT NEED THIS ANYMORE
+export function prepareFood(data: ChapterQueryResults[], selectedFoodOptions: string[]) {
+  const resultData = data?.filter(chapter => {
+    if (chapter.matches) {
+      const localMatches = chapter.matches.map(m => m.labels);
 
       const reducedMatches: string[] = localMatches.reduce(
         (accumulator, currentValue) => accumulator.concat(currentValue),
         [],
       );
-      return reducedMatches.some(r => allFoodItems.includes(r))
+      return reducedMatches.some(r => selectedFoodOptions.includes(r))
     }
     return false;
   })
   return resultData;
 }
-
 
 /**
   * Returns results as lists per map point/path
@@ -29,6 +26,7 @@ export function prepareFood(usedFilterData: ChapterQueryResults[], selectedFoodO
   * @param results 
   * @returns list of lists of matches for this point only
   */
+//TODO: MOVE THIS LOGIC?
 function findMatchesInSamePoint(loclabel: FunnyEntry, results: ChapterQueryResults[]): string[][] | undefined {
   const chapter = results.find((chapter) => chapter.bookIndex == loclabel.bookIndex && chapter.chapterIndex == loclabel.chapterIndex);
   const actual = chapter?.matches?.filter(match => match.paragraphIndex >= loclabel.startParagraph! && match.paragraphIndex <= loclabel.endParagraph!)
@@ -41,6 +39,7 @@ function findMatchesInSamePoint(loclabel: FunnyEntry, results: ChapterQueryResul
   return matches;
 }
 
+//TODO: WE WILL NOT NEED THIS ANYMORE, MOVE PART OF THIS LOGIC?
 //TODO: 1. Matches are per paragraph, chapters are used for filtering and age only
 export function mapFoodToPointsOnSameCoordinates(points: FunnyEntry[], foodMatches: ChapterQueryResults[]) {
   const pointMap = new Map<string, FoodPoint>();

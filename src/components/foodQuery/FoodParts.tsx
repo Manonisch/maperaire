@@ -12,6 +12,7 @@ export const FoodVisualisation = memo(({ projection, path }: { projection: d3.Ge
   const relevantLocations = useDataPointsStore(s => s.allRelevantElements)
 
   //TODO: should this be pre-filter or post filtering?
+  //TODO: 
   const allKindsOfFood = getAllKindsOfFood(queryRefs.Food);
   const foodColors = getFoodColors(allKindsOfFood);
 

@@ -6,6 +6,7 @@ import { TopBar } from "./Topbar";
 import { useSliderStore, useFoodMapStore, useWorldDataStore, queryRefs, useQuery } from "../stores";
 import { BaseMap, OSMLink, TheSlider, AllData } from "./mapParts";
 import { FoodOverlay, FoodVisualisation, prepareFood } from "./foodQuery";
+import { MinimalGroupedData } from "../stores/DataPointsStore";
 
 export function TheMapChart() {
   const query = useQuery(s => s.query)
@@ -124,7 +125,7 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
   const selectedFoodOptions = useFoodMapStore(s => s.selectedOptions);
   const ghostLinesEnabled = useWorldDataStore(s => s.ghostLinesEnabled);
 
-  const positionList = query === 'Food' ? prepareFood(queryRefs[query], selectedFoodOptions) : queryRefs[query];
+  const positionList = query === 'Food' ? prepareFood(MinimalGroupedData, selectedFoodOptions) : MinimalGroupedData;
 
   const thePoints = getPoints({ start, end, positionList });
   const thePaths = getPaths({ start, end, positionList });
