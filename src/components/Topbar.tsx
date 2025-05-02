@@ -1,18 +1,24 @@
 import { memo, useState, useCallback, ChangeEvent } from "react";
-import { useQuery, queryRefs, Querys } from "../stores/QueryStore";
+import { useQuery, queryRefs, Querys, dataSetMinimizers } from "../stores/QueryStore";
 import { GhostPointButton } from "./GhostPointButton";
 import { SourcesLink } from "./links/SourcesLink";
 import { useWorldDataStore } from "../stores/WorldDataStore";
+import { useDataPointsStore } from "../stores/DataPointsStore";
 
 export const TopBar = memo(() => {
   const [ghostyLines, setGhostyLines] = useState(false)
   const chooseQuery = useQuery(s => s.chooseQuery)
+  const minimalizeDataSet = useDataPointsStore(s => s.minimalizeDataSet);
   const setGhostLinesEnabled = useWorldDataStore(s => s.setGhostLineEnabled)
 
   const queryArray = Object.entries(queryRefs);
 
   const handleChange = useCallback((event: ChangeEvent<HTMLSelectElement>) => {
-    chooseQuery(event.target.value as Querys);
+    const query = event.target.value as Querys;
+    chooseQuery(query);
+    const dataSet = queryRefs[query];
+    const minimizers = dataSetMinimizers[query];
+    minimalizeDataSet(dataSet, minimizers); // sets MinimalGroupedData
   }, [])
 
   return <div style={{ width: '100%', height: '40px', display: 'flex', alignItems: 'center' }}>

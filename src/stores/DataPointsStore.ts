@@ -59,9 +59,9 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
     } else if (query === 'Food') {
       // chapterInterval decides which points and paths and regions are considered
 
-      //
-
+      // Gegeben: MinimalGroupedData
       // filter decides which "food groups / food preparations" are relevant (all or some)
+
       // relevant "foods" are mapped on points and paths
     }
   },

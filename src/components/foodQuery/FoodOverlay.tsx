@@ -1,6 +1,7 @@
 import { useCallback, ChangeEvent, memo } from "react";
 import { useFoodMapStore } from "../../stores/FoodMapStore";
-import { foodGroups, ItemGroup } from "./foodtypes";
+import { ItemGroup } from "./foodtypes";
+import { foodGroups } from "./FoodStatics";
 
 function prepareItemGroups(): ItemGroup[] {
   const itemGroup: ItemGroup[] = [];
