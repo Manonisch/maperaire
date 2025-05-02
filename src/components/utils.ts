@@ -116,6 +116,7 @@ export function getPointerCoords<E, Ev>(
   }
 }
 
+// TODO will be replaced by transformBooksToLocations
 export function getAllCoords() {
   const books = chapter_labels.books as book[];
 
@@ -172,7 +173,7 @@ export function getAllLocations() {
   return theLocLabels;
 }
 
-function isInRange(
+export function isInRange(
   label: FunnyEntry,
   options?: {
     start?: ChapterQueryResults;

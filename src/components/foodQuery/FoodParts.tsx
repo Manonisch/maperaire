@@ -9,14 +9,14 @@ import { useDataPointsStore } from "../../stores/DataPointsStore";
 
 export const FoodVisualisation = memo(({ projection, path }: { projection: d3.GeoProjection, path: any }) => {
 
-  const relevantFoods = useDataPointsStore(s => s.allRelevantElements)
+  const relevantLocations = useDataPointsStore(s => s.allRelevantElements)
 
   //TODO: should this be pre-filter or post filtering?
   const allKindsOfFood = getAllKindsOfFood(queryRefs.Food);
   const foodColors = getFoodColors(allKindsOfFood);
 
-  const points = relevantFoods.filter(entry => entry && !isBehindGlobe(entry, projection));
-  const foodPoints = mapFoodToPointsOnSameCoordinates(points, queryRefs.Food);
+  const locations = relevantLocations.filter(entry => entry && !isBehindGlobe(entry, projection));
+  const foodPoints = mapFoodToPointsOnSameCoordinates(locations, queryRefs.Food);
 
   const foodCirclePoints = foodPoints.filter(p => p.type === 'point');
   const foodCirclePaths = foodPoints.filter(p => p.type === 'path');
