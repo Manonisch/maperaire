@@ -26,8 +26,6 @@ const FoodCircles = memo(({ foodPoints, foodColors, projection }: { foodPoints: 
 
   const groupedFoodPoints = countFoodInPoint(foodPoints);
 
-  // console.log('what are countedfoodpoints', groupedFoodPoints)
-
   return groupedFoodPoints.map((foodPoint, pointIndex) => {
     if (isBehindGlobe(foodPoint.coords, projection)) {
       return;

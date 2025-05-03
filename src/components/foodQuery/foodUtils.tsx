@@ -39,7 +39,6 @@ export function getFoodColors(foods: string[]): Record<string, string> {
   const result: Record<string, string> = {};
   foods.forEach((food) => {
     const parent = groupParentFoods[food];
-    console.log('what is the parent to this food?', food, 'parent', parent)
     result[food] = foodColorMap[parent];
   });
   return result;
