@@ -4,17 +4,15 @@ import chapter_labels from "../data/points_and_paths/chapter_labels";
 import { Querys } from "./QueryStore";
 import { GlobalChapterInterval } from "./SliderStore";
 import { getBookPosition, isInRange } from "../components/utils";
+import { findResultsInSameLocation } from "../components/foodQuery";
 
 //this is the data from the querystory, reduced to already only have grouped labels
 export const MinimalGroupedData: ChapterQueryResults[] = [];
 
 interface DataPointStoreStates {
   allRelevantElements: FunnyEntry[],
-  relevantData: RelevantData, // renderData?
-}
-
-interface RelevantData {
-
+  locations: FunnyEntry[],
+  locationData: LocationData[],
 }
 
 //
@@ -50,9 +48,10 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
     set({ allRelevantElements: theLocLabels });
   },
 
-  relevantData: {},
+  locations: [],
+  locationData: [],
 
-  updateRelevantData(query: Querys, filters: FilterConfig, chapterInterval: GlobalChapterInterval) {
+  updateRelevantData: (query: Querys, filters: FilterConfig, chapterInterval: GlobalChapterInterval) => {
     if (query === 'default') {
       // chapterInterval decides which points and paths and regions are considered
     } else if (query === 'Food') {
@@ -71,9 +70,14 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
           positionList: hasFilter ? filteredData : []
         })
         );
+
       // relevant "foods" are mapped on points and paths
+      const locationData = mapDataSetToLocations(locations, filteredData);
+
+      set({ locationData, locations });
     }
   },
+
   minimalizeDataSet: (dataSet, minimalizer) => {
     //Minimize data for all set minimalizers
     const combMin = combineAndReverseMinimalizers(minimalizer);
@@ -157,4 +161,53 @@ function transformBooksToLocations(books: book[]): FunnyEntry[] {
     });
   });
   return locations;
+}
+
+export interface LocationData {
+  coords: number[];
+  locName: string;
+  labels: string[];
+  type: string;
+}
+
+function mapDataSetToLocations(locations: FunnyEntry[], dataSet: ChapterQueryResults[]): LocationData[] {
+  type Coord = string;
+  const dataMap = new Map<Coord, LocationData>();
+
+  // go over every location and find for each location every data entry that is associated with that location
+
+  for (const location of locations) {
+    if (location.type === 'region') {
+      continue;
+    }
+
+    const results = findResultsInSameLocation(location, dataSet); // TODO imported from FoodQuery
+    if (!results) {
+      continue;
+    }
+
+    const labels = results.flatMap(result => result.labels); // TODO should we?
+
+    // if we have a point from another chapter on the same coordinates, just add the foods
+    // else create a new entry
+    const coordString: Coord = location.coords.join(' ');
+
+    const entry = dataMap.get(coordString);
+    if (entry) {
+      entry.labels.push(...labels);
+    } else {
+      dataMap.set(coordString, {
+        coords: [...location.coords],
+        locName: location.labelName,
+        type: location.type,
+        labels,
+      });
+    }
+  }
+
+  const result = Array.from(dataMap.values());
+  for (const entry of result) {
+    entry.labels.sort();
+  }
+  return result;
 }

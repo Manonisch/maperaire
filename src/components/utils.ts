@@ -136,14 +136,13 @@ export function getAllCoords() {
   return theLocLabels;
 }
 
-export function isBehindGlobe(point: FunnyEntry, projection: d3.GeoProjection) {
-  const invertedProj = projection.invert?.([600, 300]) as [number, number];
-  if (point.coords) {
-    const gdist = d3.geoDistance([point.coords[1], point.coords[0]], invertedProj);
-    return gdist >= 1.57;
-
+export function isBehindGlobe(coords: number[] | undefined, projection: d3.GeoProjection) {
+  if (!coords) {
+    return true;
   }
-  return true
+  const invertedProj = projection.invert?.([600, 300]) as [number, number];
+  const gdist = d3.geoDistance([coords[1], coords[0]], invertedProj);
+  return gdist >= 1.57;
 }
 
 export function updateBoundingBox(bb: number[], x1: number, y1: number, x2: number, y2: number) {

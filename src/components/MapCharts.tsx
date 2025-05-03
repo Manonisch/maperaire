@@ -166,7 +166,7 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
       return (<path key={"8+" + index} fill='none' stroke='#6d654b' d={path(regional) || undefined}><title>{`${region.bookIndex! + 1}.${region.chapterIndex} \n${region.labelName.split(':')[1]}`}</title></path>)
     })}
     {thePoints.map((point, index) => {
-      if (isBehindGlobe(point, projection)) {
+      if (isBehindGlobe(point.coords, projection)) {
         return null
       }
       const [x, y] = projection([point.coords[1], point.coords[0]]) ?? [0, 0];

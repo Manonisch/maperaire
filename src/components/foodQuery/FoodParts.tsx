@@ -2,25 +2,20 @@ import *  as d3 from "d3";
 import { memo } from "react";
 import { queryRefs } from "../../stores/QueryStore";
 import { updateBoundingBox, isBehindGlobe } from "../utils";
-import { FoodPoint } from "./foodtypes";
-import { countFoodInPoint, getAllKindsOfFood, mapFoodToPointsOnSameCoordinates } from "./foodUtils";
+import { countFoodInPoint, getAllKindsOfFood } from "./foodUtils";
 import { getPathLengthLookup } from 'svg-getpointatlength'
-import { useDataPointsStore } from "../../stores/DataPointsStore";
+import { LocationData, useDataPointsStore } from "../../stores/DataPointsStore";
 
 export const FoodVisualisation = memo(({ projection, path }: { projection: d3.GeoProjection, path: any }) => {
-
-  const relevantLocations = useDataPointsStore(s => s.allRelevantElements)
+  const locationData = useDataPointsStore(s => s.locationData);
 
   //TODO: should this be pre-filter or post filtering?
-  //TODO: 
+  //TODO:
   const allKindsOfFood = getAllKindsOfFood(queryRefs.Food);
   const foodColors = getFoodColors(allKindsOfFood);
 
-  const locations = relevantLocations.filter(entry => entry && !isBehindGlobe(entry, projection));
-  const foodPoints = mapFoodToPointsOnSameCoordinates(locations, queryRefs.Food);
-
-  const foodCirclePoints = foodPoints.filter(p => p.type === 'point');
-  const foodCirclePaths = foodPoints.filter(p => p.type === 'path');
+  const foodCirclePoints = locationData.filter(p => p.type === 'point');
+  const foodCirclePaths = locationData.filter(p => p.type === 'path');
 
   return <g>
     <g>
@@ -39,11 +34,15 @@ function getFoodColors(foods: string[]): Record<string, string> {
   return result;
 }
 
-const FoodCircles = memo(({ foodPoints, foodColors, projection }: { foodPoints: FoodPoint[], foodColors: Record<string, string>, projection: d3.GeoProjection }) => {
+const FoodCircles = memo(({ foodPoints, foodColors, projection }: { foodPoints: LocationData[], foodColors: Record<string, string>, projection: d3.GeoProjection }) => {
 
   const groupedFoodPoints = countFoodInPoint(foodPoints);
 
   return groupedFoodPoints.map((foodPoint, pointIndex) => {
+    if (isBehindGlobe(foodPoint.coords, projection)) {
+      return;
+    }
+
     const [x, y] = projection([foodPoint.coords[1], foodPoint.coords[0]]) ?? [0, 0];
     const foodsArray = Array.from(foodPoint.countedFood.entries())
 
@@ -54,14 +53,11 @@ const FoodCircles = memo(({ foodPoints, foodColors, projection }: { foodPoints: 
       let n = 0;
       if (foodsArray.length <= 5) {
         n = foodsArray.length;
-      }
-      else if (foodIndex < 5) {
+      } else if (foodIndex < 5) {
         n = 5
-      }
-      else if (foodIndex < 16) {
+      } else if (foodIndex < 16) {
         n = 12
-      }
-      else if (foodIndex < 32) {
+      } else {
         n = 19
       }
 
@@ -90,8 +86,8 @@ const FoodCircles = memo(({ foodPoints, foodColors, projection }: { foodPoints: 
   });
 });
 
-function FoodPathVis({ foodPoints, path }: { foodPoints: FoodPoint[], path: any }) {
-  return <g>{foodPoints.map((pathData, i) => <PathVis key={i + 'kjgkhjkt'} d={getD(pathData.coords, path)} pathData={pathData} />)}</g>
+function FoodPathVis({ foodPoints, path }: { foodPoints: LocationData[], path: any }) {
+  return <g>{foodPoints.map((data, i) => <PathVis key={i + 'kjgkhjkt'} d={getD(data.coords, path)} pathData={data} />)}</g>
 }
 
 // function svgPathElement(coords: number[], path: any) {
@@ -113,8 +109,8 @@ function getD(coords: number[], path: any) {
   return path({ type: "LineString", coordinates: positions }) || '';
 }
 
-function PathVis({ pathData, d }: { pathData: FoodPoint, d: string }) {
-  const foodElems = pathData.foods;
+function PathVis({ pathData, d }: { pathData: LocationData, d: string }) {
+  const foodElems = pathData.labels;
   const foodLength = foodElems.length;
 
   if (!d) {
