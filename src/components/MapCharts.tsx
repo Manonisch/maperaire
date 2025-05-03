@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef, memo } from "react";
 import * as d3 from 'd3';
 import versor from 'versor';
-import { getPointerCoords, geoRefs, getPaths, getPoints, getRegions, getBookPosition, getImpliedPaths, getStrokeColor, isBehindGlobe } from "./utils";
+import { getPointerCoords } from "./utils";
 import { TopBar } from "./Topbar";
-import { useSliderStore, useFoodMapStore, useWorldDataStore, queryRefs, useQuery } from "../stores";
-import { BaseMap, OSMLink, TheSlider, AllData } from "./mapParts";
-import { FoodOverlay, FoodVisualisation, prepareFood } from "./foodQuery";
-import { MinimalGroupedData } from "../stores/DataPointsStore";
+import { useQuery } from "../stores";
+import { BaseMap, OSMLink, TheSlider } from "./mapParts";
+import { FoodOverlay, FoodVisualisation } from "./foodQuery";
+import { BookMapParts } from "./mapParts/BookMapParts";
 
 export function TheMapChart() {
   const query = useQuery(s => s.query)
@@ -26,6 +26,8 @@ export const Marks = memo(() => {
   const [projection] = useState(d3.geoOrthographic)
   const unityScale = projection.scale();
   const [trick17a, trick17] = useState(0);
+
+  const query = useQuery(s => s.query)
 
   trick17a;
 
@@ -105,7 +107,7 @@ export const Marks = memo(() => {
         <g key="2" className="marks" style={{ cursor: 'grab' }}>
           <BaseMap path={path} isMoving={isMoving} />
           <BookMapParts projection={projection} path={path} />
-          <FoodVisualisation projection={projection} path={path} />
+          {query === 'Food' && <FoodVisualisation projection={projection} path={path} />}
         </g>
         <OSMLink />
       </svg>
@@ -113,75 +115,3 @@ export const Marks = memo(() => {
     </>
   );
 });
-
-export const BookMapParts = memo(function BookMapParts({ projection, path }: { projection: d3.GeoProjection, path: any }) {
-  const query = useQuery(s => s.query)
-
-  const sliderStart = useSliderStore(s => s.start);
-  const sliderEnd = useSliderStore(s => s.end);
-  const start = getBookPosition(sliderStart);
-  const end = getBookPosition(sliderEnd);
-
-  const selectedFoodOptions = useFoodMapStore(s => s.selectedOptions);
-  const ghostLinesEnabled = useWorldDataStore(s => s.ghostLinesEnabled);
-
-  const positionList = query === 'Food' ? prepareFood(MinimalGroupedData, selectedFoodOptions) : MinimalGroupedData;
-
-  const thePoints = getPoints({ start, end, positionList });
-  const thePaths = getPaths({ start, end, positionList });
-  const theImpliedPaths = getImpliedPaths({ start, end, positionList });
-  const theRegions = getRegions({ start, end, positionList });
-
-
-  // TODO: what we need:
-
-  // Global: Structure should be calculated once for all foods, needs to be filterable by chapter and data should then be accessible with a filtered query, like:
-
-  // getFoodsOnMap ( startChapterIndex, EndChapterIndex ) => Coordinate Elements (Points or Paths)??, food for each element, with amount (maybe with age)
-
-  return <>
-    {ghostLinesEnabled && <AllData projection={projection} path={path} />}
-    {thePaths.map((pathEntry, index) => {
-      const positions: number[][] = []
-      for (let i = 0; i < pathEntry.coords.length; i += 2) {
-        positions.push([pathEntry.coords[i + 1], pathEntry.coords[i]]);
-      }
-      return (<path key={"17+" + index} fill='none' stroke={getStrokeColor(pathEntry, "#699aaa")} strokeWidth='1.5px' opacity={0.8} d={path({
-        type: "LineString",
-        coordinates: positions
-      }) || undefined} markerEnd={pathEntry.char !== 'Laurence' ? "url(#dragon)" : ''} ><title>{`${pathEntry.bookIndex! + 1}.${pathEntry.chapterIndex} \n${pathEntry.labelName.split(':')[1]}`}</title></path>)
-    })}
-    {theImpliedPaths.map((pathEntry, index) => {
-      const positions: number[][] = []
-      for (let i = 0; i < pathEntry.coords.length; i += 2) {
-        positions.push([pathEntry.coords[i + 1], pathEntry.coords[i]]);
-      }
-      return (<path key={"7+" + index} fill='none' stroke={getStrokeColor(pathEntry, '#699aaa')} strokeWidth='1.5px' opacity={0.7} strokeDasharray='6' d={path({
-        type: "LineString",
-        coordinates: positions
-      }) || undefined} markerEnd={pathEntry.char !== 'Laurence' ? "url(#dragon)" : ''} ><title>{`${pathEntry.bookIndex! + 1}.${pathEntry.chapterIndex} \n${pathEntry.labelName.split(':')[1]}`}</title></path>)
-    })}
-    {theRegions.map((region, index) => {
-      const regional = geoRefs[region?.file ?? ''] || null
-      return (<path key={"8+" + index} fill='none' stroke='#6d654b' d={path(regional) || undefined}><title>{`${region.bookIndex! + 1}.${region.chapterIndex} \n${region.labelName.split(':')[1]}`}</title></path>)
-    })}
-    {thePoints.map((point, index) => {
-      if (isBehindGlobe(point.coords, projection)) {
-        return null
-      }
-      const [x, y] = projection([point.coords[1], point.coords[0]]) ?? [0, 0];
-      return <circle
-        key={"116+" + index}
-        cx={x}
-        cy={y}
-        r={5}
-        fill={getStrokeColor(point, "#699aaa")}
-        opacity={1}
-        stroke='#e6edd0'
-      >
-        <title>{`${point.bookIndex! + 1}.${point.chapterIndex} \n${point.labelName.split(':')[1]}`}</title>
-      </circle>
-    })
-    }
-  </>
-})

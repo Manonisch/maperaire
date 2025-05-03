@@ -9,8 +9,6 @@ import { LocationData, useDataPointsStore } from "../../stores/DataPointsStore";
 export const FoodVisualisation = memo(({ projection, path }: { projection: d3.GeoProjection, path: any }) => {
   const locationData = useDataPointsStore(s => s.locationData);
 
-  //TODO: should this be pre-filter or post filtering?
-  //TODO:
   const allKindsOfFood = getAllKindsOfFood(queryRefs.Food);
   const foodColors = getFoodColors(allKindsOfFood);
 

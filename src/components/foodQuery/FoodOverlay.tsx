@@ -17,6 +17,7 @@ function prepareItemGroups(): ItemGroup[] {
 export const FoodOverlay = () => {
   const legendItems = prepareItemGroups();
   const changeSelectedOption = useFoodMapStore((s) => s.changeSelectedOption);
+  const selectedOptions = useFoodMapStore(s => s.selectedOptions)
   const handleChange = useCallback((ev: ChangeEvent<HTMLInputElement>) => {
     changeSelectedOption(ev.target.id);
   }, []);
@@ -62,6 +63,7 @@ export const FoodOverlay = () => {
                   type="checkbox"
                   onChange={handleChange}
                   id={item.groupName}
+                  checked={selectedOptions.includes(item.groupName)}
                 />
                 <label htmlFor={item.groupName}>{item.groupName ?? ""}</label>
               </div>

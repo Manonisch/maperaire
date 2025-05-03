@@ -1,10 +1,9 @@
 import { create } from "zustand";
-import { book, ChapterQueryResults, FunnyEntry } from "../components/types";
+import { book, ChapterQueryResults, FunnyEntry, outputResult } from "../components/types";
 import chapter_labels from "../data/points_and_paths/chapter_labels";
 import { Querys } from "./QueryStore";
 import { GlobalChapterInterval } from "./SliderStore";
 import { getBookPosition, isInRange } from "../components/utils";
-import { findResultsInSameLocation } from "../components/foodQuery";
 
 //this is the data from the querystory, reduced to already only have grouped labels
 export const MinimalGroupedData: ChapterQueryResults[] = [];
@@ -14,8 +13,6 @@ interface DataPointStoreStates {
   locations: FunnyEntry[],
   locationData: LocationData[],
 }
-
-//
 
 interface DataPointStoreActions {
   storeAllRelevantElements: () => void;
@@ -54,6 +51,14 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
   updateRelevantData: (query: Querys, filters: FilterConfig, chapterInterval: GlobalChapterInterval) => {
     if (query === 'default') {
       // chapterInterval decides which points and paths and regions are considered
+      const locations = transformBooksToLocations(chapter_labels.books as book[])
+        .filter(location => isInRange(location, {
+          start: getBookPosition(chapterInterval.start),
+          end: getBookPosition(chapterInterval.end),
+          positionList: []
+        })
+        );
+      set({ locations, locationData: [] });
     } else if (query === 'Food') {
 
       const hasFilter = !!filters.filter?.length;
@@ -210,4 +215,31 @@ function mapDataSetToLocations(locations: FunnyEntry[], dataSet: ChapterQueryRes
     entry.labels.sort();
   }
   return result;
+}
+/**
+  * Returns results as lists per map point/path
+  * @param loclabel
+  * @param results
+  * @returns list of matches, each match is list of labels
+  */
+export function findResultsInSameLocation(loclabel: FunnyEntry, results: ChapterQueryResults[]): outputResult[] {
+  const { bookIndex, chapterIndex, startParagraph, endParagraph } = loclabel;
+  if (typeof startParagraph !== 'number' || typeof endParagraph !== 'number') {
+    return [];
+  }
+
+  const resultsInThisChapter = results.filter((chapter) => chapter.bookIndex == bookIndex && chapter.chapterIndex == chapterIndex);
+  if (resultsInThisChapter.length > 1) {
+    throw new Error('we only handle the case where a result belongs to a single chapter, instead ' + resultsInThisChapter.length);
+  }
+  if (!resultsInThisChapter.length) {
+    return [];
+  }
+
+  const resultInThisChapter = resultsInThisChapter[0];
+  const matchesForTheseParagraphs = resultInThisChapter.matches?.filter(match =>
+    match.paragraphIndex >= startParagraph && match.paragraphIndex <= endParagraph
+  ) ?? [];
+
+  return matchesForTheseParagraphs;
 }
