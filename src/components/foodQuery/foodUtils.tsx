@@ -1,6 +1,8 @@
 import { countedFoodPoint } from "./foodtypes";
 import { ChapterQueryResults } from "../types";
 import { LocationData } from "../../stores/DataPointsStore";
+import * as d3 from "d3";
+import { groupParentFoods, foodColorMap } from "./FoodStatics";
 
 export function countFoodInPoint(foodPoints: LocationData[]): countedFoodPoint[] {
   const theRetour: countedFoodPoint[] = [];
@@ -33,3 +35,17 @@ export function getAllKindsOfFood(foodPoints: ChapterQueryResults[]): string[] {
   const uniqueFoods = new Set(allKindsOfFood);
   return Array.from(uniqueFoods).sort();
 }
+
+export function getFoodColors(foods: string[]): Record<string, string> {
+  const result: Record<string, string> = {};
+  foods.forEach((food) => {
+    const parent = groupParentFoods[food];
+    result[food] = foodColorMap[parent];
+  });
+  return result;
+}
+
+
+
+
+

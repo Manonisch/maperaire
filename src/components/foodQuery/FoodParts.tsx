@@ -1,10 +1,9 @@
 import *  as d3 from "d3";
 import { memo } from "react";
-import { queryRefs } from "../../stores/QueryStore";
 import { updateBoundingBox, isBehindGlobe } from "../utils";
-import { countFoodInPoint, getAllKindsOfFood } from "./foodUtils";
+import { countFoodInPoint, getAllKindsOfFood, getFoodColors } from "./foodUtils";
 import { getPathLengthLookup } from 'svg-getpointatlength'
-import { LocationData, useDataPointsStore } from "../../stores/DataPointsStore";
+import { LocationData, queryRefs, useDataPointsStore } from "../../stores";
 
 export const FoodVisualisation = memo(({ projection, path }: { projection: d3.GeoProjection, path: any }) => {
   const locationData = useDataPointsStore(s => s.locationData);
@@ -22,15 +21,6 @@ export const FoodVisualisation = memo(({ projection, path }: { projection: d3.Ge
     <FoodPathVis foodPoints={foodCirclePaths} path={path} />
   </g>
 })
-
-function getFoodColors(foods: string[]): Record<string, string> {
-  const palette = d3.schemeCategory10;
-  const result: Record<string, string> = {};
-  foods.forEach((food, index) => {
-    result[food] = palette[index % palette.length];
-  });
-  return result;
-}
 
 const FoodCircles = memo(({ foodPoints, foodColors, projection }: { foodPoints: LocationData[], foodColors: Record<string, string>, projection: d3.GeoProjection }) => {
 
@@ -87,17 +77,6 @@ const FoodCircles = memo(({ foodPoints, foodColors, projection }: { foodPoints: 
 function FoodPathVis({ foodPoints, path }: { foodPoints: LocationData[], path: any }) {
   return <g>{foodPoints.map((data, i) => <PathVis key={i + 'kjgkhjkt'} d={getD(data.coords, path)} pathData={data} />)}</g>
 }
-
-// function svgPathElement(coords: number[], path: any) {
-//   const positions: number[][] = []
-//   for (let i = 0; i < coords.length; i += 2) {
-//     positions.push([coords[i + 1], coords[i]]);
-//   }
-//   const d = path({ type: "LineString", coordinates: positions }) || '';
-//   const pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-//   pathElement.setAttribute('d', d);
-//   return pathElement;
-// }
 
 function getD(coords: number[], path: any) {
   const positions: number[][] = []

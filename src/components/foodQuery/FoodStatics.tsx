@@ -1,3 +1,18 @@
+
+export const foodColorMap = {
+  birds: '#577590',
+  game: '#f94144',
+  livestock: '#f3722c',
+  reptiles: '#4d908e',
+  'stews and more': '#f9c74f',
+  'grains': '#f8961e',
+  'fish & ocean mammals': '#277da1',
+  'fruits & vegetables': '#90be6d',
+  "nuts and so": '#f9844a',
+  "condiments": '#43aa8b',
+  "misc": 'rgb(86, 125, 128)',
+}
+
 export const parentGroups = new Map([
   ["birds", ["birds", "cassowary", "penguin"]],
   [
@@ -11,10 +26,11 @@ export const parentGroups = new Map([
       "rat",
       "wombat",
       "game",
+      "elephant"
     ],
   ],
   [
-    "domesticated meat",
+    "livestock",
     [
       "camel",
       "charqui",
@@ -30,9 +46,8 @@ export const parentGroups = new Map([
       "fat-tailed sheep with hair instead of wool",
     ],
   ],
-  ["large game", ["elephant"]],
   ["reptiles", ["lizard", "frog", "snake"]],
-  ["stews and soups and processed", ["bread", "soup", "stew", "porridge"]],
+  ["stews and more", ["bread", "soup", "stew", "porridge"]],
   ["grains", ["barley", "wheat", "maize", "rice"]],
   [
     "fish & ocean mammals",
@@ -76,7 +91,7 @@ export const parentGroups = new Map([
     "condiments",
     ["spices", "cardamom", "pepper", "tumeric", "anise", "sugar"],
   ],
-  ["special", ["blood", "liver", "meat", "ice"]],
+  ["misc", ["blood", "liver", "meat", "ice"]],
 ]);
 
 export const foodGroups = new Map([
@@ -171,4 +186,12 @@ for (const [group, foods] of foodGroups.entries()) {
     groupFoods[food] = group;
   }
 }
-export { groupFoods };
+
+const groupParentFoods: Record<string, string> = {};
+for (const [group, foods] of parentGroups.entries()) {
+  for (const food of foods) {
+    groupParentFoods[food] = group;
+  }
+}
+
+export { groupFoods, groupParentFoods };
