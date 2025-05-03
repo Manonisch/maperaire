@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { useWorldDataStore } from "../../stores";
+import { useQuery, useWorldDataStore } from "../../stores";
 import { useDataPointsStore } from "../../stores/DataPointsStore";
 import { getStrokeColor, geoRefs, isBehindGlobe } from "../utils";
 import { AllData } from "./GhostLines";
@@ -7,6 +7,7 @@ import { AllData } from "./GhostLines";
 export const BookMapParts = memo(function BookMapParts({ projection, path }: { projection: d3.GeoProjection, path: any }) {
   const locations = useDataPointsStore(s => s.locations)
   const ghostLinesEnabled = useWorldDataStore(s => s.ghostLinesEnabled);
+  const query = useQuery(s => s.query)
 
   const thePoints = locations.filter(
     (label) => label.type === "point");
@@ -26,7 +27,7 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
       for (let i = 0; i < pathEntry.coords.length; i += 2) {
         positions.push([pathEntry.coords[i + 1], pathEntry.coords[i]]);
       }
-      return (<path key={"17+" + index} fill='none' stroke={getStrokeColor(pathEntry, "#699aaa")} strokeWidth='1.5px' opacity={0.8} d={path({
+      return (<path key={"17+" + index} fill='none' stroke={query === 'default' ? getStrokeColor(pathEntry, "#699aaa") : '#c2b8b3'} strokeWidth='1.5px' opacity={0.8} d={path({
         type: "LineString",
         coordinates: positions
       }) || undefined} markerEnd={pathEntry.char !== 'Laurence' ? "url(#dragon)" : ''} ><title>{`${pathEntry.bookIndex! + 1}.${pathEntry.chapterIndex} \n${pathEntry.labelName.split(':')[1]}`}</title></path>)
@@ -36,7 +37,7 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
       for (let i = 0; i < pathEntry.coords.length; i += 2) {
         positions.push([pathEntry.coords[i + 1], pathEntry.coords[i]]);
       }
-      return (<path key={"7+" + index} fill='none' stroke={getStrokeColor(pathEntry, '#699aaa')} strokeWidth='1.5px' opacity={0.7} strokeDasharray='6' d={path({
+      return (<path key={"7+" + index} fill='none' stroke={query === 'default' ? getStrokeColor(pathEntry, '#699aaa') : '#c2b8b3'} strokeWidth='1.5px' opacity={0.7} strokeDasharray='6' d={path({
         type: "LineString",
         coordinates: positions
       }) || undefined} markerEnd={pathEntry.char !== 'Laurence' ? "url(#dragon)" : ''} ><title>{`${pathEntry.bookIndex! + 1}.${pathEntry.chapterIndex} \n${pathEntry.labelName.split(':')[1]}`}</title></path>)
@@ -55,7 +56,7 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
         cx={x}
         cy={y}
         r={5}
-        fill={getStrokeColor(point, "#699aaa")}
+        fill={query === 'default' ? getStrokeColor(point, "#699aaa") : '#c2b8b3'}
         opacity={1}
         stroke='#e6edd0'
       >

@@ -26,7 +26,8 @@ export const parentGroups = new Map([
       "rat",
       "wombat",
       "game",
-      "elephant"
+      "elephant",
+      "buffalo"
     ],
   ],
   [
@@ -38,7 +39,7 @@ export const parentGroups = new Map([
       "cow & ox",
       "ducks",
       "goat",
-      "horses",
+      "horse",
       "pig",
       "sheep",
       "guinea pigs",
@@ -57,7 +58,7 @@ export const parentGroups = new Map([
       "lobster",
       "porpoise",
       "seal",
-      "sharks",
+      "shark",
       "toothfish",
       "tunny",
       "whale",
@@ -86,7 +87,7 @@ export const parentGroups = new Map([
       "seaweed",
     ],
   ],
-  ["nuts and so", ["chestnuts", "cocoa nuts", "mushroom", "roots"]],
+  ["nuts and so", ["chestnuts", "cocoa nut", "mushroom", "roots"]],
   [
     "condiments",
     ["spices", "cardamom", "pepper", "tumeric", "anise", "sugar"],
@@ -179,6 +180,28 @@ export const foodGroups = new Map([
   ["yam", ["local yam"]],
   ["yellow fruit", ["small yellow fruits"]],
 ]);
+
+export const prepTypes = [
+  'stewed',
+  'boiled',
+  'cooked',
+  'spit-roasted',
+  'roasted',
+  'dressed with sauce',
+  "stuffed",
+  "burnt",
+  "smoked",
+  "skewers",
+  "salted",
+  "raw",
+  "dried",
+  "seared",
+  "in wine",
+  "grilled",
+  "fried",
+  "shaved",
+  "cured",
+]
 
 const groupFoods: Record<string, string> = {};
 for (const [group, foods] of foodGroups.entries()) {

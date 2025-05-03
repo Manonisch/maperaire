@@ -1,8 +1,5 @@
 # NEXT
 
-- [x] (BUG) Slider start and end only show current and not full range of points while changing
-- [ ] (BUG) Bubbles show all data in point -> should only show selected && should only show FOOD
-- [x] colorize the foodz (idea: use food parent groups)
 - [ ] QMF - bidirectional higlighting (match in Agenda + points on card) (copied, see below)
       ^
 - [ ] QMF - Filter by meta matches (food preparation) in a tiered legend, preparation uses different color scale
@@ -26,10 +23,8 @@
 - [ ] Query Map Food (QMF)
 - [ ] QMF - show result groups on map (different matches)
 - [ ] QMF - show result frequency on map (per chapter vs total)
-- [x] QMF - Show match legend
 - [ ] QMF - Individual match icons
-- [x] QMF - Filter by individual matches
-- [ ] QMF - Filter by individual match Groups
+- [ ] ~~QMF - Filter by individual match Groups~~
 - [ ] QMF - Filter by meta matches
 - [ ] QMF - bidirectional higlighting (match in Agenda + points on card) (copied, see above)
 - [ ] QMF - Animated Story following (reveal locations and automatic semantic zoom)
@@ -39,8 +34,11 @@
 - [ ] QMDT - Individual match icons...
 - [ ] QMDT - icon size matches Dragon size type?
 
-
 # Last changes
+
+- [x] (BUG) Slider start and end only show current and not full range of points while changing
+- [x] (BUG) Bubbles show all data in point -> should only show selected && should only show FOOD
+- [x] colorize the foodz (idea: use food parent groups)
 
 - [x] food map should only show with 
 - [x] connect circles and pathcircles to normal filtering mechanisms from the slider
@@ -48,6 +46,7 @@
 
 - [x] make everything that can be static, static and move to global state -> PERFORMANCE, Precalculate and cache
 
+- [x] QMF - Filter by individual matches
 - [x] function (point, food) draws spiral of food symbols around it
 - [x] function (point, food) draws spiral of food symbols with variable size around it
 - [x] add paragraphIndexes to food data
@@ -56,3 +55,5 @@
 
 - [x] function that is mapping for all places (points, paths, etc, but not names!)
       all foods that are associated with them, returns a list of all places with their foods attached
+
+- [x] QMF - Show match legend

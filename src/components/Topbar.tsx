@@ -52,7 +52,7 @@ export const TopBar = memo(() => {
 const TriggerUpdateRelevantData = () => {
   const updateRelevantData = useDataPointsStore(s => s.updateRelevantData);
   const query = useQuery(s => s.query);
-  const filter = useFoodMapStore(s => s.selectedOptions)
+  const filter = useFoodMapStore(s => s.selectedFoodOptions)
   const sliderEnd = useSliderStore(s => s.end)
   const sliderStart = useSliderStore(s => s.start)
 

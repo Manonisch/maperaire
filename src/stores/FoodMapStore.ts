@@ -1,22 +1,27 @@
 import { create } from "zustand";
 
 interface FoodMapAction {
-  setSelectedOption: (selectedOptions: string[]) => void;
-  changeSelectedOption: (selectedOption: string) => void;
+  setSelectedFoodOption: (selectedOptions: string[]) => void;
+  changeSelectedFoodOption: (selectedOption: string) => void;
+  setSelectedPrepOption: (selectedOptions: string[]) => void;
+  changeSelectedPrepOption: (selectedOption: string) => void;
+  setPrepFilter: (set: boolean) => void;
 }
 
 interface FoodMapState {
-  selectedOptions: string[];
+  selectedFoodOptions: string[];
+  selectedPrepOptions: string[];
+  prepFilter: boolean;
 }
 
 export const useFoodMapStore = create<FoodMapAction & FoodMapState>(
   (set, get) => ({
-    selectedOptions: [],
-    setSelectedOption: (selectedOptions) => {
-      set({ selectedOptions });
+    selectedFoodOptions: [],
+    setSelectedFoodOption: (selectedOptions) => {
+      set({ selectedFoodOptions: selectedOptions });
     },
-    changeSelectedOption: (selectedOption) => {
-      const { selectedOptions } = get();
+    changeSelectedFoodOption: (selectedOption) => {
+      const { selectedFoodOptions: selectedOptions } = get();
       const foo = [...selectedOptions];
       const index = foo.indexOf(selectedOption);
       if (index > -1) {
@@ -24,7 +29,26 @@ export const useFoodMapStore = create<FoodMapAction & FoodMapState>(
       } else {
         foo.push(selectedOption);
       }
-      set({ selectedOptions: foo });
+      set({ selectedFoodOptions: foo });
     },
+    selectedPrepOptions: [],
+    setSelectedPrepOption: (selectedOptions) => {
+      set({ selectedPrepOptions: selectedOptions });
+    },
+    changeSelectedPrepOption: (selectedOption) => {
+      const { selectedPrepOptions: selectedOptions } = get();
+      const foo = [...selectedOptions];
+      const index = foo.indexOf(selectedOption);
+      if (index > -1) {
+        foo.splice(index, 1);
+      } else {
+        foo.push(selectedOption);
+      }
+      set({ selectedPrepOptions: foo });
+    },
+    setPrepFilter: (prepFilter) => {
+      set({ prepFilter })
+    },
+    prepFilter: false,
   })
 );
