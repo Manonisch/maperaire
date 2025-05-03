@@ -3,12 +3,12 @@ import { memo } from "react";
 import { updateBoundingBox, isBehindGlobe } from "../utils";
 import { countFoodInPoint, getAllKindsOfFood, getFoodColors } from "./foodUtils";
 import { getPathLengthLookup } from 'svg-getpointatlength'
-import { LocationData, queryRefs, useDataPointsStore } from "../../stores";
+import { LocationData, MinimalGroupedData, useDataPointsStore } from "../../stores";
 
 export const FoodVisualisation = memo(({ projection, path }: { projection: d3.GeoProjection, path: any }) => {
   const locationData = useDataPointsStore(s => s.locationData);
 
-  const allKindsOfFood = getAllKindsOfFood(queryRefs.Food);
+  const allKindsOfFood = getAllKindsOfFood(MinimalGroupedData);
   const foodColors = getFoodColors(allKindsOfFood);
 
   const foodCirclePoints = locationData.filter(p => p.type === 'point');
@@ -25,6 +25,8 @@ export const FoodVisualisation = memo(({ projection, path }: { projection: d3.Ge
 const FoodCircles = memo(({ foodPoints, foodColors, projection }: { foodPoints: LocationData[], foodColors: Record<string, string>, projection: d3.GeoProjection }) => {
 
   const groupedFoodPoints = countFoodInPoint(foodPoints);
+
+  // console.log('what are countedfoodpoints', groupedFoodPoints)
 
   return groupedFoodPoints.map((foodPoint, pointIndex) => {
     if (isBehindGlobe(foodPoint.coords, projection)) {

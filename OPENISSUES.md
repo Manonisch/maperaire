@@ -1,8 +1,8 @@
 # NEXT
 
-- [ ] (BUG) Slider start and end only show current and not full range of points while changing - E
-- [ ] (BUG) Bubbles show all data in point -> should only show selected && should only show FOOD - G
-- [ ] colorize the foodz (idea: use food parent groups)
+- [x] (BUG) Slider start and end only show current and not full range of points while changing
+- [ ] (BUG) Bubbles show all data in point -> should only show selected && should only show FOOD
+- [x] colorize the foodz (idea: use food parent groups)
 - [ ] QMF - bidirectional higlighting (match in Agenda + points on card) (copied, see below)
       ^
 - [ ] QMF - Filter by meta matches (food preparation) in a tiered legend, preparation uses different color scale
