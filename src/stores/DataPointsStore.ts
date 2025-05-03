@@ -59,7 +59,6 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
         })
         );
       set({ locations, locationData: [] });
-
     } else if (query === 'Food') {
 
       const hasFilter = !!filters.filter?.length;
@@ -120,11 +119,10 @@ function filterDataSet(dataSet: ChapterQueryResults[], filter: FilterConfig): Ch
   });
 
   return filteredByChapter.map(dataEntry => {
-    const matches = dataEntry.matches?.map(result => {
-      return {
-        ...result,
-        labels: result.labels.filter(label => filter.filter.every(filter => filter.includes(label)))
-      };
+    const matches = dataEntry.matches?.filter(result => {
+      return filter.filter.every(singleFilter => {
+        return result.labels.some(label => singleFilter.includes(label))
+      });
     })
     return { ...dataEntry, matches }
   })
