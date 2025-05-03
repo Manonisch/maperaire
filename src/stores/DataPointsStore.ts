@@ -79,6 +79,9 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
       // relevant "foods" are mapped on points and paths
       const locationData = mapDataSetToLocations(locations, filteredData);
 
+      // FOOD SPECIFIC
+      // split food ingredients labels from food preparation labels ?
+
       set({ locationData, locations });
     }
   },

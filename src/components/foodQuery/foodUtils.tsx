@@ -1,7 +1,7 @@
 import { countedFoodPoint } from "./foodtypes";
 import { ChapterQueryResults } from "../types";
 import { LocationData } from "../../stores/DataPointsStore";
-import { groupParentFoods, foodColorMap } from "./FoodStatics";
+import { groupParentFoods, foodColorMap, foodGroups } from "./FoodStatics";
 
 export function countFoodInPoint(foodPoints: LocationData[]): countedFoodPoint[] {
   const theRetour: countedFoodPoint[] = [];
@@ -9,7 +9,10 @@ export function countFoodInPoint(foodPoints: LocationData[]): countedFoodPoint[]
     (foodPoint) => {
       const theFoods = new Map<string, number>();
       foodPoint.labels.forEach(food => {
-        theFoods.set(food, (theFoods.get(food) ?? 0) + 1)
+        // some food is NOT food but preparations
+        if (foodGroups.has(food)) {
+          theFoods.set(food, (theFoods.get(food) ?? 0) + 1)
+        }
       })
       theRetour.push({
         countedFood: theFoods,
@@ -39,7 +42,11 @@ export function getFoodColors(foods: string[]): Record<string, string> {
   const result: Record<string, string> = {};
   foods.forEach((food) => {
     const parent = groupParentFoods[food];
-    result[food] = foodColorMap[parent];
+    const color = foodColorMap[parent];
+    if (!color) {
+      // console.error(`No color for parent '${parent}' from food '${food}'`);
+    }
+    result[food] = color || 'black';
   });
   return result;
 }

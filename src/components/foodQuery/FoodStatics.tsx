@@ -65,7 +65,7 @@ export const parentGroups = new Map([
     ],
   ],
   [
-    "fruits and vegetables",
+    "fruits & vegetables",
     [
       "banana",
       "berries",

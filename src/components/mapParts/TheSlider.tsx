@@ -10,7 +10,6 @@ export const TheSlider = memo(function TheSlider() {
   const setStart = useSliderStore(s => s.setStart)
 
   const handleChange = useCallback(({ theStart, theEnd }: { theStart: number, theEnd: number }) => {
-    console.log('handling change with', theStart, theEnd)
     setStart(theStart);
     setEnd(theEnd);
   }, [])
