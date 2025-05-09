@@ -1,5 +1,5 @@
 import *  as d3 from "d3";
-import { memo } from "react";
+import { memo, MouseEvent, useCallback } from "react";
 import { updateBoundingBox, isBehindGlobe } from "../utils";
 import { countFoodInPoint, getAllKindsOfFood, getFoodColors } from "./foodUtils";
 import { getPathLengthLookup } from 'svg-getpointatlength'
@@ -25,6 +25,17 @@ export const FoodVisualisation = memo(({ projection, path }: { projection: d3.Ge
 
 const FoodCircles = memo(({ foodPoints, foodColors, projection }: { foodPoints: LocationData[], foodColors: Record<string, string>, projection: d3.GeoProjection }) => {
   const interestingLabel = useInterestingLabelStore(s => s.interestingLabel);
+  const setInterestingLabel = useInterestingLabelStore(s => s.setInterestingLabel);
+
+  const onCircleMouseOver = useCallback((ev: MouseEvent<SVGElement>) => {
+    setInterestingLabel(ev.currentTarget.dataset.label ?? null);
+  }, []);
+  const onCircleMouseLeave = useCallback((ev: MouseEvent<SVGElement>) => {
+    if (interestingLabel == ev.currentTarget.dataset.label) {
+      setInterestingLabel(null);
+    }
+  }, [interestingLabel]);
+
   const groupedFoodPoints = countFoodInPoint(foodPoints);
 
   return groupedFoodPoints.map((foodPoint, pointIndex) => {
@@ -67,6 +78,9 @@ const FoodCircles = memo(({ foodPoints, foodColors, projection }: { foodPoints: 
         opacity={0.5}
         stroke='black'
         strokeWidth={interestingLabel == food[0] ? 3 : 1}
+        onMouseOver={onCircleMouseOver}
+        onMouseLeave={onCircleMouseLeave}
+        data-label={food[0]}
       >
         <title>{food[0]}</title>
       </circle>

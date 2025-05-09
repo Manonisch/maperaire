@@ -107,7 +107,7 @@ const Foods = memo(() => {
     if (ev.currentTarget.dataset.groupname == interestingLabel) {
       setInterestingLabel(null);
     }
-  }, []);
+  }, [interestingLabel]);
 
   return (
     <div
@@ -120,7 +120,10 @@ const Foods = memo(() => {
       {legendItems.map((item) => {
         return (
           <div
-            style={{ listStyleType: "none" }}
+            style={{
+              listStyleType: "none",
+              fontWeight: interestingLabel == item.groupName ? 'bold' : undefined,
+            }}
             key={item.groupName + "1"}
             data-groupname={item.groupName}
             onMouseOver={onItemMouseOver}
@@ -138,7 +141,7 @@ const Foods = memo(() => {
       })}
     </div>
   )
-})
+});
 
 const Preparations = memo(() => {
 
