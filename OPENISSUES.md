@@ -1,23 +1,22 @@
 # NEXT
-
-- [ ] QMF - bidirectional higlighting (match in Agenda + points on card) (copied, see below)
-      ^
-- [ ] QMF - Filter by meta matches (food preparation) in a tiered legend, preparation uses different color scale
+  ^
+- [x] QMF - Filter by meta matches (food preparation) in a tiered legend
+- [ ] preparation uses different color scale @manonisch
+- [ ] add ancient map typography @payload
 
 # Todos
 
 - [ ] Use icons instead of circles for path foods
 - [ ] Concept: How to display the individual points on far zoom
 
-- [ ] function (path, food) checks if symbols fit along the path or path needs to be treated as point
-
 - [ ] show food symbols in legend
 - [ ] food legend, maybe add hints about food preparation
-- [ ] add ancient map typography
 
-- [ ] Region objects need to be rewound to accept fill 
+- [ ] Region objects need to be rewound to accept fill
 - [ ] Better Tooltips
 - [ ] Allow processing for point meta information (single query result labels)
+
+- [ ] Concept for Linear Journey List
 
 # FeatureList to add
 - [ ] Query Map Food (QMF)
@@ -25,8 +24,7 @@
 - [ ] QMF - show result frequency on map (per chapter vs total)
 - [ ] QMF - Individual match icons
 - [ ] ~~QMF - Filter by individual match Groups~~
-- [ ] QMF - Filter by meta matches
-- [ ] QMF - bidirectional higlighting (match in Agenda + points on card) (copied, see above)
+- [x] QMF - Filter by meta matches
 - [ ] QMF - Animated Story following (reveal locations and automatic semantic zoom)
 - [ ] Other Map types (naturalEarth1, flat map)
 - [ ] Automatic, animated region zooming on filtering
@@ -36,11 +34,12 @@
 
 # Last changes
 
+- [x] QMF - bidirectional higlighting (match in Agenda + points on card) (copied, see below)
 - [x] (BUG) Slider start and end only show current and not full range of points while changing
 - [x] (BUG) Bubbles show all data in point -> should only show selected && should only show FOOD
 - [x] colorize the foodz (idea: use food parent groups)
 
-- [x] food map should only show with 
+- [x] food map should only show with
 - [x] connect circles and pathcircles to normal filtering mechanisms from the slider
 - [x] connect circles and pathcircles to filtering mechanisms from food legend
 
