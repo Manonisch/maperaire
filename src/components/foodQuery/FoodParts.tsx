@@ -5,6 +5,7 @@ import { countFoodInPoint, getAllKindsOfFood, getFoodColors } from "./foodUtils"
 import { getPathLengthLookup } from 'svg-getpointatlength'
 import { LocationData, MinimalGroupedData, useDataPointsStore } from "../../stores";
 import { useBidiHighlight } from "../../hooks/useBidiHighlight";
+import { foodGroups } from "./FoodStatics";
 
 export const FoodVisualisation = memo(({ projection, path }: { projection: d3.GeoProjection, path: any }) => {
   const locationData = useDataPointsStore(s => s.locationData);
@@ -93,7 +94,9 @@ function getD(coords: number[], path: any) {
 }
 
 function PathVis({ pathData, d }: { pathData: LocationData, d: string }) {
-  const foodElems = pathData.labels;
+  const { interestingLabel, bidiHighlightMouseOver, bidiHighlightMouseLeave } = useBidiHighlight('label');
+
+  const foodElems = pathData.labels.filter(label => foodGroups.has(label));
   const foodLength = foodElems.length;
 
   if (!d) {
@@ -112,9 +115,25 @@ function PathVis({ pathData, d }: { pathData: LocationData, d: string }) {
     }
     const x = pos.x + 7 * Math.cos(pos.angle + rotatepoo);
     const y = pos.y + 7 * Math.sin(pos.angle + rotatepoo);
+    const interest = interestingLabel === elem;
 
     //TODO: here shall be icons
-    return <text key={i + 'somestuff'} x={x} y={y} style={{ fontSize: '12px' }} fill='grey' stroke='none'>{elem[0]}</text>
+    return <text
+      key={i + 'somestuff'}
+      x={x} y={y}
+      style={{
+        fontSize: '12px',
+        fontWeight: interest ? 'bold' : undefined,
+      }}
+      fill={ interest ? 'black' : 'grey' }
+      stroke='none'
+      onMouseOver={bidiHighlightMouseOver}
+      onMouseLeave={bidiHighlightMouseLeave}
+      data-label={elem}
+    >
+      {elem[0]}
+      <title>{elem}</title>
+    </text>;
   })
 
 }

@@ -11,9 +11,9 @@ export function useBidiHighlight(dataName: string) {
         setInterestingLabel(ev.currentTarget.dataset[dataName] ?? null);
     }, []);
     const bidiHighlightMouseLeave = useCallback((ev: MouseEvent<any>) => {
-    if (interestingLabel == ev.currentTarget.dataset[dataName]) {
-        setInterestingLabel(null);
-    }
+        if (interestingLabel == ev.currentTarget.dataset[dataName]) {
+            setInterestingLabel(null);
+        }
     }, [interestingLabel]);
     return {
         bidiHighlightMouseOver,
