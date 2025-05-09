@@ -1,8 +1,8 @@
-import { useCallback, ChangeEvent, memo, useState, MouseEvent } from "react";
+import { useCallback, ChangeEvent, memo, useState } from "react";
 import { useFoodMapStore } from "../../stores/FoodMapStore";
 import { ItemGroup } from "./foodtypes";
 import { foodGroups, prepTypes } from "./FoodStatics";
-import { useInterestingLabelStore } from "../../stores/InterestingLabelStore";
+import { useBidiHighlight } from "../../hooks/useBidiHighlight";
 
 function prepareFoodItemGroups(): ItemGroup[] {
   const itemGroup: ItemGroup[] = [];
@@ -97,17 +97,7 @@ const Foods = memo(() => {
     changeSelectedOption(ev.target.id);
   }, []);
 
-  const interestingLabel = useInterestingLabelStore(s => s.interestingLabel);
-  const setInterestingLabel = useInterestingLabelStore(s => s.setInterestingLabel);
-  const onItemMouseOver = useCallback((ev: MouseEvent<HTMLDivElement>) => {
-    // NOTE that dataset keys are lowercased attribute names
-    setInterestingLabel(ev.currentTarget.dataset.groupname || null);
-  }, []);
-  const onItemMouseLeave = useCallback((ev: MouseEvent<HTMLDivElement>) => {
-    if (ev.currentTarget.dataset.groupname == interestingLabel) {
-      setInterestingLabel(null);
-    }
-  }, [interestingLabel]);
+  const { interestingLabel, bidiHighlightMouseOver, bidiHighlightMouseLeave } = useBidiHighlight('groupname');
 
   return (
     <div
@@ -126,8 +116,8 @@ const Foods = memo(() => {
             }}
             key={item.groupName + "1"}
             data-groupname={item.groupName}
-            onMouseOver={onItemMouseOver}
-            onMouseLeave={onItemMouseLeave}
+            onMouseOver={bidiHighlightMouseOver}
+            onMouseLeave={bidiHighlightMouseLeave}
           >
             <input
               type="checkbox"
