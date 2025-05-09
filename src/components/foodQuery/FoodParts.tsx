@@ -4,6 +4,7 @@ import { updateBoundingBox, isBehindGlobe } from "../utils";
 import { countFoodInPoint, getAllKindsOfFood, getFoodColors } from "./foodUtils";
 import { getPathLengthLookup } from 'svg-getpointatlength'
 import { LocationData, MinimalGroupedData, useDataPointsStore } from "../../stores";
+import { useInterestingLabelStore } from "../../stores/InterestingLabelStore";
 
 export const FoodVisualisation = memo(({ projection, path }: { projection: d3.GeoProjection, path: any }) => {
   const locationData = useDataPointsStore(s => s.locationData);
@@ -23,7 +24,7 @@ export const FoodVisualisation = memo(({ projection, path }: { projection: d3.Ge
 })
 
 const FoodCircles = memo(({ foodPoints, foodColors, projection }: { foodPoints: LocationData[], foodColors: Record<string, string>, projection: d3.GeoProjection }) => {
-
+  const interestingLabel = useInterestingLabelStore(s => s.interestingLabel);
   const groupedFoodPoints = countFoodInPoint(foodPoints);
 
   return groupedFoodPoints.map((foodPoint, pointIndex) => {
@@ -64,7 +65,8 @@ const FoodCircles = memo(({ foodPoints, foodColors, projection }: { foodPoints: 
         r={3 + food[1]}
         fill={foodColors[food[0]]}
         opacity={0.5}
-        stroke="#000000"
+        stroke='black'
+        strokeWidth={interestingLabel == food[0] ? 3 : 1}
       >
         <title>{food[0]}</title>
       </circle>

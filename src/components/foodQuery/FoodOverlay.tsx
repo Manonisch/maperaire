@@ -1,7 +1,8 @@
-import { useCallback, ChangeEvent, memo, useState } from "react";
+import { useCallback, ChangeEvent, memo, useState, MouseEvent } from "react";
 import { useFoodMapStore } from "../../stores/FoodMapStore";
 import { ItemGroup } from "./foodtypes";
 import { foodGroups, prepTypes } from "./FoodStatics";
+import { useInterestingLabelStore } from "../../stores/InterestingLabelStore";
 
 function prepareFoodItemGroups(): ItemGroup[] {
   const itemGroup: ItemGroup[] = [];
@@ -89,10 +90,23 @@ const Legend = memo(() => {
 
 const Foods = memo(() => {
   const legendItems = prepareFoodItemGroups();
+
   const changeSelectedOption = useFoodMapStore((s) => s.changeSelectedFoodOption);
   const selectedOptions = useFoodMapStore(s => s.selectedFoodOptions)
+  const setInterestingLabel = useInterestingLabelStore(s => s.setInterestingLabel);
+  const interestingLabel = useInterestingLabelStore(s => s.interestingLabel);
+
   const handleChange = useCallback((ev: ChangeEvent<HTMLInputElement>) => {
     changeSelectedOption(ev.target.id);
+  }, []);
+  const onItemMouseOver = useCallback((ev: MouseEvent<HTMLDivElement>) => {
+    // NOTE that dataset keys are lowercased attribute names
+    setInterestingLabel(ev.currentTarget.dataset.groupname || null);
+  }, []);
+  const onItemMouseLeave = useCallback((ev: MouseEvent<HTMLDivElement>) => {
+    if (ev.currentTarget.dataset.groupname == interestingLabel) {
+      setInterestingLabel(null);
+    }
   }, []);
 
   return (
@@ -105,7 +119,13 @@ const Foods = memo(() => {
     >
       {legendItems.map((item) => {
         return (
-          <div style={{ listStyleType: "none" }} key={item.groupName + "1"}>
+          <div
+            style={{ listStyleType: "none" }}
+            key={item.groupName + "1"}
+            data-groupname={item.groupName}
+            onMouseOver={onItemMouseOver}
+            onMouseLeave={onItemMouseLeave}
+          >
             <input
               type="checkbox"
               onChange={handleChange}
