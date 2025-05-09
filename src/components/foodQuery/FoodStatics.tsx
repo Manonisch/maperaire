@@ -1,5 +1,13 @@
 
 import * as d3 from 'd3'
+import { BirdIcon } from '../../assets/bird';
+import { DeergameIcon } from '../../assets/deergame';
+import { CowIcon } from '../../assets/cow';
+import { PorridgeIcon } from '../../assets/porridge';
+import { GrainsIcon } from '../../assets/grains';
+import { FishIcon } from '../../assets/fish';
+import { VegetablesIcon } from '../../assets/vegetables';
+import { ReactElement } from 'react';
 
 export const foodColorMap = {
   birds: '#577590',
@@ -14,6 +22,20 @@ export const foodColorMap = {
   "condiments": '#43aa8b',
   "misc": 'rgb(86, 125, 128)',
 } as Record<string, string>
+
+export const foodIconMap = {
+  birds: <BirdIcon />,
+  game: <DeergameIcon />,
+  livestock: <CowIcon />,
+  reptiles: '',
+  'stews and more': <PorridgeIcon />,
+  'grains': <GrainsIcon />,
+  'fish & ocean mammals': <FishIcon />,
+  'fruits & vegetables': <VegetablesIcon />,
+  "nuts and so": '',
+  "condiments": '',
+  "misc": '',
+} as Record<string, string | ReactElement>
 
 export const parentGroups = new Map([
   ["birds", ["birds", "cassowary", "penguin"]],

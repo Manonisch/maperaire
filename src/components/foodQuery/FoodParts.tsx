@@ -1,11 +1,18 @@
 import *  as d3 from "d3";
-import { memo } from "react";
+import { memo, ReactElement, SVGProps } from "react";
 import { updateBoundingBox, isBehindGlobe } from "../utils";
 import { countFoodInPoint, getAllKindsOfFood, getFoodColors } from "./foodUtils";
 import { getPathLengthLookup } from 'svg-getpointatlength'
 import { LocationData, MinimalGroupedData, useDataPointsStore } from "../../stores";
 import { useBidiHighlight } from "../../hooks/useBidiHighlight";
-import { foodGroups } from "./FoodStatics";
+import { foodColorMap, foodGroups, foodIconMap, groupParentFoods } from "./FoodStatics";
+import { BirdIcon } from "../../assets/bird";
+import { CowIcon } from "../../assets/cow";
+import { DeergameIcon } from "../../assets/deergame";
+import { FishIcon } from "../../assets/fish";
+import { GrainsIcon } from "../../assets/grains";
+import { PorridgeIcon } from "../../assets/porridge";
+import { VegetablesIcon } from "../../assets/vegetables";
 
 export const FoodVisualisation = memo(({ projection, path }: { projection: d3.GeoProjection, path: any }) => {
   const locationData = useDataPointsStore(s => s.locationData);
@@ -121,23 +128,106 @@ function PathVis({ pathData, d }: { pathData: LocationData, d: string }) {
     const interest = interestingLabel === elem;
 
     //TODO: here shall be icons
-    return <text
-      key={i + 'somestuff'}
-      x={x} y={y}
-      style={{
-        fontSize: '12px',
-        fontWeight: interest ? 'bold' : undefined,
-        cursor: 'pointer',
-      }}
-      fill={ interest ? 'black' : 'grey' }
-      stroke='none'
-      onMouseOver={bidiHighlightMouseOver}
-      onMouseLeave={bidiHighlightMouseLeave}
-      data-label={elem}
-    >
-      {elem[0]}
-      <title>{elem}</title>
-    </text>;
-  })
 
+    const parent = groupParentFoods[elem];
+    const commonProps = {
+      x: x,
+      y: y,
+      width: '20px',
+      height: '20px',
+      opacity: '0.5',
+      style: { cursor: 'pointer', strokeWidth: '4%' }
+    }
+
+    switch (parent) {
+      case 'birds':
+        return <g x={x} y={y} style={{ color: foodColorMap[parent] }}
+        >
+          <BirdIcon {...commonProps} stroke={interest ? 'black' : 'none'}
+            onMouseOver={bidiHighlightMouseOver}
+            onMouseLeave={bidiHighlightMouseLeave}
+            data-label={elem}
+          ></BirdIcon>
+          <title>{elem}</title>
+        </g>
+        break;
+      case 'game':
+        return <g x={x} y={y} style={{ color: foodColorMap[parent] }}
+        >
+          <DeergameIcon {...commonProps} stroke={interest ? 'black' : 'none'} onMouseOver={bidiHighlightMouseOver}
+            onMouseLeave={bidiHighlightMouseLeave} data-label={elem}
+          ></DeergameIcon>
+          <title>{elem}</title>
+        </g>;
+        break;
+      case 'livestock':
+        return <g x={x} y={y} style={{ color: foodColorMap[parent] }}
+        >
+          <CowIcon {...commonProps} stroke={interest ? 'black' : 'none'} onMouseOver={bidiHighlightMouseOver}
+            onMouseLeave={bidiHighlightMouseLeave} data-label={elem}
+          ></CowIcon>
+          <title>{elem}</title>
+        </g >
+        break;
+      case 'stews and more':
+        return <g x={x} y={y} style={{ color: foodColorMap[parent] }}
+        >
+          <PorridgeIcon {...commonProps} stroke={interest ? 'black' : 'none'} onMouseOver={bidiHighlightMouseOver}
+            onMouseLeave={bidiHighlightMouseLeave} data-label={elem}
+          ></PorridgeIcon>
+          <title>{elem}</title>
+        </g >
+        break;
+      case 'grains':
+        return <g x={x} y={y} style={{ color: foodColorMap[parent] }}
+        >
+          <GrainsIcon {...commonProps} stroke={interest ? 'black' : 'none'} onMouseOver={bidiHighlightMouseOver}
+            onMouseLeave={bidiHighlightMouseLeave} data-label={elem}
+          ></GrainsIcon>
+          <title>{elem}</title>
+        </g >;
+        break;
+      case 'fish & ocean mammals':
+        return <g x={x} y={y} style={{ color: foodColorMap[parent] }}
+        ><FishIcon {...commonProps} stroke={interest ? 'black' : 'none'} onMouseOver={bidiHighlightMouseOver}
+          onMouseLeave={bidiHighlightMouseLeave} data-label={elem}
+        ></FishIcon>
+          <title>{elem}</title>
+        </g >;
+        break;
+      case 'fruits & vegetables':
+        return <g x={x} y={y} style={{ color: foodColorMap[parent] }}
+        ><VegetablesIcon {...commonProps} stroke={interest ? 'black' : 'none'} onMouseOver={bidiHighlightMouseOver}
+          onMouseLeave={bidiHighlightMouseLeave} data-label={elem}
+        ></VegetablesIcon>
+          <title>{elem}</title>
+        </g >
+        break;
+      default:
+        return (<text
+          key={i + 'somestuff'}
+          x={x} y={y}
+          style={{
+            fontSize: '12px',
+            fontWeight: interest ? 'bold' : undefined,
+            cursor: 'pointer',
+          }}
+          fill={interest ? 'black' : 'grey'}
+          stroke='none'
+          onMouseOver={bidiHighlightMouseOver}
+          onMouseLeave={bidiHighlightMouseLeave}
+          data-label={elem}
+        >
+          {elem[0]}
+          <title>{elem}</title>
+        </text>)
+    }
+  })
+}
+
+const theIcon = () => {
+
+  //pass the props to the generic child
+
+  return {props.children}
 }
