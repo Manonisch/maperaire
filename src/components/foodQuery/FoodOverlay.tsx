@@ -1,8 +1,8 @@
 import { useCallback, ChangeEvent, memo, useState } from "react";
 import { useFoodMapStore } from "../../stores/FoodMapStore";
 import { ItemGroup } from "./foodtypes";
-import { foodGroups, prepTypes } from "./FoodStatics";
 import { useBidiHighlight } from "../../hooks/useBidiHighlight";
+import { foodColorMap, foodGroups, groupParentFoods, prepColors } from "./FoodStatics";
 
 function prepareFoodItemGroups(): ItemGroup[] {
   const itemGroup: ItemGroup[] = [];
@@ -60,7 +60,7 @@ const Legend = memo(() => {
         overflow: "hidden",
         padding: "16px",
         backgroundColor: "#e8dfd2",
-        height: "50vh",
+        height: "80vh",
         width: usePrepFilter ? "240px" : "160px",
       }}
     >
@@ -81,14 +81,14 @@ const Legend = memo(() => {
         display: "flex", flexDirection: "row", columnGap: '4px', overflowY: "scroll",
         height: "calc(100% - 30px)",
       }}>
-        <Foods />
+        <Foods usingPrep={usePrepFilter} />
         {usePrepFilter && <Preparations />}
       </div>
     </div>
   )
 })
 
-const Foods = memo(() => {
+const Foods = memo(({ usingPrep }: { usingPrep: boolean }) => {
   const legendItems = prepareFoodItemGroups();
 
   const selectedOptions = useFoodMapStore(s => s.selectedFoodOptions)
@@ -108,6 +108,10 @@ const Foods = memo(() => {
       }}
     >
       {legendItems.map((item) => {
+
+        const parent = groupParentFoods[item.groupName];
+        const color = parent in foodColorMap ? foodColorMap[parent] : 'rgba(150, 150, 150, 0.5)'
+
         return (
           <div
             style={{
@@ -118,7 +122,15 @@ const Foods = memo(() => {
             data-groupname={item.groupName}
             onMouseOver={bidiHighlightMouseOver}
             onMouseLeave={bidiHighlightMouseLeave}
-          >
+          >{!usingPrep &&
+            <span style={{
+              width: '15px',
+              height: '15px',
+              borderRadius: '100%',
+              backgroundColor: color,
+              opacity: '0.5',
+              display: 'inline-block'
+            }} />}
             <input
               type="checkbox"
               onChange={handleChange}
@@ -135,7 +147,7 @@ const Foods = memo(() => {
 
 const Preparations = memo(() => {
 
-  const legendItems = prepTypes;
+  const legendItems = Object.entries(prepColors);
   const changeSelectedOption = useFoodMapStore((s) => s.changeSelectedPrepOption);
   const selectedOptions = useFoodMapStore(s => s.selectedPrepOptions)
   const handleChange = useCallback((ev: ChangeEvent<HTMLInputElement>) => {
@@ -153,13 +165,20 @@ const Preparations = memo(() => {
     {legendItems.map((item) => {
       return (
         <div style={{ listStyleType: "none" }} key={item + "1"}>
+          <span style={{
+            width: '15px',
+            height: '15px',
+            borderRadius: '100%',
+            backgroundColor: item[1],
+            display: 'inline-block'
+          }} />
           <input
             type="checkbox"
             onChange={handleChange}
-            id={item}
-            checked={selectedOptions.includes(item)}
+            id={item[0]}
+            checked={selectedOptions.includes(item[0])}
           />
-          <label htmlFor={item}>{item ?? ""}</label>
+          <label htmlFor={item[0]}>{item[0] ?? ""}</label>
         </div>
       );
     })}

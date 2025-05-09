@@ -1644,14 +1644,14 @@ const chapter_labels = {
             },
             {
               labelName: "loc:to Cape Coast",
-              coords: [-8.772750, 13.192766, -6.244629, 11.661547, -1.664509, 8.299730, 4.149282, 5.684213, 5.10186, -1.246887],
+              coords: [-8.772750, 13.192766, -6.244629, 11.661547, -1.664509, 8.299730, 4.149282, 5.684213, 5.099445, -1.2882399],
               type: "path",
               startParagraph: 1344,
               endParagraph: 1345,
             },
             {
               labelName: "loc:Cape Coast",
-              coords: [5.10186, -1.246887],
+              coords: [5.099445, -1.2882399],
               type: "point",
               startParagraph: 1346,
               endParagraph: 1359,

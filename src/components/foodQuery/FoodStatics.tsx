@@ -1,4 +1,6 @@
 
+import * as d3 from 'd3'
+
 export const foodColorMap = {
   birds: '#577590',
   game: '#f94144',
@@ -11,7 +13,7 @@ export const foodColorMap = {
   "nuts and so": '#f9844a',
   "condiments": '#43aa8b',
   "misc": 'rgb(86, 125, 128)',
-}
+} as Record<string, string>
 
 export const parentGroups = new Map([
   ["birds", ["birds", "cassowary", "penguin"]],
@@ -202,6 +204,28 @@ export const prepTypes = [
   "shaved",
   "cured",
 ]
+
+export const prepColors = {
+  "shaved": d3.interpolateRdBu(0.7),
+  "cured": d3.interpolateRdBu(0.62),
+  "salted": d3.interpolateRdBu(0.58),
+  "dried": d3.interpolateRdBu(0.54),
+  raw: d3.interpolateRdBu(0.5), //white
+  "seared": d3.interpolateRdBu(0.48),
+  'boiled': d3.interpolateRdBu(0.45),
+  'stewed': d3.interpolateRdBu(0.43),
+  'cooked': d3.interpolateRdBu(0.4),
+  "stuffed": d3.interpolateRdBu(0.36),
+  'dressed with sauce': d3.interpolateRdBu(0.32),
+  "in wine": d3.interpolateRdBu(0.28),
+  "fried": d3.interpolateRdBu(0.24),
+  "skewers": d3.interpolateRdBu(0.2),
+  "grilled": d3.interpolateRdBu(0.16),
+  'spit-roasted': d3.interpolateRdBu(0.12),
+  'roasted': d3.interpolateRdBu(0.08),
+  "smoked": d3.interpolateRdBu(0.04),
+  "burnt": d3.interpolateRdBu(0)
+}
 
 const groupFoods: Record<string, string> = {};
 for (const [group, foods] of foodGroups.entries()) {

@@ -72,7 +72,7 @@ const FoodCircles = memo(({ foodPoints, foodColors, projection }: { foodPoints: 
         onMouseLeave={bidiHighlightMouseLeave}
         data-label={food[0]}
       >
-        <title>{food[0]}</title>
+        <title>{food[0] + ': ' + food[1]}</title>
       </circle>
     })}</g>;
 
