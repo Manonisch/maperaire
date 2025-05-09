@@ -91,14 +91,14 @@ const Legend = memo(() => {
 const Foods = memo(() => {
   const legendItems = prepareFoodItemGroups();
 
-  const changeSelectedOption = useFoodMapStore((s) => s.changeSelectedFoodOption);
   const selectedOptions = useFoodMapStore(s => s.selectedFoodOptions)
-  const setInterestingLabel = useInterestingLabelStore(s => s.setInterestingLabel);
-  const interestingLabel = useInterestingLabelStore(s => s.interestingLabel);
-
+  const changeSelectedOption = useFoodMapStore((s) => s.changeSelectedFoodOption);
   const handleChange = useCallback((ev: ChangeEvent<HTMLInputElement>) => {
     changeSelectedOption(ev.target.id);
   }, []);
+
+  const interestingLabel = useInterestingLabelStore(s => s.interestingLabel);
+  const setInterestingLabel = useInterestingLabelStore(s => s.setInterestingLabel);
   const onItemMouseOver = useCallback((ev: MouseEvent<HTMLDivElement>) => {
     // NOTE that dataset keys are lowercased attribute names
     setInterestingLabel(ev.currentTarget.dataset.groupname || null);

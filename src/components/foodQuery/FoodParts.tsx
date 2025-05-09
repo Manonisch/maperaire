@@ -26,7 +26,6 @@ export const FoodVisualisation = memo(({ projection, path }: { projection: d3.Ge
 const FoodCircles = memo(({ foodPoints, foodColors, projection }: { foodPoints: LocationData[], foodColors: Record<string, string>, projection: d3.GeoProjection }) => {
   const interestingLabel = useInterestingLabelStore(s => s.interestingLabel);
   const setInterestingLabel = useInterestingLabelStore(s => s.setInterestingLabel);
-
   const onCircleMouseOver = useCallback((ev: MouseEvent<SVGElement>) => {
     setInterestingLabel(ev.currentTarget.dataset.label ?? null);
   }, []);
