@@ -30,7 +30,11 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
       return (<path key={"17+" + index} fill='none' stroke={query === 'default' ? getStrokeColor(pathEntry, "#699aaa") : '#c2b8b3'} strokeWidth='1.5px' opacity={0.8} d={path({
         type: "LineString",
         coordinates: positions
-      }) || undefined} markerEnd={pathEntry.char !== 'Laurence' ? "url(#dragon)" : ''} ><title>{`${pathEntry.bookIndex! + 1}.${pathEntry.chapterIndex} \n${pathEntry.labelName.split(':')[1]}`}</title></path>)
+      }) || undefined} markerEnd={pathEntry.char !== 'Laurence' ? "url(#dragon)" : ''}
+      style={{
+        cursor: 'pointer'
+      }}
+      ><title>{`${pathEntry.bookIndex! + 1}.${pathEntry.chapterIndex} \n${pathEntry.labelName.split(':')[1]}`}</title></path>)
     })}
     {theImpliedPaths.map((pathEntry, index) => {
       const positions: number[][] = []
@@ -40,7 +44,10 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
       return (<path key={"7+" + index} fill='none' stroke={query === 'default' ? getStrokeColor(pathEntry, '#699aaa') : '#c2b8b3'} strokeWidth='1.5px' opacity={0.7} strokeDasharray='6' d={path({
         type: "LineString",
         coordinates: positions
-      }) || undefined} markerEnd={pathEntry.char !== 'Laurence' ? "url(#dragon)" : ''} ><title>{`${pathEntry.bookIndex! + 1}.${pathEntry.chapterIndex} \n${pathEntry.labelName.split(':')[1]}`}</title></path>)
+      }) || undefined} markerEnd={pathEntry.char !== 'Laurence' ? "url(#dragon)" : ''}
+      style={{
+        cursor: 'pointer'
+      }}><title>{`${pathEntry.bookIndex! + 1}.${pathEntry.chapterIndex} \n${pathEntry.labelName.split(':')[1]}`}</title></path>)
     })}
     {theRegions.map((region, index) => {
       const regional = geoRefs[region?.file ?? ''] || null
@@ -59,6 +66,9 @@ export const BookMapParts = memo(function BookMapParts({ projection, path }: { p
         fill={query === 'default' ? getStrokeColor(point, "#699aaa") : '#c2b8b3'}
         opacity={1}
         stroke='#e6edd0'
+        style={{
+          cursor: 'pointer'
+        }}
       >
         <title>{`${point.bookIndex! + 1}.${point.chapterIndex} \n${point.labelName.split(':')[1]}`}</title>
       </circle>

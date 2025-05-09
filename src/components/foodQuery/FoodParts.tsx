@@ -68,6 +68,9 @@ const FoodCircles = memo(({ foodPoints, foodColors, projection }: { foodPoints: 
         fill={foodColors[food[0]]}
         opacity={0.5}
         stroke='black'
+        style={{
+          cursor: 'pointer'
+        }}
         strokeWidth={interestingLabel == food[0] ? 3 : 1}
         onMouseOver={bidiHighlightMouseOver}
         onMouseLeave={bidiHighlightMouseLeave}
@@ -124,6 +127,7 @@ function PathVis({ pathData, d }: { pathData: LocationData, d: string }) {
       style={{
         fontSize: '12px',
         fontWeight: interest ? 'bold' : undefined,
+        cursor: 'pointer',
       }}
       fill={ interest ? 'black' : 'grey' }
       stroke='none'
