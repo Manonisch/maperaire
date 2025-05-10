@@ -81,14 +81,14 @@ const Legend = memo(() => {
         display: "flex", flexDirection: "row", columnGap: '4px', overflowY: "scroll",
         height: "calc(100% - 30px)",
       }}>
-        <Foods usingPrep={usePrepFilter} />
+        <Foods />
         {usePrepFilter && <Preparations />}
       </div>
     </div>
   )
 })
 
-const Foods = memo(({ usingPrep }: { usingPrep: boolean }) => {
+const Foods = memo(() => {
   const legendItems = prepareFoodItemGroups();
 
   const selectedOptions = useFoodMapStore(s => s.selectedFoodOptions)
