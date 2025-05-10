@@ -3,13 +3,12 @@
 - [x] QMF - Filter by meta matches (food preparation) in a tiered legend
 - [ ] preparation uses different color scale @manonisch
 - [ ] add ancient map typography @payload
+- [ ] Use icons inside circles on points?
 
 # Todos
 
-- [ ] Use icons instead of circles for path foods
 - [ ] Concept: How to display the individual points on far zoom
 
-- [ ] show food symbols in legend
 - [ ] food legend, maybe add hints about food preparation
 
 - [ ] Region objects need to be rewound to accept fill
@@ -34,6 +33,8 @@
 
 # Last changes
 
+- [x] Use icons instead of circles for path foods
+- [x] show food symbols in legend
 - [x] QMF - bidirectional higlighting (match in Agenda + points on card) (copied, see below)
 - [x] (BUG) Slider start and end only show current and not full range of points while changing
 - [x] (BUG) Bubbles show all data in point -> should only show selected && should only show FOOD

@@ -2,7 +2,7 @@ import { useCallback, ChangeEvent, memo, useState } from "react";
 import { useFoodMapStore } from "../../stores/FoodMapStore";
 import { ItemGroup } from "./foodtypes";
 import { useBidiHighlight } from "../../hooks/useBidiHighlight";
-import { foodColorMap, foodGroups, groupParentFoods, prepColors } from "./FoodStatics";
+import { foodColorMap, foodGroups, foodIconMap, groupParentFoods, groupParentIconFoods, prepColors } from "./FoodStatics";
 
 function prepareFoodItemGroups(): ItemGroup[] {
   const itemGroup: ItemGroup[] = [];
@@ -112,6 +112,9 @@ const Foods = memo(({ usingPrep }: { usingPrep: boolean }) => {
         const parent = groupParentFoods[item.groupName];
         const color = parent in foodColorMap ? foodColorMap[parent] : 'rgba(150, 150, 150, 0.5)'
 
+        const parentIcon = groupParentIconFoods[item.groupName];
+        const FoodIcon = foodIconMap[parentIcon];
+
         return (
           <div
             style={{
@@ -127,10 +130,18 @@ const Foods = memo(({ usingPrep }: { usingPrep: boolean }) => {
               width: '15px',
               height: '15px',
               borderRadius: '100%',
-              backgroundColor: color,
+              // backgroundColor: color,
               opacity: '0.5',
               display: 'inline-block'
-            }} />}
+            }} >
+              <FoodIcon
+                width="20px"
+                height="20px"
+                fill={color}
+                stroke="#222"
+                style={{ strokeWidth: '2%' }}
+              />
+            </span>}
             <input
               type="checkbox"
               onChange={handleChange}

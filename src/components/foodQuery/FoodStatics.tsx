@@ -8,6 +8,13 @@ import { PorridgeIcon } from '../../assets/porridge';
 import { GrainsIcon } from '../../assets/grains';
 import { VegetablesIcon } from '../../assets/vegetables';
 import { FishIcon } from '../../assets/fish';
+import { TurtleIcon } from '../../assets/turtle';
+import { NutsIcon } from '../../assets/nuts';
+import { CondimentsIcon } from '../../assets/condiments';
+import { LiverIcon } from '../../assets/liver';
+import { CamelgameIcon } from '../../assets/camelgame';
+import { CangarooIcon } from '../../assets/cangaroo';
+import { ElefantgameIcon } from '../../assets/elefantgame';
 
 // import { DeergameIcon } from '../../assets/deergame';
 // import { CowIcon } from '../../assets/cow';
@@ -34,15 +41,98 @@ export const foodIconMap = {
   birds: BirdIcon,
   game: DeergameIcon,
   livestock: CowIcon,
-  reptiles: undefined,
+  reptiles: TurtleIcon,
   'stews and more': PorridgeIcon,
   'grains': GrainsIcon,
   'fish & ocean mammals': FishIcon,
   'fruits & vegetables': VegetablesIcon,
-  "nuts and so": undefined,
-  "condiments": undefined,
-  "misc": undefined,
+  "nuts and so": NutsIcon,
+  "condiments": CondimentsIcon,
+  "misc": LiverIcon,
+  "camel": CamelgameIcon,
+  "kangaroo": CangarooIcon,
+  "elephant": ElefantgameIcon
 } as Record<string, JSXElementConstructor<SVGAttributes<SVGElement>> | undefined>
+
+export const parentIconGroups = new Map([
+  ["birds", ["birds", "cassowary", "penguin"]],
+  [
+    "game",
+    [
+      "deer",
+      "rabbit",
+      "monkey",
+      "rat",
+      "game",
+      "buffalo"
+    ],
+  ],
+  ["kangaroo", ["kangaroo", "wombat"]],
+  ["elephant", ["elephant", "antelope"]],
+  [
+    "livestock",
+    [
+      "charqui",
+      "chicken",
+      "cow & ox",
+      "ducks",
+      "goat",
+      "horse",
+      "pig",
+      "sheep",
+      "guinea pigs",
+      "llama",
+      "fat-tailed sheep with hair instead of wool",
+    ],
+  ],
+  ["camel", ["camel"]],
+  ["reptiles", ["lizard", "frog", "snake"]],
+  ["stews and more", ["bread", "soup", "stew", "porridge"]],
+  ["grains", ["barley", "wheat", "maize", "rice"]],
+  [
+    "fish & ocean mammals",
+    [
+      "cod",
+      "dolphins",
+      "lobster",
+      "porpoise",
+      "seal",
+      "shark",
+      "toothfish",
+      "tunny",
+      "whale",
+      "fish",
+    ],
+  ],
+  [
+    "fruits & vegetables",
+    [
+      "banana",
+      "berries",
+      "coconut",
+      "dried fruit",
+      "mash",
+      "potatoes",
+      "nutty beans",
+      "peppers",
+      "onions",
+      "pumpkin",
+      "plums",
+      "raisins",
+      "turnips",
+      "vegetables",
+      "yam",
+      "yellow fruit",
+      "seaweed",
+    ],
+  ],
+  ["nuts and so", ["chestnuts", "cocoa nut", "mushroom", "roots"]],
+  [
+    "condiments",
+    ["spices", "cardamom", "pepper", "tumeric", "anise", "sugar"],
+  ],
+  ["misc", ["blood", "liver", "meat", "ice"]],
+])
 
 export const parentGroups = new Map([
   ["birds", ["birds", "cassowary", "penguin"]],
@@ -270,4 +360,11 @@ for (const [group, foods] of parentGroups.entries()) {
   }
 }
 
-export { groupFoods, groupParentFoods };
+const groupParentIconFoods: Record<string, string> = {};
+for (const [group, foods] of parentIconGroups.entries()) {
+  for (const food of foods) {
+    groupParentIconFoods[food] = group;
+  }
+}
+
+export { groupFoods, groupParentFoods, groupParentIconFoods };

@@ -1,6 +1,6 @@
 import { SVGProps } from "react"
 
-export const CangarooIcon = (props: SVGProps<SVGSVGElement>) => {
+export const CondimentsIcon = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       width="100%"

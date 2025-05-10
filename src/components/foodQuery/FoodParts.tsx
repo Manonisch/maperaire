@@ -5,7 +5,7 @@ import { countFoodInPoint, getAllKindsOfFood, getFoodColors } from "./foodUtils"
 import { getPathLengthLookup } from 'svg-getpointatlength'
 import { LocationData, MinimalGroupedData, useDataPointsStore } from "../../stores";
 import { useBidiHighlight } from "../../hooks/useBidiHighlight";
-import { foodColorMap, foodGroups, foodIconMap, groupParentFoods } from "./FoodStatics";
+import { foodColorMap, foodGroups, foodIconMap, groupParentFoods, groupParentIconFoods } from "./FoodStatics";
 
 export const FoodVisualisation = memo(({ projection, path }: { projection: d3.GeoProjection, path: any }) => {
   const locationData = useDataPointsStore(s => s.locationData);
@@ -120,11 +120,10 @@ function PathVis({ pathData, d }: { pathData: LocationData, d: string }) {
     const y = pos.y + 7 * Math.sin(pos.angle + rotatepoo);
     const interest = interestingLabel === elem;
 
-    //TODO: here shall be icons
-
     const parent = groupParentFoods[elem];
+    const parentIcon = groupParentIconFoods[elem];
 
-    const FoodIcon = foodIconMap[parent];
+    const FoodIcon = foodIconMap[parentIcon];
 
     if (!FoodIcon) {
       return <text
@@ -152,8 +151,8 @@ function PathVis({ pathData, d }: { pathData: LocationData, d: string }) {
         <FoodIcon
           x={x}
           y={y}
-          width="20px"
-          height="20px"
+          width="16px"
+          height="16px"
           opacity={0.5}
           style={{ cursor: 'pointer', strokeWidth: '8%' }}
           fill={foodColorMap[parent]}
@@ -161,7 +160,7 @@ function PathVis({ pathData, d }: { pathData: LocationData, d: string }) {
           onMouseOver={bidiHighlightMouseOver}
           onMouseLeave={bidiHighlightMouseLeave}
           data-label={elem}
-        ></FoodIcon>
+        />
         <title>{elem}</title>
       </g>
     }
