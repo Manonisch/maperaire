@@ -134,13 +134,14 @@ const Foods = memo(({ usingPrep }: { usingPrep: boolean }) => {
               opacity: '0.5',
               display: 'inline-block'
             }} >
-              <FoodIcon
-                width="20px"
-                height="20px"
-                fill={color}
-                stroke="#222"
-                style={{ strokeWidth: '2%' }}
-              />
+              {FoodIcon &&
+                <FoodIcon
+                  width="20px"
+                  height="20px"
+                  fill={color}
+                  stroke="#222"
+                  style={{ strokeWidth: '2%' }}
+                />}
             </span>
             <input
               type="checkbox"
