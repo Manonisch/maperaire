@@ -50,8 +50,8 @@ export const Marks = memo(() => {
         v0 = versor.cartesian(projectedCoords);
         r0 = projection.rotate();
         q0 = versor(r0);
-        setIsMoving(true);
-        clearTimeout(zoomEndTimeout);
+        //setIsMoving(true);
+        //clearTimeout(zoomEndTimeout);
       })
       .on('zoom', (ev: d3.D3ZoomEvent<Element, unknown>) => {
         if (!isMoving) {
@@ -88,7 +88,7 @@ export const Marks = memo(() => {
 
   return (
     <>
-      <svg key="1" width='80vw' height='80vh' viewBox="40 0 900 500" className="d-block m-auto" stroke='#aaa' fill='#d7dbd0' ref={svgRef} style={{ margin: 'auto', display: 'block' }}>
+      <svg key="1" width='80vw' height='80vh' viewBox="40 0 900 500" className="d-block m-auto" stroke='#aaa' fill='#d7dbd0' ref={svgRef} style={{ margin: 'auto', display: 'block' }} onMouseDown={(event) => { event.preventDefault() }}>
         <defs>
           <filter id='shadow' colorInterpolationFilters="sRGB">
             <feDropShadow dx="0" dy="0" stdDeviation="1" floodOpacity="0.2" floodColor='orange' />
