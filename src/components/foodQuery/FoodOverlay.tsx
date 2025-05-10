@@ -59,8 +59,8 @@ const Legend = memo(() => {
         right: "20px",
         overflow: "hidden",
         padding: "16px",
-        backgroundColor: "#e8dfd2",
-        height: "80vh",
+        backgroundColor: "rgba(232, 223, 210, 0.8)",
+        height: "78vh",
         width: usePrepFilter ? "240px" : "160px",
       }}
     >
@@ -125,7 +125,7 @@ const Foods = memo(({ usingPrep }: { usingPrep: boolean }) => {
             data-groupname={item.groupName}
             onMouseOver={bidiHighlightMouseOver}
             onMouseLeave={bidiHighlightMouseLeave}
-          >{!usingPrep &&
+          >
             <span style={{
               width: '15px',
               height: '15px',
@@ -141,7 +141,7 @@ const Foods = memo(({ usingPrep }: { usingPrep: boolean }) => {
                 stroke="#222"
                 style={{ strokeWidth: '2%' }}
               />
-            </span>}
+            </span>
             <input
               type="checkbox"
               onChange={handleChange}
@@ -176,13 +176,13 @@ const Preparations = memo(() => {
     {legendItems.map((item) => {
       return (
         <div style={{ listStyleType: "none" }} key={item + "1"}>
-          <span style={{
+          {/* <span style={{
             width: '15px',
             height: '15px',
             borderRadius: '100%',
             backgroundColor: item[1],
             display: 'inline-block'
-          }} />
+          }} /> */}
           <input
             type="checkbox"
             onChange={handleChange}

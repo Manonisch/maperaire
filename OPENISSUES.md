@@ -1,7 +1,7 @@
 # NEXT
   ^
 - [x] QMF - Filter by meta matches (food preparation) in a tiered legend
-- [ ] preparation uses different color scale @manonisch
+- [ ] preparation uses different color scale @manonisch -> needs different concept!
 - [ ] add ancient map typography @payload
 - [ ] Use icons inside circles on points?
 
