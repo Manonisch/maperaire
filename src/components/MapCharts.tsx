@@ -50,8 +50,8 @@ export const Marks = memo(() => {
         v0 = versor.cartesian(projectedCoords);
         r0 = projection.rotate();
         q0 = versor(r0);
-        //setIsMoving(true);
-        //clearTimeout(zoomEndTimeout);
+        // setIsMoving(true);
+        // clearTimeout(zoomEndTimeout);
       })
       .on('zoom', (ev: d3.D3ZoomEvent<Element, unknown>) => {
         if (!isMoving) {
