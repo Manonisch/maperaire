@@ -4,12 +4,15 @@ import { SourcesView } from "./views/attributation";
 import { usePage } from "./stores/PageStore";
 import { useWorldData } from "./components/utils";
 import { useWorldDataStore } from "./stores/WorldDataStore";
+import { useDataPointsStore } from "./stores/DataPointsStore";
 
 function App() {
   const AppWrapper = ({ children, ...rest }: PropsWithChildren<HTMLProps<HTMLDivElement>>) => {
     return (<div {...rest}>{children}</div>);
   }
 
+  const storeRelevantElements = useDataPointsStore(s => s.storeAllRelevantElements)
+  storeRelevantElements();
   const data = useWorldData();
   const setWorldData = useWorldDataStore(s => s.setWorldData)
   setWorldData(data);

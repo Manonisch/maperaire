@@ -1,4 +1,4 @@
-import * as d3 from "d3"; 
+import * as d3 from "d3";
 import { memo } from "react";
 import { useWorldDataStore } from "../../stores/WorldDataStore";
 import { w2000 } from "../utils";
@@ -35,19 +35,19 @@ export const BaseMap = memo(function BaseMap({ path, isMoving }: { path: any, is
           <path key={"5+" + index} className="feature" fill='#dfd6c9' d={path(feature) || undefined} stroke='#c9c2af' strokeWidth={6} strokeLinejoin='round' />
         )) :
         data.fifty.land.features.map((feature: d3.GeoPermissibleObjects, index: number) => (
-          <path key={"5+" + index} className="feature" fill='#dfd6c9' d={path(feature) || undefined} stroke='#c9c2af' strokeWidth={6} strokeLinejoin='round' />
+          <path key={"6+" + index} className="feature" fill='#dfd6c9' d={path(feature) || undefined} stroke='#c9c2af' strokeWidth={6} strokeLinejoin='round' />
         ))
       }
       {isMoving ?
         data.hundred.land.features.map((feature: d3.GeoPermissibleObjects, index: number) => (
-          <path key={"5+" + index} className="feature" fill='#F3E9DF' d={path(feature) || undefined} stroke='#bbb' />
+          <path key={"7+" + index} className="feature" fill='#F3E9DF' d={path(feature) || undefined} stroke='#bbb' />
         )) :
         data.fifty.land.features.map((feature: d3.GeoPermissibleObjects, index: number) => (
-          <path key={"5+" + index} className="feature" fill='#F3E9DF' d={path(feature) || undefined} stroke='#bbb' />
+          <path key={"8+" + index} className="feature" fill='#F3E9DF' d={path(feature) || undefined} stroke='#bbb' />
         ))
       }
       {!isMoving && (
-        <path key="8" fill="none" stroke="#999" d={path(w2000) || undefined} filter="url(#shadow)" />)}
+        <path key="9" fill="none" stroke="#999" d={path(w2000) || undefined} filter="url(#shadow)" />)}
     </>
   )
 })

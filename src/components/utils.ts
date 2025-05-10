@@ -17,7 +17,7 @@ import {
   Chapterus,
   book,
   ChapterType,
-  BookPosition,
+  ChapterQueryResults,
   FunnyEntry,
 } from "./types";
 import * as d3 from "d3";
@@ -116,6 +116,7 @@ export function getPointerCoords<E, Ev>(
   }
 }
 
+// TODO will be replaced by transformBooksToLocations
 export function getAllCoords() {
   const books = chapter_labels.books as book[];
 
@@ -135,34 +136,48 @@ export function getAllCoords() {
   return theLocLabels;
 }
 
-export function getAllFirstElementOnly() {
+export function isBehindGlobe(coords: number[] | undefined, projection: d3.GeoProjection) {
+  if (!coords) {
+    return true;
+  }
+  const invertedProj = projection.invert?.([600, 300]) as [number, number];
+  const gdist = d3.geoDistance([coords[1], coords[0]], invertedProj);
+  return gdist >= 1.57;
+}
+
+export function updateBoundingBox(bb: number[], x1: number, y1: number, x2: number, y2: number) {
+  bb[0] = Math.min(bb[0], x1);
+  bb[1] = Math.min(bb[1], y1);
+  bb[2] = Math.max(bb[2], x2);
+  bb[3] = Math.max(bb[3], y2);
+}
+
+export function getAllLocations() {
   const books = chapter_labels.books as book[];
 
   const theLocLabels: FunnyEntry[] = [];
   books.forEach((book, bookI) => {
     book.chapters.forEach((chapter) => {
-      const localLabels: FunnyEntry[] = [chapter.locLabels[0]];
-      if (localLabels.length > 0) {
-        localLabels.forEach((entry) => {
-          if (entry) {
-            entry.chapterIndex = chapter.index;
-            entry.bookIndex = bookI;
-          }
-        });
+      // if a locLabel has no startParagraph, it won't have a match (food) and then we not gonna need it
+      const filteredLocLabels = chapter.locLabels.filter(label => !!label.startParagraph)
+      for (const localLabelus of filteredLocLabels) {
+        const localLabel: FunnyEntry = { ...localLabelus };
+        localLabel.chapterIndex = chapter.index;
+        localLabel.bookIndex = bookI;
+        theLocLabels.push(localLabel);
       }
-      theLocLabels.push(...localLabels);
     });
   });
 
   return theLocLabels;
 }
 
-function isInRange(
+export function isInRange(
   label: FunnyEntry,
   options?: {
-    start?: BookPosition;
-    end?: BookPosition;
-    positionList?: BookPosition[];
+    start?: ChapterQueryResults;
+    end?: ChapterQueryResults;
+    positionList?: ChapterQueryResults[];
   }
 ): boolean {
   if (
@@ -206,9 +221,9 @@ function isInRange(
 }
 
 export function getPoints(options?: {
-  start?: BookPosition;
-  end?: BookPosition;
-  positionList?: BookPosition[];
+  start?: ChapterQueryResults;
+  end?: ChapterQueryResults;
+  positionList?: ChapterQueryResults[];
 }) {
   return getAllCoords().filter(
     (label) => label.type === "point" && isInRange(label, options)
@@ -216,9 +231,9 @@ export function getPoints(options?: {
 }
 
 export function getPaths(options?: {
-  start?: BookPosition;
-  end?: BookPosition;
-  positionList?: BookPosition[];
+  start?: ChapterQueryResults;
+  end?: ChapterQueryResults;
+  positionList?: ChapterQueryResults[];
 }) {
   return getAllCoords().filter(
     (label) =>
@@ -227,9 +242,9 @@ export function getPaths(options?: {
 }
 
 export function getImpliedPaths(options?: {
-  start?: BookPosition;
-  end?: BookPosition;
-  positionList?: BookPosition[];
+  start?: ChapterQueryResults;
+  end?: ChapterQueryResults;
+  positionList?: ChapterQueryResults[];
 }) {
   return getAllCoords().filter(
     (label) =>
@@ -238,9 +253,9 @@ export function getImpliedPaths(options?: {
 }
 
 export function getRegions(options?: {
-  start?: BookPosition;
-  end?: BookPosition;
-  positionList?: BookPosition[];
+  start?: ChapterQueryResults;
+  end?: ChapterQueryResults;
+  positionList?: ChapterQueryResults[];
 }) {
   return getAllCoords().filter(
     (label) => label.type === "region" && isInRange(label, options)

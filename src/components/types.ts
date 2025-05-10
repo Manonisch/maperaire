@@ -1,10 +1,14 @@
+
+//TODO: WE NEED TO SERIOUSLY REFACTOR THESE TYPES!!!!!!!!!!!!!!!!!
 export interface LocLabel {
   labelName: string;
   coords: number[];
-  type: string;
+  type: string; // point, path, region
   file?: string;
   char?: string;
   centrality?: "implied";
+  startParagraph?: number;
+  endParagraph?: number; // no endParagraph -> no attached data
 }
 
 export interface FunnyEntry extends LocLabel {
@@ -27,10 +31,17 @@ export type book = {
   chapters: ChapterEntry[];
 };
 
-export interface BookPosition {
+
+export interface outputResult {
+  paragraphIndex: number,
+  labels: string[]
+}
+
+// per chapter, stores all found mathches/results
+export interface ChapterQueryResults {
   bookIndex: number;
   chapterIndex: number;
-  matches?: string[][] | string[]; //per result, save all labels as strings
+  matches?: outputResult[]; //per result, save all labels as strings
   length?: number;
 }
 

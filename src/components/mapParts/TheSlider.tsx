@@ -38,14 +38,14 @@ export const TheSlider = memo(function TheSlider() {
         setLeftSliderPos(event.clientX - 38)
         if (theNumber && leftRange !== theTickPos) {
           setLeftRange(theNumber);
-          handleChange({ theStart: leftRange, theEnd: theNumber })
+          handleChange({ theStart: theNumber, theEnd: rightRange })
         }
       }
       if (onTheMove === 'right' && event.clientX - 38 > leftSliderPos) {
         setRightSliderPos(event.clientX - 38)
         if (theNumber && rightRange !== theTickPos) {
           setRightRange(theNumber);
-          handleChange({ theStart: theNumber, theEnd: rightRange })
+          handleChange({ theStart: leftRange, theEnd: theNumber })
         }
       }
       if (onTheMove === 'slider') {
