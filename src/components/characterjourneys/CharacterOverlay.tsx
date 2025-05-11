@@ -6,7 +6,8 @@ import { CharacterColors, CharacterIconMap } from "./CharacterStatics";
 const CharacterList = [
   "Jane",
   "Tharkay",
-  "Granby"
+  "Granby",
+  "Riley"
 ]
 
 export const CharacterOverlay = () => {

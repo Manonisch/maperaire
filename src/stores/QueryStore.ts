@@ -3,6 +3,7 @@ import { ChapterQueryResults } from "../components/types";
 import { foodGroups } from "../components/foodQuery";
 import { Food } from "../data/querys/positions_food_final";
 import { charsData } from "../data/querys/positions_char_granby_tharkay_jane";
+import { characterGroups } from "../components/characterjourneys/CharacterStatics";
 
 export type Querys = "default" | "Food" | 'Characters';
 
@@ -15,7 +16,7 @@ export const queryRefs: Record<string, ChapterQueryResults[]> = {
 export const dataSetMinimizers = {
   default: [],
   Food: [foodGroups],
-  Characters: []
+  Characters: [characterGroups]
 };
 
 export interface Query {

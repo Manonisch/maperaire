@@ -7,21 +7,53 @@ import { CharacterColors } from "./CharacterStatics";
 export const CharacterVisualisation = memo(({ projection, path }: { projection: d3.GeoProjection, path: any }) => {
   const locationData = useDataPointsStore(s => s.locationData);
 
-  // const allKindsOfFood = getAllKindsOfFood(MinimalGroupedData);
-  // const foodColors = getFoodColors(allKindsOfFood);
-
-  console.log('what is locationData ', locationData)
-
   const CharacterCirclePoints = locationData.filter(p => p.type === 'point');
   const CharacterCirclePaths = locationData.filter(p => p.type === 'path');
 
   return (
     <g>
+      <CharPaths charPoints={CharacterCirclePaths} path={path} />
       <CharacterCircles charPoints={CharacterCirclePoints} projection={projection} />
-      {/* <FoodPathVis foodPoints={foodCirclePaths} path={path} /> */}
     </g>
   )
 })
+
+function CharPaths({ charPoints, path }: { charPoints: LocationData[], path: any }) {
+  function reduceCharInPoints(points: LocationData[]) {
+    const theRetour: LocationData[] = [];
+    points.forEach(point => {
+      theRetour.push({
+        labels: [...new Set(point.labels)],
+        coords: [...point.coords],
+        locName: point.locName,
+        type: point.type
+      })
+    })
+    return theRetour;
+  }
+
+  const singleCharPoints = reduceCharInPoints(charPoints);
+
+  return (
+    singleCharPoints.map((pathEntry, index) => {
+      const positions: number[][] = []
+      for (let i = 0; i < pathEntry.coords.length; i += 2) {
+        positions.push([pathEntry.coords[i + 1], pathEntry.coords[i]]);
+      }
+
+      return pathEntry.labels.map((label, labelIndex) => {
+        return (<path key={"17+" + index + label} fill='none' stroke={CharacterColors[label]} strokeWidth={(pathEntry.labels.length - labelIndex) * 5} opacity={0.8} d={path({
+          type: "LineString",
+          coordinates: positions
+        }) || undefined}
+          style={{
+            cursor: 'pointer'
+          }}
+        ></path>)
+      })
+    })
+  )
+}
 
 const CharacterCircles = memo(({ charPoints, projection }: { charPoints: LocationData[], projection: d3.GeoProjection }) => {
   const { interestingLabel, bidiHighlightMouseOver, bidiHighlightMouseLeave } = useBidiHighlight('label');
