@@ -51,7 +51,7 @@ function CharPaths({ charPoints, path }: { charPoints: LocationData[], path: any
       }
 
       return pathEntry.labels.map((label, labelIndex) => {
-        return (<path key={"17+" + index + label} fill='none' stroke={CharacterColors[label]} strokeWidth={(pathEntry.labels.length - labelIndex) * 5} opacity={0.8} d={path({
+        return (<path key={"17+" + index + label} fill='none' stroke={CharacterColors[label]} strokeWidth={(pathEntry.labels.length - labelIndex) * 2} opacity={1} d={path({
           type: "LineString",
           coordinates: positions
         }) || undefined}
