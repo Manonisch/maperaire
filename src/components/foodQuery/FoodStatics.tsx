@@ -16,13 +16,6 @@ import { CamelgameIcon } from '../../assets/camelgame';
 import { CangarooIcon } from '../../assets/cangaroo';
 import { ElefantgameIcon } from '../../assets/elefantgame';
 
-// import { DeergameIcon } from '../../assets/deergame';
-// import { CowIcon } from '../../assets/cow';
-// import { PorridgeIcon } from '../../assets/porridge';
-// import { GrainsIcon } from '../../assets/grains';
-// import { FishIcon } from '../../assets/fish';
-// import { VegetablesIcon } from '../../assets/vegetables';
-
 export const foodColorMap = {
   birds: '#577590',
   game: '#f94144',

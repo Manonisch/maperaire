@@ -7,6 +7,8 @@ import { useQuery } from "../stores";
 import { BaseMap, OSMLink, TheSlider } from "./mapParts";
 import { FoodOverlay, FoodVisualisation } from "./foodQuery";
 import { BookMapParts } from "./mapParts/BookMapParts";
+import { CharacterOverlay } from "./characterjourneys/CharacterOverlay";
+import { CharacterVisualisation } from "./characterjourneys/CharacterParts";
 
 export function TheMapChart() {
   const query = useQuery(s => s.query)
@@ -14,6 +16,7 @@ export function TheMapChart() {
   return <div>
     <TopBar />
     {query === 'Food' && <FoodOverlay />}
+    {query === 'Characters' && <CharacterOverlay />}
     <Marks />
   </div>
 }
@@ -108,6 +111,7 @@ export const Marks = memo(() => {
           <BaseMap path={path} isMoving={isMoving} />
           <BookMapParts projection={projection} path={path} />
           {query === 'Food' && <FoodVisualisation projection={projection} path={path} />}
+          {query === 'Characters' && <CharacterVisualisation projection={projection} path={path} />}
         </g>
         <OSMLink />
       </svg>

@@ -6,6 +6,7 @@ interface FoodMapAction {
   setSelectedPrepOption: (selectedOptions: string[]) => void;
   changeSelectedPrepOption: (selectedOption: string) => void;
   setPrepFilter: (set: boolean) => void;
+  resetFoodFilters: () => void;
 }
 
 interface FoodMapState {
@@ -50,5 +51,8 @@ export const useFoodMapStore = create<FoodMapAction & FoodMapState>(
       set({ prepFilter })
     },
     prepFilter: false,
+    resetFoodFilters: () => {
+      set({ prepFilter: false, selectedFoodOptions: [], selectedPrepOptions: [] })
+    }
   })
 );

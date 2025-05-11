@@ -83,6 +83,30 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
       // split food ingredients labels from food preparation labels ?
 
       set({ locationData, locations });
+    } else if (query === 'Characters') {
+
+      const hasFilter = !!filters.filter?.length;
+      // filter decides which "food groups / food preparations" are relevant (all or some)
+      const filteredData = hasFilter ? filterDataSet(MinimalGroupedData, filters) : MinimalGroupedData
+
+      // get all locations
+      // chapterInterval decides which points and paths and regions are considered
+      // THESE SHOULD BE ENOUGH TO RETURN TO DRAW THE FILTERED BASEMAP
+      const locations = transformBooksToLocations(chapter_labels.books as book[])
+        .filter(location => isInRange(location, {
+          start: getBookPosition(chapterInterval.start),
+          end: getBookPosition(chapterInterval.end),
+          positionList: hasFilter ? filteredData : []
+        })
+        );
+
+      // relevant "foods" are mapped on points and paths
+      const locationData = mapDataSetToLocations(locations, filteredData);
+
+      // FOOD SPECIFIC
+      // split food ingredients labels from food preparation labels ?
+
+      set({ locationData, locations });
     }
   },
 

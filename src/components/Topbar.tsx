@@ -5,21 +5,29 @@ import { SourcesLink } from "./links/SourcesLink";
 import { useWorldDataStore } from "../stores/WorldDataStore";
 import { useDataPointsStore } from "../stores/DataPointsStore";
 import { useFoodMapStore, useSliderStore } from "../stores";
+import { useCharacterMapStore } from "../stores/CharacterMapStore";
 
 export const TopBar = memo(() => {
   const [ghostyLines, setGhostyLines] = useState(false)
   const chooseQuery = useQuery(s => s.chooseQuery)
   const minimalizeDataSet = useDataPointsStore(s => s.minimalizeDataSet);
   const setGhostLinesEnabled = useWorldDataStore(s => s.setGhostLineEnabled)
+  const resetFoodFilters = useFoodMapStore(s => s.resetFoodFilters)
+  const resetCharacterFilters = useCharacterMapStore(s => s.resetCharacterFilters)
+
 
   const queryArray = Object.entries(queryRefs);
 
   const handleChange = useCallback((event: ChangeEvent<HTMLSelectElement>) => {
     const query = event.target.value as Querys;
+    resetFoodFilters();
+    resetCharacterFilters();
     chooseQuery(query);
     const dataSet = queryRefs[query];
     const minimizers = dataSetMinimizers[query];
     minimalizeDataSet(dataSet, minimizers); // sets MinimalGroupedData
+
+
   }, [])
 
   return <div style={{ width: '100%', height: '40px', display: 'flex', alignItems: 'center' }}>
@@ -52,11 +60,12 @@ export const TopBar = memo(() => {
 const TriggerUpdateRelevantData = () => {
   const updateRelevantData = useDataPointsStore(s => s.updateRelevantData);
   const query = useQuery(s => s.query);
-  const filter = useFoodMapStore(s => s.selectedFoodOptions);
-  const prepFilter = useFoodMapStore(s => s.selectedPrepOptions)
+  const foodFilter = useFoodMapStore(s => s.selectedFoodOptions);
+  const prepFilter = useFoodMapStore(s => s.selectedPrepOptions);
+  const characterFilter = useCharacterMapStore(s => s.selectedCharacterOptions);
   const sliderEnd = useSliderStore(s => s.end)
   const sliderStart = useSliderStore(s => s.start)
 
-  updateRelevantData(query, { filter: [filter, prepFilter].filter(x => x.length) }, { end: sliderEnd ?? 0, start: sliderStart ?? 0 })
+  updateRelevantData(query, { filter: [foodFilter, prepFilter, characterFilter].filter(x => x.length) }, { end: sliderEnd ?? 0, start: sliderStart ?? 0 })
   return <></>
 }
