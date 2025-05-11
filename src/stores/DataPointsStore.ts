@@ -79,11 +79,20 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
       // relevant "foods" are mapped on points and paths
       const locationData = mapDataSetToLocations(locations, filteredData);
 
-      // FOOD SPECIFIC
-      // split food ingredients labels from food preparation labels ?
-
       set({ locationData, locations });
     } else if (query === 'Characters') {
+
+
+      //TODO: All Data should be returned, since we need to calculate something about the implied and inbetween paths!
+
+
+      // If there's two points/paths where the character is mentioned, add the character as (weak) to the path between these two points
+      // If there's n implied path between two points/paths where a character is mentioned -> add the character to the implied path as (weak)
+      // if there's n implied path two points paths where character is implicated to have been, add character to implied path
+
+
+
+
 
       const hasFilter = !!filters.filter?.length;
       // filter decides which "food groups / food preparations" are relevant (all or some)
@@ -102,9 +111,6 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
 
       // relevant "foods" are mapped on points and paths
       const locationData = mapDataSetToLocations(locations, filteredData);
-
-      // FOOD SPECIFIC
-      // split food ingredients labels from food preparation labels ?
 
       set({ locationData, locations });
     }
