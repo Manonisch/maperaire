@@ -4,14 +4,23 @@ import chapter_labels from "../data/points_and_paths/chapter_labels";
 import { Querys } from "./QueryStore";
 import { GlobalChapterInterval } from "./SliderStore";
 import { getBookPosition, isInRange } from "../components/utils";
+import { minIndex } from "d3";
 
 //this is the data from the querystory, reduced to already only have grouped labels
 export const MinimalGroupedData: ChapterQueryResults[] = [];
 
+type LocationDataType = {
+  data: LocationData[],
+  type: 'LocationData',
+} | {
+  data: CharacterLocationData[],
+  type: 'CharacterLocationData'
+};
+
 interface DataPointStoreStates {
   allRelevantElements: FunnyEntry[],
   locations: FunnyEntry[],
-  locationData: LocationData[],
+  locationData: LocationDataType,
 }
 
 interface DataPointStoreActions {
@@ -58,7 +67,8 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
           positionList: []
         })
         );
-      set({ locations, locationData: [] });
+
+      set({ locations, locationData: { data: [], type: 'LocationData' } });
     } else if (query === 'Food') {
 
       const hasFilter = !!filters.filter?.length;
@@ -81,18 +91,13 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
 
       set({ locationData, locations });
     } else if (query === 'Characters') {
-
-
       //TODO: All Data should be returned, since we need to calculate something about the implied and inbetween paths!
-
 
       // If there's two points/paths where the character is mentioned, add the character as (weak) to the path between these two points
       // If there's n implied path between two points/paths where a character is mentioned -> add the character to the implied path as (weak)
       // if there's n implied path two points paths where character is implicated to have been, add character to implied path
 
-
-
-
+      // Only
 
       const hasFilter = !!filters.filter?.length;
       // filter decides which "food groups / food preparations" are relevant (all or some)
@@ -105,12 +110,14 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
         .filter(location => isInRange(location, {
           start: getBookPosition(chapterInterval.start),
           end: getBookPosition(chapterInterval.end),
-          positionList: hasFilter ? filteredData : []
+          positionList: []
         })
         );
 
-      // relevant "foods" are mapped on points and paths
-      const locationData = mapDataSetToLocations(locations, filteredData);
+
+
+      // relevant "characters" are mapped on points and paths
+      const locationData = mapCharacterDataSetToLocations(locations, filteredData);
 
       set({ locationData, locations });
     }
@@ -208,6 +215,98 @@ export interface LocationData {
   type: string;
 }
 
+export interface CharacterLocationData extends Omit<LocationData, "labels"> {
+  labels: LabelAssociation[]
+}
+
+interface LabelAssociation {
+  label: string;
+  weak: boolean;
+}
+
+interface CharacterLocation {
+  bookIndex: number;
+  char: string; // TODO this is the POV, may be combined
+  labels: LabelAssociation[]; // TODO strong or weak?
+  coords: number[];
+  type: string;
+  locName: string;
+  implied: boolean;
+}
+
+function mapCharacterDataSetToLocations(locations: FunnyEntry[], dataSet: ChapterQueryResults[]): CharacterLocationData[] {
+  // all locations have all labels from results
+
+  const journey: CharacterLocation[] = [];
+  for (const location of locations) {
+    const results = findResultsInSameLocation(location, dataSet);
+    const labels = [...new Set(...results.flatMap(result => result.labels))].map(label => ({
+      label, weak: false
+    }));
+    if (typeof location.bookIndex === 'undefined') {
+      throw new Error('nooo');
+    }
+    journey.push({
+      bookIndex: location.bookIndex,
+      char: location.char || 'combined',
+      implied: !!location.centrality,
+      labels: labels,
+      coords: location.coords,
+      type: location.type,
+      locName: location.labelName,
+    });
+  }
+
+  // If there's two points/paths where the character is mentioned, add the character as (weak) to the path between these two points
+  // If there's n implied path between two points/paths where a character is mentioned -> add the character to the implied path as (weak)
+  // if there's n implied path two points paths where character is implicated to have been, add character to implied path
+  // If implied path is the first point in a book, throw and show
+
+  journey.forEach((location, index) => {
+    const prev = journey[index - 1];
+    const next = journey[index + 1];
+    if (!prev || !next) {
+      return;
+    }
+    if (prev.bookIndex !== location.bookIndex) {
+      return;
+    }
+
+    const allInPrevButNotInHere = new Set(prev.labels).difference(new Set(location.labels));
+    const inPrevAndInNextButNotHere = allInPrevButNotInHere.intersection(new Set(next.labels));
+
+    for (const label of inPrevAndInNextButNotHere) {
+      location.labels.push({ label: label.label, weak: true });
+    }
+  });
+
+
+  // Data optimization => transform to LocationData 
+  // Map same points in journey to single point
+
+  // Post LocationData => deal differently with Timmy Strong and Timmy Weak
+
+  type Coord = string;
+  const dataMap = new Map<Coord, CharacterLocationData>();
+  for (const location of journey) {
+    const coordString: Coord = location.coords.join(' ');
+
+    const entry = dataMap.get(coordString);
+    if (entry) {
+      entry.labels.push(...location.labels);
+    } else {
+      dataMap.set(coordString, {
+        coords: [...location.coords],
+        locName: location.locName,
+        type: location.type,
+        labels: [...location.labels],
+      });
+    }
+  }
+
+  return [...dataMap.values()];
+}
+
 function mapDataSetToLocations(locations: FunnyEntry[], dataSet: ChapterQueryResults[]): LocationData[] {
   type Coord = string;
   const dataMap = new Map<Coord, LocationData>();
@@ -219,7 +318,8 @@ function mapDataSetToLocations(locations: FunnyEntry[], dataSet: ChapterQueryRes
       continue;
     }
 
-    const results = findResultsInSameLocation(location, dataSet); // TODO imported from FoodQuery
+    const results = findResultsInSameLocation(location, dataSet);
+
     if (!results) {
       continue;
     }

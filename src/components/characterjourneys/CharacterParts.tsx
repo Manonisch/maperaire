@@ -36,9 +36,6 @@ function CharPaths({ charPoints, path }: { charPoints: LocationData[], path: any
 
   //TODO
 
-
-  const locations = useDataPointsStore(s => s.locations)
-
   // If there's two points/paths where the character is mentioned, add the character as (weak) to the path between these two points
   // If there's n implied path between two points/paths where a character is mentioned -> add the character to the implied path as (weak)
   // if there's n implied path two points paths where character is implicated to have been, add character to implied path
