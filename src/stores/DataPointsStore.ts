@@ -4,23 +4,15 @@ import chapter_labels from "../data/points_and_paths/chapter_labels";
 import { Querys } from "./QueryStore";
 import { GlobalChapterInterval } from "./SliderStore";
 import { getBookPosition, isInRange } from "../components/utils";
-import { minIndex } from "d3";
 
 //this is the data from the querystory, reduced to already only have grouped labels
 export const MinimalGroupedData: ChapterQueryResults[] = [];
 
-type LocationDataType = {
-  data: LocationData[],
-  type: 'LocationData',
-} | {
-  data: CharacterLocationData[],
-  type: 'CharacterLocationData'
-};
-
 interface DataPointStoreStates {
   allRelevantElements: FunnyEntry[],
   locations: FunnyEntry[],
-  locationData: LocationDataType,
+  locationData: LocationData[],
+  characterLocationData: CharacterLocationData[],
 }
 
 interface DataPointStoreActions {
@@ -56,6 +48,7 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
 
   locations: [],
   locationData: [],
+  characterLocationData: [],
 
   updateRelevantData: (query: Querys, filters: FilterConfig, chapterInterval: GlobalChapterInterval) => {
     if (query === 'default') {
@@ -68,7 +61,7 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
         })
         );
 
-      set({ locations, locationData: { data: [], type: 'LocationData' } });
+      set({ locations, locationData: [], characterLocationData: [] });
     } else if (query === 'Food') {
 
       const hasFilter = !!filters.filter?.length;
@@ -89,7 +82,7 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
       // relevant "foods" are mapped on points and paths
       const locationData = mapDataSetToLocations(locations, filteredData);
 
-      set({ locationData, locations });
+      set({ locationData, locations, characterLocationData: [] });
     } else if (query === 'Characters') {
       //TODO: All Data should be returned, since we need to calculate something about the implied and inbetween paths!
 
@@ -114,12 +107,10 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
         })
         );
 
-
-
       // relevant "characters" are mapped on points and paths
-      const locationData = mapCharacterDataSetToLocations(locations, filteredData);
+      const characterLocationData = mapCharacterDataSetToLocations(locations, filteredData);
 
-      set({ locationData, locations });
+      set({ locationData: [], characterLocationData, locations });
     }
   },
 
@@ -219,7 +210,7 @@ export interface CharacterLocationData extends Omit<LocationData, "labels"> {
   labels: LabelAssociation[]
 }
 
-interface LabelAssociation {
+export interface LabelAssociation {
   label: string;
   weak: boolean;
 }
@@ -239,19 +230,23 @@ function mapCharacterDataSetToLocations(locations: FunnyEntry[], dataSet: Chapte
 
   const journey: CharacterLocation[] = [];
   for (const location of locations) {
+    if (location.type === 'region') {
+      continue;
+    }
     const results = findResultsInSameLocation(location, dataSet);
-    const labels = [...new Set(...results.flatMap(result => result.labels))].map(label => ({
-      label, weak: false
-    }));
+
+    const allLabels = [...new Set(results.flatMap(result => result.labels))]
+    const labels = allLabels.map(label => ({ label: label, weak: false }));
     if (typeof location.bookIndex === 'undefined') {
       throw new Error('nooo');
     }
+
     journey.push({
       bookIndex: location.bookIndex,
       char: location.char || 'combined',
       implied: !!location.centrality,
       labels: labels,
-      coords: location.coords,
+      coords: [...location.coords],
       type: location.type,
       locName: location.labelName,
     });
@@ -261,6 +256,10 @@ function mapCharacterDataSetToLocations(locations: FunnyEntry[], dataSet: Chapte
   // If there's n implied path between two points/paths where a character is mentioned -> add the character to the implied path as (weak)
   // if there's n implied path two points paths where character is implicated to have been, add character to implied path
   // If implied path is the first point in a book, throw and show
+
+  function containsLabel(search: LabelAssociation, labels: LabelAssociation[]): boolean {
+    return labels.some(label => label.label === search.label);
+  }
 
   journey.forEach((location, index) => {
     const prev = journey[index - 1];
@@ -272,19 +271,12 @@ function mapCharacterDataSetToLocations(locations: FunnyEntry[], dataSet: Chapte
       return;
     }
 
-    const allInPrevButNotInHere = new Set(prev.labels).difference(new Set(location.labels));
-    const inPrevAndInNextButNotHere = allInPrevButNotInHere.intersection(new Set(next.labels));
+    const theLabels = prev.labels.filter(label => containsLabel(label, next.labels) && !containsLabel(label, location.labels));
 
-    for (const label of inPrevAndInNextButNotHere) {
+    for (const label of theLabels) {
       location.labels.push({ label: label.label, weak: true });
     }
   });
-
-
-  // Data optimization => transform to LocationData 
-  // Map same points in journey to single point
-
-  // Post LocationData => deal differently with Timmy Strong and Timmy Weak
 
   type Coord = string;
   const dataMap = new Map<Coord, CharacterLocationData>();

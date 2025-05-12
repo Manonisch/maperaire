@@ -1,11 +1,11 @@
 import { memo } from "react";
-import { LocationData, useDataPointsStore } from "../../stores";
+import { CharacterLocationData, LabelAssociation, LocationData, useDataPointsStore } from "../../stores";
 import { useBidiHighlight } from "../../hooks/useBidiHighlight";
 import { isBehindGlobe, updateBoundingBox } from "../utils";
 import { CharacterColors } from "./CharacterStatics";
 
 export const CharacterVisualisation = memo(({ projection, path }: { projection: d3.GeoProjection, path: any }) => {
-  const locationData = useDataPointsStore(s => s.locationData);
+  const locationData = useDataPointsStore(s => s.characterLocationData);
 
   const CharacterCirclePoints = locationData.filter(p => p.type === 'point');
   const CharacterCirclePaths = locationData.filter(p => p.type === 'path');
@@ -18,27 +18,32 @@ export const CharacterVisualisation = memo(({ projection, path }: { projection: 
   )
 })
 
-function CharPaths({ charPoints, path }: { charPoints: LocationData[], path: any }) {
-  function reduceCharInPoints(points: LocationData[]) {
-    const theRetour: LocationData[] = [];
-    points.forEach(point => {
-      theRetour.push({
-        labels: [...new Set(point.labels)],
-        coords: [...point.coords],
-        locName: point.locName,
-        type: point.type
-      })
+function whatever(list: LabelAssociation[]): LabelAssociation[] {
+  const whater: LabelAssociation[] = [];
+  list.forEach(l => {
+    if (!whater.some(what => what.label === l.label)) {
+      whater.push(l);
+    }
+  })
+  return whater;
+}
+
+function reduceCharInPoints(points: CharacterLocationData[]) {
+  const theRetour: CharacterLocationData[] = [];
+  points.forEach(point => {
+    theRetour.push({
+      labels: whatever(point.labels),
+      coords: [...point.coords],
+      locName: point.locName,
+      type: point.type
     })
-    return theRetour;
-  }
+  })
+  return theRetour;
+}
+
+function CharPaths({ charPoints, path }: { charPoints: CharacterLocationData[], path: any }) {
 
   const singleCharPoints = reduceCharInPoints(charPoints);
-
-  //TODO
-
-  // If there's two points/paths where the character is mentioned, add the character as (weak) to the path between these two points
-  // If there's n implied path between two points/paths where a character is mentioned -> add the character to the implied path as (weak)
-  // if there's n implied path two points paths where character is implicated to have been, add character to implied path
 
   return (
     singleCharPoints.map((pathEntry, index) => {
@@ -48,7 +53,7 @@ function CharPaths({ charPoints, path }: { charPoints: LocationData[], path: any
       }
 
       return pathEntry.labels.map((label, labelIndex) => {
-        return (<path key={"17+" + index + label} fill='none' stroke={CharacterColors[label]} strokeWidth={(pathEntry.labels.length - labelIndex) * 2} opacity={1} d={path({
+        return (<path key={"17+" + index + label.label} fill='none' stroke={CharacterColors[label.label]} strokeWidth={(pathEntry.labels.length - labelIndex) * 3} opacity={1} d={path({
           type: "LineString",
           coordinates: positions
         }) || undefined}
@@ -61,21 +66,8 @@ function CharPaths({ charPoints, path }: { charPoints: LocationData[], path: any
   )
 }
 
-const CharacterCircles = memo(({ charPoints, projection }: { charPoints: LocationData[], projection: d3.GeoProjection }) => {
+const CharacterCircles = memo(({ charPoints, projection }: { charPoints: CharacterLocationData[], projection: d3.GeoProjection }) => {
   const { interestingLabel, bidiHighlightMouseOver, bidiHighlightMouseLeave } = useBidiHighlight('label');
-
-  function reduceCharInPoints(points: LocationData[]) {
-    const theRetour: LocationData[] = [];
-    points.forEach(point => {
-      theRetour.push({
-        labels: [...new Set(point.labels)],
-        coords: [...point.coords],
-        locName: point.locName,
-        type: point.type
-      })
-    })
-    return theRetour;
-  }
 
   const singleCharPoints = reduceCharInPoints(charPoints);
 
@@ -110,18 +102,18 @@ const CharacterCircles = memo(({ charPoints, projection }: { charPoints: Locatio
         cx={cx}
         cy={cy}
         r={5}
-        fill={CharacterColors[char]}
+        fill={CharacterColors[char.label]}
         opacity={0.5}
         stroke='black'
         style={{
           cursor: 'pointer'
         }}
-        strokeWidth={interestingLabel == char ? 3 : 1}
+        strokeWidth={interestingLabel == char.label ? 3 : 1}
         onMouseOver={bidiHighlightMouseOver}
         onMouseLeave={bidiHighlightMouseLeave}
-        data-label={char}
+        data-label={char.label}
       >
-        <title>{char}</title>
+        <title>{char.label}</title>
       </circle>
     })}</g>;
 
