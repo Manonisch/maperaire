@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { CharacterLocationData, LabelAssociation, LocationData, useDataPointsStore } from "../../stores";
+import { CharacterLocationData, LabelAssociation, useDataPointsStore } from "../../stores";
 import { useBidiHighlight } from "../../hooks/useBidiHighlight";
 import { isBehindGlobe, updateBoundingBox } from "../utils";
 import { CharacterColors } from "./CharacterStatics";

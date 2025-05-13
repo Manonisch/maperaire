@@ -583,6 +583,7 @@ export const charsData = [
       { paragraphIndex: 1163, labels: ["Riley"] },
       { paragraphIndex: 1166, labels: ["Riley"] },
       { paragraphIndex: 1168, labels: ["Riley"] },
+      { paragraphIndex: 1168, labels: ["Granby"] },
     ],
     length: 16,
   },

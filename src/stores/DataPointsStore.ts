@@ -263,12 +263,21 @@ function mapCharacterDataSetToLocations(locations: FunnyEntry[], dataSet: Chapte
 
   journey.forEach((location, index) => {
     const prev = journey[index - 1];
-    const next = journey[index + 1];
+    let next = journey[index + 1];
     if (!prev || !next) {
       return;
     }
     if (prev.bookIndex !== location.bookIndex) {
       return;
+    }
+
+    //if current is implied and next is implied, go to the one after next
+    let runner = 1;
+    while (location.implied && next.implied && runner < 3) {
+      runner += 1;
+      if (journey[index + runner]) {
+        next = journey[index + runner]
+      }
     }
 
     const theLabels = prev.labels.filter(label => containsLabel(label, next.labels) && !containsLabel(label, location.labels));
