@@ -1206,7 +1206,7 @@ const chapter_labels = {
             {
               labelName: "loc:to Warsaw",
               coords: [52.39647, 16.907989, 52.322518, 20.119259],
-              type: "point",
+              type: "path",
               startParagraph: 1384,
               endParagraph: 1391,
             },
@@ -1665,8 +1665,17 @@ const chapter_labels = {
               ],
               type: "path",
               startParagraph: 1360,
-              endParagraph: 1395,
+              endParagraph: 1363,
             },
+            {
+
+              labelName: "loc:Lizard Point to Dover",
+              coords: [49.957497, -5.206202, 50.688843, 1.093861, 51.1278758, 1.3134027
+              ],
+              type: "path",
+              startParagraph: 1364,
+              endParagraph: 1395,
+            }
           ],
         },
         {
@@ -2282,6 +2291,7 @@ const chapter_labels = {
               labelName: "loc:cross fell? Cross fell house",
               coords: [54.702774, -2.487212],
               type: "point",
+              centrality: "implied",
             },
             {
               labelName: "loc:to Howick Hall",
