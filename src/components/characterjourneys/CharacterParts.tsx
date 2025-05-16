@@ -1,8 +1,9 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { CharacterLocationData, LabelAssociation, useDataPointsStore } from "../../stores";
 import { useBidiHighlight } from "../../hooks/useBidiHighlight";
-import { isBehindGlobe, updateBoundingBox } from "../utils";
+import { getChapterList, isBehindGlobe, updateBoundingBox } from "../utils";
 import { CharacterColors } from "./CharacterStatics";
+import * as d3 from "d3";
 
 export const CharacterVisualisation = memo(({ projection, path }: { projection: d3.GeoProjection, path: any }) => {
   const locationData = useDataPointsStore(s => s.characterLocationData);
@@ -120,3 +121,41 @@ const CharacterCircles = memo(({ charPoints, projection }: { charPoints: Charact
     return g;
   });
 });
+
+export const SingleFilterBarChart = memo(() => {
+
+  const characterChapterData = useDataPointsStore(s => s.characterChapterData);
+
+  if (!characterChapterData) {
+    return null
+  }
+
+  const width = document.body.getBoundingClientRect().width - 100;
+  const margin = 10;
+  const maxHeight = 45;
+
+  const data = getChapterList();
+  const data_last = data.length == 0 ? 0 : data.length - 1;
+  const characterCounts = characterChapterData.map(elem => elem.labels[0].count);
+
+  const xScale = d3.scaleLinear([0, data_last], [margin, width - margin]).clamp(true);
+  const yScale = d3.scaleLinear([0, Math.max(...characterCounts)], [0, 90]).clamp(true);
+  const barWidth = (width / data.length) - 1
+  const bars = useMemo(() => {
+    const numberOfTicksTarget = data.length;
+
+    return xScale.ticks(numberOfTicksTarget).map((value, index) => ({
+      value: yScale(characterCounts[index]),
+      xOffset: xScale(value),
+    }));
+  }, [xScale, data]);
+
+  return (
+    <svg width={'95vw'} height={maxHeight} style={{ margin: 'auto', display: 'block', marginTop: '-100px' }}>
+      {bars.map(({ value, xOffset }, index) => (
+        <g key={"10+" + index} transform={`translate(${xOffset - (barWidth / 2)}, 0)`}>
+          <rect x={0} y={0} width={barWidth} height={value} opacity={0.8} fill="#2F4F4F" />
+        </g>))}
+    </svg>
+  )
+})

@@ -36,7 +36,7 @@ export const TheTicks = memo(() => {
               style={{
                 fontSize: "10px",
                 textAnchor: "middle",
-                transform: firstChapter ? "translateY(45px)" : "translateY(30px)",
+                transform: firstChapter ? "translateY(70px)" : "translateY(55px)",
               }}
             >
               {value}

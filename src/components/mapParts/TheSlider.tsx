@@ -14,7 +14,7 @@ export const TheSlider = memo(function TheSlider() {
     setEnd(theEnd);
   }, [])
 
-  const height = 70;
+  const height = 120;
   const width = document.body.getBoundingClientRect().width - 100;
   const margin = 10;
 
@@ -102,7 +102,7 @@ export const TheSlider = memo(function TheSlider() {
         setOnTheMove('slider');
       }} style={{ cursor: 'grab' }}
     >
-      <rect x={leftSliderPos} y={15} width={rightSliderPos - leftSliderPos} height={25} fill="green" fillOpacity={0.2} stroke="none" />
+      <rect x={leftSliderPos} y={15} width={rightSliderPos - leftSliderPos} height={50} fill="green" fillOpacity={0.2} stroke="none" />
     </g>
     <g key='left slider' id='left-slider'
       onMouseDown={(event: MouseEvent<SVGSVGElement>) => {

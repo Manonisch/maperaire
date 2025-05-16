@@ -1,13 +1,16 @@
 # NEXT
   ^
 - [x] QMF - Filter by meta matches (food preparation) in a tiered legend
-- [ ] preparation uses different color scale @manonisch -> needs different concept!
+- [ ] Other Map types (naturalEarth1, flat map)
+- [ ] QMC - show result frequency on map (per chapter for single filter)
 - [ ] add ancient map typography @payload
-- [ ] Use icons inside circles on points?
+- [ ] Use icons inside circles on points? (food map)
 
 # Todos
 
-- [ ] Concept: How to display the individual points on far zoom
+- [ ] QMC - Add better path comparison visualisation
+
+- [ ] Concept: How to display the individual points on far zoom (food map)
 
 - [ ] food legend, maybe add hints about food preparation
 
@@ -19,20 +22,23 @@
 
 # FeatureList to add
 - [ ] Query Map Food (QMF)
-- [ ] QMF - show result groups on map (different matches)
-- [ ] QMF - show result frequency on map (per chapter vs total)
-- [ ] QMF - Individual match icons
-- [ ] ~~QMF - Filter by individual match Groups~~
-- [x] QMF - Filter by meta matches
 - [ ] QMF - Animated Story following (reveal locations and automatic semantic zoom)
-- [ ] Other Map types (naturalEarth1, flat map)
 - [ ] Automatic, animated region zooming on filtering
+
+# FeatureList under Consideration
+
 - [ ] Query Map Dragon Types (QMDT)
 - [ ] QMDT - Individual match icons...
 - [ ] QMDT - icon size matches Dragon size type?
 
+
 # Last changes
 
+- [x] QMC - Filter by Character
+- [x] QMC - Show Side Character Journeys in new map
+- [x] QMF - show result groups on map (different matches)
+- [x] QMF - Individual match icons (partially)
+- [x] QMF - Filter by meta matches
 - [x] Use icons instead of circles for path foods
 - [x] show food symbols in legend
 - [x] QMF - bidirectional higlighting (match in Agenda + points on card) (copied, see below)
@@ -57,3 +63,8 @@
       all foods that are associated with them, returns a list of all places with their foods attached
 
 - [x] QMF - Show match legend
+
+# Rejected
+
+- [ ] ~~preparation uses different color scale @manonisch~~ -> needs different concept!
+- [ ] ~~QMF - Filter by individual match Groups~~

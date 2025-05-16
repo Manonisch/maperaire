@@ -8,7 +8,7 @@ import { BaseMap, OSMLink, TheSlider } from "./mapParts";
 import { FoodOverlay, FoodVisualisation } from "./foodQuery";
 import { BookMapParts } from "./mapParts/BookMapParts";
 import { CharacterOverlay } from "./characterjourneys/CharacterOverlay";
-import { CharacterVisualisation } from "./characterjourneys/CharacterParts";
+import { CharacterVisualisation, SingleFilterBarChart } from "./characterjourneys/CharacterParts";
 
 export function TheMapChart() {
   const query = useQuery(s => s.query)
@@ -110,12 +110,14 @@ export const Marks = memo(() => {
         <g key="2" className="marks" style={{ cursor: 'grab' }}>
           <BaseMap path={path} isMoving={isMoving} />
           <BookMapParts projection={projection} path={path} />
-          {query === 'Food' && <FoodVisualisation projection={projection} path={path} />}
-          {query === 'Characters' && <CharacterVisualisation projection={projection} path={path} />}
+          {query === 'Food' ? <FoodVisualisation projection={projection} path={path} /> : null}
+          {query === 'Characters' ? <CharacterVisualisation projection={projection} path={path} /> : null}
         </g>
         <OSMLink />
       </svg>
       <TheSlider />
+      {query === 'Characters' ? <SingleFilterBarChart /> : null}
     </>
   );
 });
+

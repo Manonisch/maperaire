@@ -1442,7 +1442,8 @@ const chapter_labels = {
                 -11.178485, 34.30528, -16.803485, 18.47747, -21.72536, 2.025863,
                 -14.993421, -15.979383, -5.707991, -12.585243, 13.386897,
               ],
-              type: "path"
+              type: "path",
+              centrality: "implied"
             },
             {
               labelName: "loc:Benguela",

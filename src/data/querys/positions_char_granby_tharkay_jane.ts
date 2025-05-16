@@ -1486,6 +1486,7 @@ export const charsData = [
     bookIndex: 3,
     chapterIndex: 5,
     matches: [
+      { paragraphIndex: 605, labels: ["Riley"] },
       { paragraphIndex: 626, labels: ["Riley"] },
       { paragraphIndex: 626, labels: ["Riley"] },
       { paragraphIndex: 627, labels: ["Riley"] },

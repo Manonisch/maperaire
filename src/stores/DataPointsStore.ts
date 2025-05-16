@@ -3,7 +3,7 @@ import { book, ChapterQueryResults, FunnyEntry, outputResult } from "../componen
 import chapter_labels from "../data/points_and_paths/chapter_labels";
 import { Querys } from "./QueryStore";
 import { GlobalChapterInterval } from "./SliderStore";
-import { getBookPosition, isInRange } from "../components/utils";
+import { getBookPosition, getChapterList, isInRange } from "../components/utils";
 
 //this is the data from the querystory, reduced to already only have grouped labels
 export const MinimalGroupedData: ChapterQueryResults[] = [];
@@ -13,6 +13,7 @@ interface DataPointStoreStates {
   locations: FunnyEntry[],
   locationData: LocationData[],
   characterLocationData: CharacterLocationData[],
+  characterChapterData: CharacterLabelsCounted[],
 }
 
 interface DataPointStoreActions {
@@ -49,7 +50,7 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
   locations: [],
   locationData: [],
   characterLocationData: [],
-
+  characterChapterData: [],
   updateRelevantData: (query: Querys, filters: FilterConfig, chapterInterval: GlobalChapterInterval) => {
     if (query === 'default') {
       // chapterInterval decides which points and paths and regions are considered
@@ -84,21 +85,20 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
 
       set({ locationData, locations, characterLocationData: [] });
     } else if (query === 'Characters') {
-      //TODO: All Data should be returned, since we need to calculate something about the implied and inbetween paths!
-
-      // If there's two points/paths where the character is mentioned, add the character as (weak) to the path between these two points
-      // If there's n implied path between two points/paths where a character is mentioned -> add the character to the implied path as (weak)
-      // if there's n implied path two points paths where character is implicated to have been, add character to implied path
-
-      // Only
 
       const hasFilter = !!filters.filter?.length;
-      // filter decides which "food groups / food preparations" are relevant (all or some)
+
+      // filter decides which "characters" are relevant (all or some)
       const filteredData = hasFilter ? filterDataSet(MinimalGroupedData, filters) : MinimalGroupedData
 
-      // get all locations
-      // chapterInterval decides which points and paths and regions are considered
-      // THESE SHOULD BE ENOUGH TO RETURN TO DRAW THE FILTERED BASEMAP
+      if (filters.filter?.length === 1) {
+        set({ characterChapterData: countFilteredCharacters(filteredData, filters.filter[0]) })
+      }
+      else {
+        set({ characterChapterData: [] })
+      }
+
+      // get all locations in chapter
       const locations = transformBooksToLocations(chapter_labels.books as book[])
         .filter(location => isInRange(location, {
           start: getBookPosition(chapterInterval.start),
@@ -124,6 +124,54 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
     MinimalGroupedData.push(...minimizedData);
   },
 }));
+
+type Accounted = {
+  name: string,
+  count: number
+}
+
+interface CharacterLabelsCounted {
+  bookIndex: number;
+  chapterIndex: number;
+  labels: Accounted[]
+}
+
+function countFilteredCharacters(filteredData: ChapterQueryResults[], filters: string[]) {
+  const chapterlist = getChapterList();
+  const newData: CharacterLabelsCounted[] = [];
+
+  chapterlist.forEach(chapter => {
+    if (filteredData.some(datarus => datarus.bookIndex === chapter.bookIndex && datarus.chapterIndex === chapter.chapterIndex)) {
+      const countedLabels: any[] = []
+      const filteredEntry = filteredData.find(datarus => datarus.bookIndex === chapter.bookIndex && datarus.chapterIndex === chapter.chapterIndex);
+
+      if (filteredEntry) {
+        filters.forEach(filterus => {
+          const matches = filteredEntry.matches?.filter(match => match.labels.includes(filterus))
+          countedLabels.push({ name: filterus, count: matches?.length ?? 0 })
+        })
+
+        newData.push({
+          bookIndex: chapter.bookIndex,
+          chapterIndex: chapter.chapterIndex,
+          labels: [...countedLabels]
+        })
+      }
+    }
+    else {
+
+      const countedLabels = filters.map(filterus => ({ name: filterus, count: 0 }))
+
+      newData.push({
+        bookIndex: chapter.bookIndex,
+        chapterIndex: chapter.chapterIndex,
+        labels: countedLabels
+      })
+    }
+  });
+
+  return newData
+}
 
 // query - dragonreader query pattern (\bdragon\S*\b)
 // match - all found matches for this query (dragon, dragons, dragonnette, dragon-egg)
