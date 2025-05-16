@@ -126,6 +126,8 @@ export const SingleFilterBarChart = memo(() => {
 
   const characterChapterData = useDataPointsStore(s => s.characterChapterData);
 
+  console.log('has rerendered')
+
   if (!characterChapterData) {
     return null
   }

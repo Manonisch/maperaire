@@ -1,14 +1,17 @@
 # NEXT
   ^
-- [x] QMF - Filter by meta matches (food preparation) in a tiered legend
-- [ ] Other Map types (naturalEarth1, flat map)
-- [ ] QMC - show result frequency on map (per chapter for single filter)
+- [ ] Other Map types (naturalEarth1, flat map) - @payloadd
+
+- [ ] QMC - Character Portraits - @manonisch
+- [ ] QMC - Change Filter handling to protraits - @manonisch
+
 - [ ] add ancient map typography @payload
 - [ ] Use icons inside circles on points? (food map)
 
 # Todos
 
 - [ ] QMC - Add better path comparison visualisation
+- [ ] QMC - visualize weakness of paths
 
 - [ ] Concept: How to display the individual points on far zoom (food map)
 
@@ -31,11 +34,12 @@
 - [ ] QMDT - Individual match icons...
 - [ ] QMDT - icon size matches Dragon size type?
 
-
 # Last changes
 
+- [x] QMC - show result frequency on map (per chapter for single filter)
 - [x] QMC - Filter by Character
 - [x] QMC - Show Side Character Journeys in new map
+- [x] QMF - Filter by meta matches (food preparation) in a tiered legend
 - [x] QMF - show result groups on map (different matches)
 - [x] QMF - Individual match icons (partially)
 - [x] QMF - Filter by meta matches

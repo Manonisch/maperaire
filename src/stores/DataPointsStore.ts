@@ -26,7 +26,7 @@ interface FilterConfig {
   filter: string[][] // [string OR string] AND [string OR string]
 }
 
-export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreActions>((set) => ({
+export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreActions>((set, get) => ({
   allRelevantElements: [],
   storeAllRelevantElements: () => {
     const books = chapter_labels.books as book[];
@@ -91,11 +91,21 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
       // filter decides which "characters" are relevant (all or some)
       const filteredData = hasFilter ? filterDataSet(MinimalGroupedData, filters) : MinimalGroupedData
 
-      if (filters.filter?.length === 1) {
-        set({ characterChapterData: countFilteredCharacters(filteredData, filters.filter[0]) })
+      // //only compute new bar chart if the data has changed
+      // //TODO: FOR SOME REASON THIS IS STILL COSTLY!
+      if (filters && filters.filter[0] && filters.filter[0].length === 1) {
+        const { characterChapterData } = get();
+
+        if (characterChapterData.length === 0) {
+          set({ characterChapterData: countFilteredCharacters(filteredData, filters.filter[0]) })
+        }
       }
       else {
-        set({ characterChapterData: [] })
+        const { characterChapterData } = get();
+        if (characterChapterData.length > 0) {
+          console.log('resetting')
+          set({ characterChapterData: [] })
+        }
       }
 
       // get all locations in chapter

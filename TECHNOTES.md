@@ -1,8 +1,8 @@
 # How to prepare map data
 
-* Get your data as valid .geojson data -> can be exported from OSM via tools or APIs
+* 1. Get your data as valid .geojson data -> can be exported from OSM via tools or APIs
 
-* Transform geojson to topojson, using geo2topo
+* 2. Transform geojson to topojson, using geo2topo
 
 ```
 npm install -g topojson-server
@@ -14,7 +14,7 @@ geo2topo myGeojson.json > myTopojson.json
 
 ```
 
-*Note*: Do not use geo2topo's quantisation mechanism for reducing file size, since this returns blocky quantisation. Instead use topojson-simplofy
+*Note*: Do not use geo2topo's quantisation mechanism for reducing file size, since this returns blocky quantisation! Instead use topojson-simplify.
 
 
 * 3. topojson-simplify for topojson file size reducing

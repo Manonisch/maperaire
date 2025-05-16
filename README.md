@@ -2,26 +2,30 @@
 Interactive Map Project for the Temeraire books by Naomi Novik.
 Try it out [here](https://manonisch.github.io/maperaire/)
 
-## Features
+## The Project
+I started this map, as a base visualisation to show specific map based data from the Temeraire books. Now that the base is done, I aim to add multiple interactive overlays showcasing different datasets manually queried from the books. 
+
+### Available Overlays: 
+- The 'Food' project, exploring which foods were explicitly mentioned to be devoured by Temeraire or friends during the course of the service. (95% done)
+- The 'Side Characters' project. Maps showing the journeys different major side characters joining Laurence and Temeraire during the books. (70% done)
+
+### Upcoming Overlays:
+- OPEN FOR SUGGESTIONS
+
+## Map Features
 - Shows a world map showcasing the (aproximated) locations mentioned over the course of the books.
 - Implied routes taken to get characters from named places in the book to the next are added as dashed lines
-- Simple Tooltip while hovering over routes and points
+- Simple Tooltip with location and chapter data while hovering over routes and points
 
-Available Filter Methods
-- On a per chapter basis via the bottom chapter slider bar.
-- Depending on pre-filtered queries via the select in the topbar.
+- Filter any map on a per chapter basis via the bottom chapter slider bar.
+
+Overlay depending filters:
+- Food: Filter by food and food preparation
+- Side Characters: Filter by SideCharacter
 
 ## Note
 
-Locations and paths were manually selected by the authors best approximation depending on the descriptions in the books. If you see any errors or would like to suggest more detailed paths or points or features, please send me a message or contact me via the 'issues' tab.
-
-## Coming Soon
-
-I started this map, as a base visualisation to show specific map based data from the Temeraire books. Now that the base is done, I aim to add multiple interactive overlays showcasing different datasets manually queried from the books. 
-
-The current project currently finishing is the 'Food' project, exploring which foods were explicitly mentioned to be devoured by Temeraire or friends during the course of the service. 
-
-The next project is the "Side Character" project. These maps will showcase when different major side characters join Laurence and Temeraire on their journey.
+Locations and paths were manually selected by the authors best approximation depending on the descriptions in the books. If you see any errors or would like to suggest more detailed paths or points or features, please send me a message or raise an issue via the 'issues' tab.
 
 ## Other interesting stuff
 
@@ -71,4 +75,6 @@ The next project is the "Side Character" project. These maps will showcase when 
   - [React](https://github.com/facebook/react) - Copyright (c) Meta Platforms, Inc. and affiliates.
         [MIT License](https://github.com/facebook/react?tab=MIT-1-ov-file#)
       
+### Graphic
 
+All used graphics, including icons, portraits & backgrounds have been created by @manonisch and do not fall under any other licensing rights or copright.

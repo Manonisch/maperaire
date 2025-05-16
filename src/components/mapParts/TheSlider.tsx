@@ -110,7 +110,7 @@ export const TheSlider = memo(function TheSlider() {
         setOnTheMove('left')
       }}
       transform={`translate(${leftSliderPos}, 15)`}>
-      <line y2={30} stroke='#427c42' strokeWidth={'6px'} />
+      <line y2={50} stroke='#427c42' strokeWidth={'6px'} opacity={0.8} />
       <text style={{
         fontSize: "10px",
         textAnchor: "middle",
@@ -123,7 +123,7 @@ export const TheSlider = memo(function TheSlider() {
         setOnTheMove('right')
       }}
       transform={`translate(${rightSliderPos}, 15)`}>
-      <line y2={30} stroke='#427c42' strokeWidth={'6px'} />
+      <line y2={50} stroke='#427c42' strokeWidth={'6px'} opacity={0.8} />
       <text style={{
         fontSize: "10px",
         textAnchor: "middle",
