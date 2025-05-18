@@ -97,7 +97,6 @@ const VerticalCharacters = memo(() => {
     >
       {CharacterList.map((item) => {
         const color = CharacterColors[item];
-        const CharacterIcon = CharacterIconMap[item];
 
         return (
           <div
