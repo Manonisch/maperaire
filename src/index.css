@@ -37,4 +37,22 @@ position: relative;
 
 .wrapper {
   padding: 10px;
+  padding-bottom: 0;
 }
+
+.CharacterPortrait:hover {
+  outline: solid olive;
+}
+
+.CharacterPortrait:active {
+  outline: solid darkblue
+}
+
+.characterCheckbox:checked ~ .CharacterPortrait{
+  outline: solid darkblue
+}
+
+.characterCheckbox:focus-visible ~ .CharacterPortrait{
+  outline: solid lightblue
+}
+

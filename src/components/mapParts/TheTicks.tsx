@@ -16,19 +16,26 @@ export const TheTicks = memo(() => {
   const ticks = useMemo(() => {
     const numberOfTicksTarget = data.length;
 
+    const dates = new Map<number, number>([[0, 1805], [21, 1806], [54, 1807], [79, 1808], [84, 1809], [100, 1810], [105, 1811], [122, 1812], [149, 1813]])
+
+
+
     return xScale.ticks(numberOfTicksTarget).map((value) => ({
       value: (data[value] && value % 4 === 0 || data[value].chapterIndex === 0) ? data[value].bookIndex + 1 + '.' + getChapterName(data[value].name) : '',
       xOffset: xScale(value),
-      firstChapter: data[value].chapterIndex === 0
+      firstChapter: data[value].chapterIndex === 0,
+      date: dates.get(value) ?? null
     }));
   }, [xScale, data]);
+
+
 
   return (
     <>
       <line stroke="black" x1={margin} y1={20} x2={width - margin} y2={20} />
       {/* Ticks and labels */}
       {
-        ticks.map(({ value, xOffset, firstChapter }, index) => (
+        ticks.map(({ value, xOffset, firstChapter, date }, index) => (
           <g key={"10+" + index} transform={`translate(${xOffset}, 20)`}>
             <line y2={firstChapter ? DOUBLE_TICK_LENGTH : TICK_LENGTH} stroke="currentColor" />
             <text
@@ -41,6 +48,20 @@ export const TheTicks = memo(() => {
             >
               {value}
             </text>
+            {date ?
+              <>
+                <line y2={60} stroke="#2F4F4F" strokeWidth={2} opacity={0.3} />
+                <text style={{
+                  fontSize: "10px",
+                  textAnchor: "middle",
+                  transform: "translateY(85px)",
+                }}>
+                  {date}
+                </text>
+              </>
+              :
+              null
+            }
           </g>
         ))
       }

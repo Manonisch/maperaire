@@ -99,7 +99,7 @@ const CharacterCircles = memo(({ charPoints, projection }: { charPoints: Charact
       updateBoundingBox(bb, cx - radius, cy - radius, cx + radius, cy + radius);
 
       return <circle
-        key={`${charIndex}.${pointIndex}.food`}
+        key={`${charIndex}.${pointIndex}.char`}
         cx={cx}
         cy={cy}
         r={5}
@@ -126,8 +126,6 @@ export const SingleFilterBarChart = memo(() => {
 
   const characterChapterData = useDataPointsStore(s => s.characterChapterData);
 
-  console.log('has rerendered')
-
   if (!characterChapterData) {
     return null
   }
@@ -153,7 +151,7 @@ export const SingleFilterBarChart = memo(() => {
   }, [xScale, data]);
 
   return (
-    <svg width={'95vw'} height={maxHeight} style={{ margin: 'auto', display: 'block', marginTop: '-100px' }}>
+    <svg width={'95vw'} height={maxHeight} style={{ margin: 'auto', display: 'block', marginTop: '-90px' }}>
       {bars.map(({ value, xOffset }, index) => (
         <g key={"10+" + index} transform={`translate(${xOffset - (barWidth / 2)}, 0)`}>
           <rect x={0} y={0} width={barWidth} height={value} opacity={0.8} fill="#2F4F4F" />

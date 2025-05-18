@@ -9,6 +9,9 @@ export function SourcesView() {
       <li>
         Non-map data shown is based on the Temeraire book series by Naomi Novik - Temeraire copyright Naomi Novik
       </li>
+      <li>
+        Approximate year dates taken from @star_grazing's timeline compilation on the Temeraire Discord Server
+      </li>
     </ul>
     <h2> Map Data Sources </h2>
     <ul>

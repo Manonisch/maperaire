@@ -14,7 +14,7 @@ export const TheSlider = memo(function TheSlider() {
     setEnd(theEnd);
   }, [])
 
-  const height = 120;
+  const height = 110;
   const width = document.body.getBoundingClientRect().width - 100;
   const margin = 10;
 

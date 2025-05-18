@@ -34,7 +34,10 @@ Locations and paths were manually selected by the authors best approximation dep
 
 ## Sources
 
-### The underlying world map data, as well as region boundaries were queried using the following sources:
+### Data sources & world map data
+
+- The Temeraire Books - Copyright by Naomi Novik
+- Approximate year dates taken from @star_grazing's timeline compilation on the Temeraire Discord Server
 
 - Historical country boundaries & Chikuzen Province Boundaries: OpenHistoricalMap contributors
 - The above + other province and area boundaries:
