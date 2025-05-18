@@ -34,6 +34,7 @@ const VerticalCharacters = memo(() => {
         marginInlineEnd: "10px",
         float: "inline-end",
         height: 0,
+        position: 'relative'
       }}
     >
       {CharacterList.map((item) => {

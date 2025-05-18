@@ -46,6 +46,12 @@ function CharPaths({ charPoints, path }: { charPoints: CharacterLocationData[], 
 
   const singleCharPoints = reduceCharInPoints(charPoints);
 
+  //if there's more than 1 label in points total
+
+  // for each single path in all paths
+
+  //if path has 2 points => get tangent 
+
   return (
     singleCharPoints.map((pathEntry, index) => {
       const positions: number[][] = []
