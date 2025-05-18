@@ -2,16 +2,13 @@
   ^
 - [ ] Other Map types (naturalEarth1, flat map) - @payloadd
 
-- [ ] QMC - Character Portraits - @manonisch
-- [ ] QMC - Change Filter handling to protraits - @manonisch
+- [ ] QMC - Add better path comparison visualisation
+- [ ] QMC - visualize weakness of paths
 
 - [ ] add ancient map typography @payload
 - [ ] Use icons inside circles on points? (food map)
 
 # Todos
-
-- [ ] QMC - Add better path comparison visualisation
-- [ ] QMC - visualize weakness of paths
 
 - [ ] Concept: How to display the individual points on far zoom (food map)
 
@@ -35,6 +32,11 @@
 - [ ] QMDT - icon size matches Dragon size type?
 
 # Last changes
+
+- [x] QMC - Character Portraits - @manonisch
+- [x] QMC - Change Filter handling to protraits - @manonisch
+
+- [x] Add year dates to slider
 
 - [x] QMC - show result frequency on map (per chapter for single filter)
 - [x] QMC - Filter by Character

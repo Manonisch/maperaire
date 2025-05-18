@@ -24,6 +24,7 @@ const VerticalCharacters = memo(() => {
     changeSelectedOption(ev.target.id);
   }, []);
 
+
   return (
     <div
       style={{
@@ -39,7 +40,7 @@ const VerticalCharacters = memo(() => {
         const color = CharacterColors[item];
 
         return (
-          <div>
+          <div key={item + 'slector'}>
             <label
               style={{
                 display: "flex",
@@ -47,6 +48,9 @@ const VerticalCharacters = memo(() => {
                 rowGap: "8px",
                 alignItems: "center",
                 height: "fit-content",
+                textDecoration: 'underline',
+                textDecorationColor: color,
+                textDecorationThickness: '3px'
               }}
             >
               <input
@@ -54,15 +58,14 @@ const VerticalCharacters = memo(() => {
                 type="checkbox"
                 onChange={handleChange}
                 id={item}
-                checked={selectedOptions.includes(item)}
+                checked={selectedOptions.includes(item) || selectedOptions.length === 0}
                 className="characterCheckbox"
               />
               <div
-                className="CharacterPortrait"
+                className={`CharacterPortrait ${item}_portrait`}
                 style={{
-                  width: "60px",
-                  height: "80px",
-                  backgroundColor: color,
+                  width: "75px",
+                  height: "100px",
                 }}
               ></div>
               {item}

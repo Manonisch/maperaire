@@ -40,7 +40,7 @@ position: relative;
   padding-bottom: 0;
 }
 
-.CharacterPortrait:hover {
+/* .CharacterPortrait:hover {
   outline: solid olive;
 }
 
@@ -54,5 +54,60 @@ position: relative;
 
 .characterCheckbox:focus-visible ~ .CharacterPortrait{
   outline: solid lightblue
+} */
+
+.CharacterPortrait {
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
+
+
+
+.CharacterPortrait.Jane_portrait:hover {
+  filter: drop-shadow(5px 2px rgb(18, 142, 12))
+}
+
+.characterCheckbox:checked ~ .CharacterPortrait.Jane_portrait, .characterCheckbox:not(:checked) ~ .CharacterPortrait.Jane_portrait:hover {
+  background-image: url("assets/portraits/portrait_jane_selected.png");
+}
+
+.characterCheckbox:not(:checked) ~ .CharacterPortrait.Jane_portrait {
+  background-image: url("assets/portraits/portrait_jane_unselected.png");
+}
+
+.CharacterPortrait.Riley_portrait:hover {
+  filter: drop-shadow(5px 2px rgb(227, 172, 46))
+}
+
+.characterCheckbox:checked ~ .CharacterPortrait.Riley_portrait, .characterCheckbox:not(:checked) ~ .CharacterPortrait.Riley_portrait:hover {
+  background-image: url("assets/portraits/portrait_riley_selected.png");
+}
+
+.characterCheckbox:not(:checked) ~ .CharacterPortrait.Riley_portrait {
+  background-image: url("assets/portraits/portrait_riley_unselected.png");
+}
+
+.CharacterPortrait.Granby_portrait:hover {
+  filter: drop-shadow(5px 2px rgb(229, 11, 11))
+}
+
+.characterCheckbox:checked ~ .CharacterPortrait.Granby_portrait, .characterCheckbox:not(:checked) ~ .CharacterPortrait.Granby_portrait:hover {
+  background-image: url("assets/portraits/portrait_granby_selected.png");
+}
+
+.characterCheckbox:not(:checked) ~ .CharacterPortrait.Granby_portrait {
+  background-image: url("assets/portraits/portrait_granby_unselected.png");
+}
+
+.CharacterPortrait.Tharkay_portrait:hover {
+  filter: drop-shadow(5px 2px rgb(132, 9, 185))
+}
+.characterCheckbox:checked ~ .CharacterPortrait.Tharkay_portrait, .characterCheckbox:not(:checked) ~ .CharacterPortrait.Tharkay_portrait:hover {
+  background-image: url("assets/portraits/portrait_tharkay_selected.png");
+}
+
+.characterCheckbox:not(:checked) ~ .CharacterPortrait.Tharkay_portrait {
+  background-image: url("assets/portraits/portrait_tharkay_unselected.png");
+}
