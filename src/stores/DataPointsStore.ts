@@ -103,7 +103,6 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
       else {
         const { characterChapterData } = get();
         if (characterChapterData.length > 0) {
-          console.log('resetting')
           set({ characterChapterData: [] })
         }
       }

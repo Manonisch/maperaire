@@ -2,9 +2,6 @@
   ^
 - [ ] Other Map types (naturalEarth1, flat map) - @payloadd
 
-- [ ] QMC - Add better path comparison visualisation
-- [ ] QMC - visualize weakness of paths
-
 - [ ] add ancient map typography @payload
 - [ ] Use icons inside circles on points? (food map)
 
@@ -21,7 +18,6 @@
 - [ ] Concept for Linear Journey List
 
 # FeatureList to add
-- [ ] Query Map Food (QMF)
 - [ ] QMF - Animated Story following (reveal locations and automatic semantic zoom)
 - [ ] Automatic, animated region zooming on filtering
 
@@ -33,8 +29,12 @@
 
 # Last changes
 
-- [x] QMC - Character Portraits - @manonisch
-- [x] QMC - Change Filter handling to protraits - @manonisch
+- [x] QMC - offset distance bug
+- [x] QMC - Add better path comparison visualisation
+- [x] QMC - visualize weakness of paths
+
+- [x] QMC - Character Portraits
+- [x] QMC - Change Filter handling to protraits
 
 - [x] Add year dates to slider
 
