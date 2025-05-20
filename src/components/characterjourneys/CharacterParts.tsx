@@ -82,10 +82,10 @@ function CharPaths({
 
         if (poothos.length === 4) {
           //transform that positions
-          const flatOffsetPath = offsetSinglePathSegment(poothos, labelIndex);
+          const flatOffsetPath = offsetSinglePathSegment(poothos);
           pathString = createPathStringFromCoords(flatOffsetPath);
         } else if (pathEntry.coords.length > 4) {
-          const complexPathString = dealWithComplexPaths(poothos, labelIndex);
+          const complexPathString = dealWithComplexPaths(poothos);
           pathString = createPathStringFromCoords(complexPathString)
         }
       }
@@ -105,7 +105,9 @@ function CharPaths({
           style={{
             cursor: "pointer",
           }}
-        ></path>
+        >
+          <title>{`${label.label}\n${pathEntry.locName.split(":")[1]}`}</title>
+        </path>
       );
     });
   });
@@ -267,13 +269,12 @@ function createPathStringFromCoords(coords: number[]): string {
   return result;
 }
 
-function dealWithComplexPaths(path: number[], labelIndex: number): number[] {
+function dealWithComplexPaths(path: number[]): number[] {
   const newPoints: number[] = [];
 
   //get starting point so we only have to get offset once for each point
   let offsetStarterPath = offsetSinglePathSegment(
-    [path[0], path[1], path[2], path[3]],
-    labelIndex
+    [path[0], path[1], path[2], path[3]]
   );
   newPoints.push(offsetStarterPath[0], offsetStarterPath[1]);
 
@@ -283,7 +284,7 @@ function dealWithComplexPaths(path: number[], labelIndex: number): number[] {
     const testPathNext = [path[i], path[i + 1], path[i + 2], path[i + 3]];
 
     //get the offset of this path segment and the next
-    const offTestPathNext = offsetSinglePathSegment(testPathNext, labelIndex);
+    const offTestPathNext = offsetSinglePathSegment(testPathNext);
 
     //Find the intersection between this path segment and the next
     const interSectPoint = getIntersection(offsetStarterPath, offTestPathNext);
@@ -296,7 +297,6 @@ function dealWithComplexPaths(path: number[], labelIndex: number): number[] {
 
 function offsetSinglePathSegment(
   path: number[],
-  offseter: number
 ): [number, number, number, number] {
   // get the richtungsvector
   const xa = path[2] - path[0];
@@ -311,7 +311,7 @@ function offsetSinglePathSegment(
   const xn = -yau;
   const yn = xau;
 
-  const offset = 3.5 * offseter;
+  const offset = 3.6 * 1;
 
   return [
     path[0] + offset * xn,

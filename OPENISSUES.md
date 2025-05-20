@@ -2,8 +2,6 @@
   ^
 - [ ] Other Map types (naturalEarth1, flat map) - @payloadd
 
-- [ ] QMC - offset distance bug
-
 - [ ] add ancient map typography @payload
 - [ ] Use icons inside circles on points? (food map)
 
@@ -31,6 +29,7 @@
 
 # Last changes
 
+- [x] QMC - offset distance bug
 - [x] QMC - Add better path comparison visualisation
 - [x] QMC - visualize weakness of paths
 
