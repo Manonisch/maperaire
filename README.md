@@ -3,14 +3,14 @@ Interactive Map Project for the Temeraire books by Naomi Novik.
 Try it out [here](https://manonisch.github.io/maperaire/)
 
 ## The Project
-I started this map, as a base visualisation to show specific map based data from the Temeraire books. Now that the base is done, I aim to add multiple interactive overlays showcasing different datasets manually queried from the books. 
+I started this map as a base visualisation to show specific map based data from the Temeraire books. Now that the base is done I aim to add multiple interactive overlays showcasing different datasets manually queried from the books. 
 
 ### Available Overlays: 
 - The 'Food' project, exploring which foods were explicitly mentioned to be devoured by Temeraire or friends during the course of the service. (95% done)
-- The 'Side Characters' project. Maps showing the journeys different major side characters joining Laurence and Temeraire during the books. (70% done)
+- The 'Side Characters' project. Maps showing the journeys different major side characters joining Laurence and Temeraire during the books. (98% done) -> showcases 4 side characters. More can be added but would need a new protrait and potentially a limit
 
 ### Upcoming Overlays:
-- OPEN FOR SUGGESTIONS
+- Side Dragons Overlay? -> Same as Side Charactors but for the dragons?
 
 ## Map Features
 - Shows a world map showcasing the (aproximated) locations mentioned over the course of the books.
