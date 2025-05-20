@@ -26,7 +26,9 @@ function whatever(list: LabelAssociation[]): LabelAssociation[] {
       whater.push(l);
     }
   })
-  return whater.sort();
+
+  const foo = whater.toSorted((a, b) => a.label.localeCompare(b.label));
+  return foo;
 }
 
 function reduceCharInPoints(points: CharacterLocationData[]) {
@@ -198,7 +200,6 @@ function offsetSinglePathSegment(path: number[], offseter: number) {
   const xn = -yau
   const yn = xau
 
-  console.log('what is offseter', offseter, xn, yn)
   const offset = 1 * offseter;
 
   return [path[0] + (offset * xn), path[1] + (offset * yn), path[2] + (offset * xn), path[3] + (offset * yn)]
