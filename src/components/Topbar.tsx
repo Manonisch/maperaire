@@ -46,10 +46,10 @@ export const TopBar = memo(() => {
       background: 'antiquewhite',
       margin: '2px'
     }}>
-      <span style={{ fontWeight: 'bold' }}>Move the Globe</span>
+      <span style={{ fontWeight: 'bold' }}>Move the Globe </span>
       by dragging with the mouse, zoom via scroll wheel. Hover on points to
-      <span style={{ fontWeight: 'bold' }}>see more information</span>.
-      To <span style={{ fontWeight: 'bold' }}>Filter</span>
+      <span style={{ fontWeight: 'bold' }}> see more information</span>.
+      To <span style={{ fontWeight: 'bold' }}> Filter </span>
       drag and move the handles on the bottom axis.
     </span>
     <TriggerUpdateRelevantData />
