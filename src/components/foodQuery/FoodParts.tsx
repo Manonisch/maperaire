@@ -107,12 +107,13 @@ function PathVis({ pathData, d }: { pathData: LocationData, d: string }) {
   }
 
   const pathLengthLookup = getPathLengthLookup(d)
+
   const distanceIncrements = pathLengthLookup.totalLength / (foodLength + 1);
 
   return foodElems.map((elem, i) => {
     const pos = pathLengthLookup.getPointAtLength(distanceIncrements * (1 + i), true);
 
-    let rotatepoo = Math.PI * 0.5
+    let rotatepoo = Math.PI * 0.5 
     if (i % 2 === 0) {
       rotatepoo = Math.PI * -0.5
     }

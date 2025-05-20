@@ -26,7 +26,7 @@ function whatever(list: LabelAssociation[]): LabelAssociation[] {
       whater.push(l);
     }
   })
-  return whater;
+  return whater.sort();
 }
 
 function reduceCharInPoints(points: CharacterLocationData[]) {
@@ -42,25 +42,43 @@ function reduceCharInPoints(points: CharacterLocationData[]) {
   return theRetour;
 }
 
+
+
+//TODO:
+
+// task: alphabetical sort over labels (done)
+// task: complex paths, make complex path into multiple single paths
+// issue: path uses longitude/lattitude and not pixel position
+
+
+
+
+
+
+
 function CharPaths({ charPoints, path }: { charPoints: CharacterLocationData[], path: any }) {
 
   const singleCharPoints = reduceCharInPoints(charPoints);
 
-  //if there's more than 1 label in points total
-
-  // for each single path in all paths
-
-  //if path has 2 points => get tangent 
-
   return (
     singleCharPoints.map((pathEntry, index) => {
-      const positions: number[][] = []
+      let positions: number[][] = []
       for (let i = 0; i < pathEntry.coords.length; i += 2) {
         positions.push([pathEntry.coords[i + 1], pathEntry.coords[i]]);
       }
 
+
+
       return pathEntry.labels.map((label, labelIndex) => {
-        return (<path key={"17+" + index + label.label} fill='none' stroke={CharacterColors[label.label]} strokeWidth={(pathEntry.labels.length - labelIndex) * 3} opacity={1} d={path({
+
+        if (pathEntry.coords.length === 4 && labelIndex > 0) {
+          //transform that positions
+          const foo = positions.flat();
+          const feral = offsetSinglePathSegment(foo, labelIndex);
+          positions = [[feral[0], feral[1]], [feral[2], feral[3]]]
+        }
+
+        return (<path key={"17+" + index + label.label} fill='none' stroke={CharacterColors[label.label]} strokeWidth={3} opacity={1} d={path({
           type: "LineString",
           coordinates: positions
         }) || undefined}
@@ -165,3 +183,57 @@ export const SingleFilterBarChart = memo(() => {
     </svg>
   )
 })
+
+function offsetSinglePathSegment(path: number[], offseter: number) {
+  // get the richtungsvector
+  const xa = path[2] - path[0];
+  const ya = path[3] - path[1];
+
+  //normalisiere den Vektor
+  const denomiter = Math.sqrt((xa * xa) + (ya * ya))
+  const xau = xa / denomiter
+  const yau = ya / denomiter
+
+  // get the normal to the anstieg
+  const xn = -yau
+  const yn = xau
+
+  console.log('what is offseter', offseter, xn, yn)
+  const offset = 1 * offseter;
+
+  return [path[0] + (offset * xn), path[1] + (offset * yn), path[2] + (offset * xn), path[3] + (offset * yn)]
+}
+
+
+function getIntersection(path1: [number, number, number, number], path2: [number, number, number, number]) {
+
+  //for two given single path segment => get the path function for each
+
+  if (path1.length !== 4 || path2.length !== 4) {
+    throw new Error('oh no, path has not exactly 4 coordinates ' + path1 + ' , ' + path2)
+  }
+
+  // basis is starting point
+  const x1 = path1[0]
+  const y1 = path1[1]
+  // slope is difference
+  const u1 = path1[2] - path1[0]
+  const v1 = path1[3] - path1[1]
+
+  // basis is starting point
+  const x2 = path2[0]
+  const y2 = path2[1]
+  // slope is difference
+  const u2 = path2[2] - path2[0]
+  const v2 = path2[3] - path2[1]
+
+
+  const divident = (-u2 * y2 + y1 * u2 + x2 * v2 - x1 * v2);
+  const divisor = (u1 * v2 - v1 * u2);
+  const a = divident / divisor;
+
+  const xS = x1 + a * u1;
+  const yS = y1 + a * v1;
+
+  return [xS, yS]
+}
