@@ -3,7 +3,7 @@
 - [ ] Other Map types (naturalEarth1, flat map) - @payloadd
 
 - [ ] QMC - Add better path comparison visualisation
-- [ ] QMC - visualize weakness of paths
+- [x] QMC - visualize weakness of paths
 
 - [ ] add ancient map typography @payload
 - [ ] Use icons inside circles on points? (food map)
@@ -33,8 +33,8 @@
 
 # Last changes
 
-- [x] QMC - Character Portraits - @manonisch
-- [x] QMC - Change Filter handling to protraits - @manonisch
+- [x] QMC - Character Portraits
+- [x] QMC - Change Filter handling to protraits
 
 - [x] Add year dates to slider
 

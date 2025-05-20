@@ -2,7 +2,7 @@ import { memo, useMemo } from "react";
 import { CharacterLocationData, LabelAssociation, useDataPointsStore } from "../../stores";
 import { useBidiHighlight } from "../../hooks/useBidiHighlight";
 import { getChapterList, isBehindGlobe, updateBoundingBox } from "../utils";
-import { CharacterColors } from "./CharacterStatics";
+import { CharacterColors, CharacterWeakColors } from "./CharacterStatics";
 import * as d3 from "d3";
 
 export const CharacterVisualisation = memo(({ projection, path }: { projection: d3.GeoProjection, path: any }) => {
@@ -26,9 +26,7 @@ function whatever(list: LabelAssociation[]): LabelAssociation[] {
       whater.push(l);
     }
   })
-
-  const foo = whater.toSorted((a, b) => a.label.localeCompare(b.label));
-  return foo;
+  return whater.toSorted((a, b) => a.label.localeCompare(b.label));;
 }
 
 function reduceCharInPoints(points: CharacterLocationData[]) {
@@ -45,18 +43,11 @@ function reduceCharInPoints(points: CharacterLocationData[]) {
 }
 
 
-
 //TODO:
 
-// task: alphabetical sort over labels (done)
+// chore: can the offset calculation be moved somewhere upwards?
 // task: complex paths, make complex path into multiple single paths
 // issue: path uses longitude/lattitude and not pixel position
-
-
-
-
-
-
 
 function CharPaths({ charPoints, path }: { charPoints: CharacterLocationData[], path: any }) {
 
@@ -69,18 +60,30 @@ function CharPaths({ charPoints, path }: { charPoints: CharacterLocationData[], 
         positions.push([pathEntry.coords[i + 1], pathEntry.coords[i]]);
       }
 
+      let pathos: string = path({
+        type: "LineString",
+        coordinates: positions
+      })
 
-
+      // console.log('what is pathos', pathos)
       return pathEntry.labels.map((label, labelIndex) => {
 
-        if (pathEntry.coords.length === 4 && labelIndex > 0) {
-          //transform that positions
-          const foo = positions.flat();
-          const feral = offsetSinglePathSegment(foo, labelIndex);
-          positions = [[feral[0], feral[1]], [feral[2], feral[3]]]
+        if (labelIndex > 0 && pathos) {
+          if (pathEntry.coords.length === 4) {
+            //transform that positions
+            const flatPos = positions.flat();
+            const poothos = pathos.split(/L|M|,/i);
+
+            console.log('what is poothos', pathos, poothos)
+            const flatOffsetPath = offsetSinglePathSegment(flatPos, labelIndex);
+            positions = [[flatOffsetPath[0], flatOffsetPath[1]], [flatOffsetPath[2], flatOffsetPath[3]]]
+          }
+          else if (pathEntry.coords.length > 4) {
+            // positions = dealWithComplexPaths(positions, labelIndex);
+          }
         }
 
-        return (<path key={"17+" + index + label.label} fill='none' stroke={CharacterColors[label.label]} strokeWidth={3} opacity={1} d={path({
+        return (<path key={"17+" + index + label.label} fill='none' strokeDasharray={label.weak ? '10 3' : 'none'} stroke={label.weak ? CharacterWeakColors[label.label] : CharacterColors[label.label]} strokeWidth={3} opacity={1} d={path({
           type: "LineString",
           coordinates: positions
         }) || undefined}
@@ -186,7 +189,32 @@ export const SingleFilterBarChart = memo(() => {
   )
 })
 
-function offsetSinglePathSegment(path: number[], offseter: number) {
+
+function dealWithComplexPaths(path: number[][], labelIndex: number) {
+
+  const newPoints: number[][] = [];
+
+  //get starting point so we only have to get offset once for each point
+  let offsetStarterPath = offsetSinglePathSegment([...path[0], ...path[1]], labelIndex);
+  newPoints.push([offsetStarterPath[0], offsetStarterPath[1]]);
+
+  // for each set of two, this is a coordinate
+  for (let i = 1; i < path.length - 1; i++) {
+    // single path segments go between each 
+    const testPathNext = [...path[i + 1], ...path[i]]
+
+    //get the offset of this path segment and the next
+    const offTestPathNext = offsetSinglePathSegment(testPathNext, labelIndex);
+
+    //Find the intersection between this path segment and the next
+    const interSectPoint = getIntersection(offsetStarterPath, offTestPathNext)
+    newPoints.push(interSectPoint);
+    offsetStarterPath = offTestPathNext;
+  }
+  return newPoints;
+}
+
+function offsetSinglePathSegment(path: number[], offseter: number): [number, number, number, number] {
   // get the richtungsvector
   const xa = path[2] - path[0];
   const ya = path[3] - path[1];
@@ -204,7 +232,6 @@ function offsetSinglePathSegment(path: number[], offseter: number) {
 
   return [path[0] + (offset * xn), path[1] + (offset * yn), path[2] + (offset * xn), path[3] + (offset * yn)]
 }
-
 
 function getIntersection(path1: [number, number, number, number], path2: [number, number, number, number]) {
 
