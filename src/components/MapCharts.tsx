@@ -26,10 +26,8 @@ export const Marks = memo(() => {
   const svgRef = useRef<SVGSVGElement>(null);
 
   const [projection] = useState(d3.geoNaturalEarth1)
-  // const [projection] = useState(d3.geoMercator)
   const unityScale = projection.scale();
   const [trick17a, trick17] = useState(0);
-  const london: [number, number] = [-0.1256161, 51.5128751];
   const path = d3.geoPath(projection);
   const r = 4;
   const query = useQuery(s => s.query)
@@ -50,8 +48,6 @@ export const Marks = memo(() => {
     let zoomEndTimeout = setTimeout(() => { });
 
     const bb = svgRef.current.getBoundingClientRect();
-    // projection.center(london);
-    // projection.translate([bb.width / 2, bb.height / 2]);
     trick17(Math.random());
 
     const zoomBehaviour = d3.zoom<SVGSVGElement, unknown>()
@@ -63,7 +59,7 @@ export const Marks = memo(() => {
         const projectedCoords = projection.invert(coords);
         if (!projectedCoords) return;
         lon0 = projectedCoords[0];
-        v0 = versor.cartesian(projectedCoords);
+        v0 = versor.cartesian([projectedCoords[0], [0]]);
         r0 = projection.rotate();
         q0 = versor(r0);
       })
@@ -73,43 +69,18 @@ export const Marks = memo(() => {
           setIsMoving(true);
         }
 
+        const {k, y: ty} = ev.transform;
         const coords_px = getPointerCoords(ev.sourceEvent.target, ev);
-        const lon1 = projection.rotate(r0).invert!(coords_px)![0];
 
-        projection.rotate([r0[0] + (lon1 - lon0), 0, 0]);
+        projection.scale(k * unityScale);
 
-        const {k, x: tx, y: ty} = ev.transform;
+        const [lon1] = projection.rotate(r0).invert!(coords_px)!;
+        projection.rotate([r0[0] + lon1 - lon0, r0[1], r0[2]]);
         projection.translate([0, ty]);
-
-        var scale = k * unityScale;
-        projection.scale(scale);
-
-        // const rotation = projection.rotate();
-        // const coords_b = projection.invert?.(coords_px);
-
-        // // console.log(rotation, coords_a, coords_b);
-
-        // // rotation[0] = 0; // Don't rotate on X axis
-        // rotation[1] = 0; // Don't rotate on Y axis
-        // rotation[2] = 0; // Don't rotate on Z axis, pole axis
-
-
-        // svgRef.current?.querySelector('g')?.setAttribute('transform', `translate(${0} ${y})`)
-
-        // projection.scale()
-
-
-        // projection.rotate(rotation);
-
-        // const [xa, ya] = projection([0, 0])!;
-
 
         trick17(Math.random());
       })
       .on('end', () => {
-        // TODO: by passing in coordinates we can move rotate the mape to center the area
-        // projection.rotate([137, -64, 0]);
-
         clearTimeout(zoomEndTimeout);
         zoomEndTimeout = setTimeout(() => {
           setIsMoving(false);
