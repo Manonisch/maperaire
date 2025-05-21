@@ -1,17 +1,17 @@
 import { memo, useMemo } from "react";
 import {
   CharacterLocationData,
-  LabelAssociation,
   useDataPointsStore,
 } from "../../stores";
 import { useBidiHighlight } from "../../hooks/useBidiHighlight";
 import { getChapterList, isBehindGlobe, updateBoundingBox } from "../utils";
-import { CharacterColors, CharacterWeakColors } from "./CharacterStatics";
+import { DragonColors, DragonWeakColors } from "./DragonStatics";
 import * as d3 from "d3";
+import { reduceCharInPoints, offsetSinglePathSegment, dealWithComplexPaths, createPathStringFromCoords } from "../characterjourneys/CharacterParts";
 
-export const CharacterVisualisation = memo(
+export const DragonVisualisation = memo(
   ({ projection, path }: { projection: d3.GeoProjection; path: any }) => {
-    const locationData = useDataPointsStore((s) => s.characterLocationData);
+    const locationData = useDataPointsStore((s) => s.dragonLocationData);
 
     const CharacterCirclePoints = locationData.filter(
       (p) => p.type === "point"
@@ -20,8 +20,8 @@ export const CharacterVisualisation = memo(
 
     return (
       <g>
-        <CharPaths charPoints={CharacterCirclePaths} path={path} />
-        <CharacterCircles
+        <DragonPaths charPoints={CharacterCirclePaths} path={path} />
+        <DragonCircles
           charPoints={CharacterCirclePoints}
           projection={projection}
         />
@@ -30,30 +30,7 @@ export const CharacterVisualisation = memo(
   }
 );
 
-export function whatever(list: LabelAssociation[]): LabelAssociation[] {
-  const whater: LabelAssociation[] = [];
-  list.forEach((l) => {
-    if (!whater.some((what) => what.label === l.label)) {
-      whater.push(l);
-    }
-  });
-  return whater.toSorted((a, b) => a.label.localeCompare(b.label));
-}
-
-export function reduceCharInPoints(points: CharacterLocationData[]) {
-  const theRetour: CharacterLocationData[] = [];
-  points.forEach((point) => {
-    theRetour.push({
-      labels: whatever(point.labels),
-      coords: [...point.coords],
-      locName: point.locName,
-      type: point.type,
-    });
-  });
-  return theRetour;
-}
-
-export function CharPaths({
+function DragonPaths({
   charPoints,
   path,
 }: {
@@ -96,8 +73,8 @@ export function CharPaths({
           fill="none"
           stroke={
             label.weak
-              ? CharacterWeakColors[label.label]
-              : CharacterColors[label.label]
+              ? DragonColors[label.label]
+              : DragonWeakColors[label.label]
           }
           strokeWidth={3}
           opacity={1}
@@ -113,7 +90,7 @@ export function CharPaths({
   });
 }
 
-export const CharacterCircles = memo(
+const DragonCircles = memo(
   ({
     charPoints,
     projection,
@@ -173,7 +150,7 @@ export const CharacterCircles = memo(
                 cx={cx}
                 cy={cy}
                 r={5}
-                fill={CharacterColors[char.label]}
+                fill={DragonColors[char.label]}
                 opacity={0.5}
                 stroke="black"
                 style={{
@@ -196,12 +173,12 @@ export const CharacterCircles = memo(
   }
 );
 
-export const SingleFilterBarChart = memo(() => {
-  const characterChapterData = useDataPointsStore(
-    (s) => s.characterChapterData
+export const SingleDragonBarChart = memo(() => {
+  const dragonChapterData = useDataPointsStore(
+    (s) => s.dragonChapterData
   );
 
-  if (!characterChapterData) {
+  if (!dragonChapterData) {
     return null;
   }
 
@@ -211,7 +188,7 @@ export const SingleFilterBarChart = memo(() => {
 
   const data = getChapterList();
   const data_last = data.length == 0 ? 0 : data.length - 1;
-  const characterCounts = characterChapterData.map(
+  const dragonCounts = dragonChapterData.map(
     (elem) => elem.labels[0].count
   );
 
@@ -219,14 +196,14 @@ export const SingleFilterBarChart = memo(() => {
     .scaleLinear([0, data_last], [margin, width - margin])
     .clamp(true);
   const yScale = d3
-    .scaleLinear([0, Math.max(...characterCounts)], [0, 90])
+    .scaleLinear([0, Math.max(...dragonCounts)], [0, 90])
     .clamp(true);
   const barWidth = width / data.length - 1;
   const bars = useMemo(() => {
     const numberOfTicksTarget = data.length;
 
     return xScale.ticks(numberOfTicksTarget).map((value, index) => ({
-      value: yScale(characterCounts[index]),
+      value: yScale(dragonCounts[index]),
       xOffset: xScale(value),
     }));
   }, [xScale, data]);
@@ -255,104 +232,3 @@ export const SingleFilterBarChart = memo(() => {
     </svg>
   );
 });
-
-export function createPathStringFromCoords(coords: number[]): string {
-  let result = "";
-
-  for (let i = 0; i < coords.length; i += 2) {
-    if (i === 0) {
-      result += "M" + coords[i] + "," + coords[i + 1];
-    } else {
-      result += "L" + coords[i] + "," + coords[i + 1];
-    }
-  }
-  return result;
-}
-
-export function dealWithComplexPaths(path: number[]): number[] {
-  const newPoints: number[] = [];
-
-  //get starting point so we only have to get offset once for each point
-  let offsetStarterPath = offsetSinglePathSegment(
-    [path[0], path[1], path[2], path[3]]
-  );
-  newPoints.push(offsetStarterPath[0], offsetStarterPath[1]);
-
-  // for each set of two, this is a coordinate
-  for (let i = 2; i < path.length - 2; i += 2) {
-    // single path segments go between each
-    const testPathNext = [path[i], path[i + 1], path[i + 2], path[i + 3]];
-
-    //get the offset of this path segment and the next
-    const offTestPathNext = offsetSinglePathSegment(testPathNext);
-
-    //Find the intersection between this path segment and the next
-    const interSectPoint = getIntersection(offsetStarterPath, offTestPathNext);
-    newPoints.push(...interSectPoint);
-    offsetStarterPath = offTestPathNext;
-  }
-  newPoints.push(offsetStarterPath[2], offsetStarterPath[3])
-  return newPoints;
-}
-
-export function offsetSinglePathSegment(
-  path: number[],
-): [number, number, number, number] {
-  // get the richtungsvector
-  const xa = path[2] - path[0];
-  const ya = path[3] - path[1];
-
-  //normalisiere den Vektor
-  const denomiter = Math.sqrt(xa * xa + ya * ya);
-  const xau = xa / denomiter;
-  const yau = ya / denomiter;
-
-  // get the normal to the anstieg
-  const xn = -yau;
-  const yn = xau;
-
-  const offset = 3.6 * 1;
-
-  return [
-    path[0] + offset * xn,
-    path[1] + offset * yn,
-    path[2] + offset * xn,
-    path[3] + offset * yn,
-  ];
-}
-
-export function getIntersection(
-  path1: [number, number, number, number],
-  path2: [number, number, number, number]
-) {
-  //for two given single path segment => get the path function for each
-
-  if (path1.length !== 4 || path2.length !== 4) {
-    throw new Error(
-      "oh no, path has not exactly 4 coordinates " + path1 + " , " + path2
-    );
-  }
-
-  // basis is starting point
-  const x1 = path1[0];
-  const y1 = path1[1];
-  // slope is difference
-  const u1 = path1[2] - path1[0];
-  const v1 = path1[3] - path1[1];
-
-  // basis is starting point
-  const x2 = path2[0];
-  const y2 = path2[1];
-  // slope is difference
-  const u2 = path2[2] - path2[0];
-  const v2 = path2[3] - path2[1];
-
-  const divident = -u2 * y2 + y1 * u2 + x2 * v2 - x1 * v2;
-  const divisor = u1 * v2 - v1 * u2;
-  const a = divident / divisor;
-
-  const xS = x1 + a * u1;
-  const yS = y1 + a * v1;
-
-  return [xS, yS];
-}

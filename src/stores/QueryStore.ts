@@ -4,19 +4,22 @@ import { foodGroups } from "../components/foodQuery";
 import { Food } from "../data/querys/positions_food_final";
 import { charsData } from "../data/querys/positions_char_granby_tharkay_jane";
 import { characterGroups } from "../components/characterjourneys/CharacterStatics";
+import { dragonsData } from "../data/querys/positions_dragons";
 
-export type Querys = "default" | "Food" | 'Characters';
+export type Querys = "default" | "Food" | 'Characters' | 'Dragons';
 
 export const queryRefs: Record<string, ChapterQueryResults[]> = {
   default: [],
   Food: Food,
-  Characters: charsData
+  Characters: charsData,
+  Dragons: dragonsData
 };
 
 export const dataSetMinimizers = {
   default: [],
   Food: [foodGroups],
-  Characters: [characterGroups]
+  Characters: [characterGroups],
+  Dragons: []
 };
 
 export interface Query {

@@ -1,13 +1,14 @@
 body {
   margin: 0;
-  padding: 0;  
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  padding: 0;
+  font-family: Georgia, "Times New Roman", Times, serif;
 }
 
-button, select {
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    text-wrap: nowrap;
-    background-color: oklch(86.9% 0.005 56.366);
+button,
+select {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  text-wrap: nowrap;
+  background-color: oklch(86.9% 0.005 56.366);
 }
 
 #root {
@@ -17,11 +18,11 @@ button, select {
   margin: 0;
 }
 
-.background-image{
+.background-image {
   width: 100vw;
   height: 100vh;
   margin: -10px;
-  background-image: url('./assets/dragon_squadron.svg');
+  background-image: url("./assets/dragon_squadron.svg");
   background-size: 120px;
   display: inline;
   position: absolute;
@@ -30,9 +31,9 @@ button, select {
   opacity: 0.07;
 }
 
-.themappa{
+.themappa {
   z-index: 1;
-position: relative;
+  position: relative;
 }
 
 .wrapper {
@@ -62,14 +63,12 @@ position: relative;
   background-repeat: no-repeat;
 }
 
-
-
-
 .CharacterPortrait.Jane_portrait:hover {
-  filter: drop-shadow(5px 2px rgb(18, 142, 12))
+  filter: drop-shadow(5px 2px rgb(18, 142, 12));
 }
 
-.characterCheckbox:checked ~ .CharacterPortrait.Jane_portrait, .characterCheckbox:not(:checked) ~ .CharacterPortrait.Jane_portrait:hover {
+.characterCheckbox:checked ~ .CharacterPortrait.Jane_portrait,
+.characterCheckbox:not(:checked) ~ .CharacterPortrait.Jane_portrait:hover {
   background-image: url("assets/portraits/portrait_jane_selected.png");
 }
 
@@ -78,10 +77,11 @@ position: relative;
 }
 
 .CharacterPortrait.Riley_portrait:hover {
-  filter: drop-shadow(5px 2px rgb(227, 172, 46))
+  filter: drop-shadow(5px 2px rgb(227, 172, 46));
 }
 
-.characterCheckbox:checked ~ .CharacterPortrait.Riley_portrait, .characterCheckbox:not(:checked) ~ .CharacterPortrait.Riley_portrait:hover {
+.characterCheckbox:checked ~ .CharacterPortrait.Riley_portrait,
+.characterCheckbox:not(:checked) ~ .CharacterPortrait.Riley_portrait:hover {
   background-image: url("assets/portraits/portrait_riley_selected.png");
 }
 
@@ -90,10 +90,11 @@ position: relative;
 }
 
 .CharacterPortrait.Granby_portrait:hover {
-  filter: drop-shadow(5px 2px rgb(229, 11, 11))
+  filter: drop-shadow(5px 2px rgb(229, 11, 11));
 }
 
-.characterCheckbox:checked ~ .CharacterPortrait.Granby_portrait, .characterCheckbox:not(:checked) ~ .CharacterPortrait.Granby_portrait:hover {
+.characterCheckbox:checked ~ .CharacterPortrait.Granby_portrait,
+.characterCheckbox:not(:checked) ~ .CharacterPortrait.Granby_portrait:hover {
   background-image: url("assets/portraits/portrait_granby_selected.png");
 }
 
@@ -102,12 +103,64 @@ position: relative;
 }
 
 .CharacterPortrait.Tharkay_portrait:hover {
-  filter: drop-shadow(5px 2px rgb(132, 9, 185))
+  filter: drop-shadow(5px 2px rgb(132, 9, 185));
 }
-.characterCheckbox:checked ~ .CharacterPortrait.Tharkay_portrait, .characterCheckbox:not(:checked) ~ .CharacterPortrait.Tharkay_portrait:hover {
+.characterCheckbox:checked ~ .CharacterPortrait.Tharkay_portrait,
+.characterCheckbox:not(:checked) ~ .CharacterPortrait.Tharkay_portrait:hover {
   background-image: url("assets/portraits/portrait_tharkay_selected.png");
 }
 
 .characterCheckbox:not(:checked) ~ .CharacterPortrait.Tharkay_portrait {
   background-image: url("assets/portraits/portrait_tharkay_unselected.png");
+}
+
+.DragonCheckbox:not(:checked) ~ .CharacterPortrait.Perscitia_portrait,
+.DragonCheckbox:not(:checked) ~ .CharacterPortrait.Maximus_portrait,
+.DragonCheckbox:not(:checked) ~ .CharacterPortrait.Iskierka_portrait,
+.DragonCheckbox:not(:checked) ~ .CharacterPortrait.Arkady_portrait,
+.DragonCheckbox:not(:checked) ~ .CharacterPortrait.Lily_portrait,
+.DragonCheckbox:not(:checked) ~ .CharacterPortrait.Churki_portrait {
+  filter: sepia(0.9) grayscale(0.5);
+}
+
+.CharacterPortrait.Perscitia_portrait:hover {
+  filter: drop-shadow(5px 2px rgb(54, 145, 129)) !important;
+}
+.CharacterPortrait.Perscitia_portrait {
+  background-image: url("assets/portraits/Perscitia_selected.png");
+}
+
+.CharacterPortrait.Maximus_portrait:hover {
+  filter: drop-shadow(5px 2px rgb(227, 152, 46)) !important;
+}
+.CharacterPortrait.Maximus_portrait {
+  background-image: url("assets/portraits/Maximus_selected.png");
+}
+
+.CharacterPortrait.Iskierka_portrait:hover {
+  filter: drop-shadow(5px 2px rgb(126, 43, 43)) !important;
+}
+.CharacterPortrait.Iskierka_portrait {
+  background-image: url("assets/portraits/Iskierka_selected.png");
+}
+
+.CharacterPortrait.Arkady_portrait:hover {
+  filter: drop-shadow(5px 2px rgb(74, 83, 77)) !important;
+}
+.CharacterPortrait.Arkady_portrait {
+  background-image: url("assets/portraits/Arkady_selected.png");
+}
+
+.CharacterPortrait.Lily_portrait:hover {
+  filter: drop-shadow(5px 2px rgb(46, 101, 196)) !important;
+}
+.CharacterPortrait.Lily_portrait {
+  background-image: url("assets/portraits/Lily_selected.png");
+}
+
+.CharacterPortrait.Churki_portrait:hover {
+  filter: drop-shadow(5px 2px rgb(103, 60, 144));
+}
+.CharacterPortrait.Churki_portrait {
+  background-image: url("assets/portraits/Churki_selected.png");
 }

@@ -9,6 +9,8 @@ import { FoodOverlay, FoodVisualisation } from "./foodQuery";
 import { BookMapParts } from "./mapParts/BookMapParts";
 import { CharacterOverlay } from "./characterjourneys/CharacterOverlay";
 import { CharacterVisualisation, SingleFilterBarChart } from "./characterjourneys/CharacterParts";
+import { DragonOverlay } from "./dragonJourneys/DragonOverlay";
+import { DragonVisualisation, SingleDragonBarChart } from "./dragonJourneys/DragonParts";
 
 export function TheMapChart() {
   const query = useQuery(s => s.query)
@@ -17,6 +19,7 @@ export function TheMapChart() {
     <TopBar />
     {query === 'Food' && <FoodOverlay />}
     {query === 'Characters' && <CharacterOverlay />}
+    {query === 'Dragons' && <DragonOverlay />}
     <Marks />
   </div>
 }
@@ -112,11 +115,14 @@ export const Marks = memo(() => {
           <BookMapParts projection={projection} path={path} />
           {query === 'Food' ? <FoodVisualisation projection={projection} path={path} /> : null}
           {query === 'Characters' ? <CharacterVisualisation projection={projection} path={path} /> : null}
+          {query === 'Dragons' ? <DragonVisualisation projection={projection} path={path} /> : null}
         </g>
         <OSMLink />
       </svg>
       <TheSlider />
       {query === 'Characters' ? <SingleFilterBarChart /> : null}
+      {query === 'Dragons' ? <SingleDragonBarChart /> : null}
+
     </>
   );
 });

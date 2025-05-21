@@ -14,6 +14,8 @@ interface DataPointStoreStates {
   locationData: LocationData[],
   characterLocationData: CharacterLocationData[],
   characterChapterData: CharacterLabelsCounted[],
+  dragonLocationData: CharacterLocationData[],
+  dragonChapterData: CharacterLabelsCounted[],
 }
 
 interface DataPointStoreActions {
@@ -51,6 +53,8 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
   locationData: [],
   characterLocationData: [],
   characterChapterData: [],
+  dragonLocationData: [],
+  dragonChapterData: [],
   updateRelevantData: (query: Querys, filters: FilterConfig, chapterInterval: GlobalChapterInterval) => {
     if (query === 'default') {
       // chapterInterval decides which points and paths and regions are considered
@@ -120,6 +124,42 @@ export const useDataPointsStore = create<DataPointStoreStates & DataPointStoreAc
       const characterLocationData = mapCharacterDataSetToLocations(locations, filteredData);
 
       set({ locationData: [], characterLocationData, locations });
+    } else if (query === 'Dragons') {
+
+      const hasFilter = !!filters.filter?.length;
+
+      // filter decides which "dragons" are relevant (all or some)
+      const filteredData = hasFilter ? filterDataSet(MinimalGroupedData, filters) : MinimalGroupedData
+
+      // //only compute new bar chart if the data has changed
+      // //TODO: FOR SOME REASON THIS IS STILL COSTLY!
+      if (filters && filters.filter[0] && filters.filter[0].length === 1) {
+        const { dragonChapterData } = get();
+
+        if (dragonChapterData.length === 0) {
+          set({ dragonChapterData: countFilteredCharacters(filteredData, filters.filter[0]) })
+        }
+      }
+      else {
+        const { dragonChapterData } = get();
+        if (dragonChapterData.length > 0) {
+          set({ dragonChapterData: [] })
+        }
+      }
+
+      // get all locations in chapter
+      const locations = transformBooksToLocations(chapter_labels.books as book[])
+        .filter(location => isInRange(location, {
+          start: getBookPosition(chapterInterval.start),
+          end: getBookPosition(chapterInterval.end),
+          positionList: []
+        })
+        );
+
+      // relevant "dragons" are mapped on points and paths
+      const dragonLocationData = mapCharacterDataSetToLocations(locations, filteredData);
+
+      set({ locationData: [], dragonLocationData, locations });
     }
   },
 

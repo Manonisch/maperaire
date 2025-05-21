@@ -6,6 +6,7 @@ import { useWorldDataStore } from "../stores/WorldDataStore";
 import { useDataPointsStore } from "../stores/DataPointsStore";
 import { useFoodMapStore, useSliderStore } from "../stores";
 import { useCharacterMapStore } from "../stores/CharacterMapStore";
+import { useDragonMapStore } from "../stores/DragonMapStore";
 
 export const TopBar = memo(() => {
   const [ghostyLines, setGhostyLines] = useState(false)
@@ -63,9 +64,11 @@ const TriggerUpdateRelevantData = () => {
   const foodFilter = useFoodMapStore(s => s.selectedFoodOptions);
   const prepFilter = useFoodMapStore(s => s.selectedPrepOptions);
   const characterFilter = useCharacterMapStore(s => s.selectedCharacterOptions);
+  const dragonFilter = useDragonMapStore(s => s.selectedDragonOptions);
+
   const sliderEnd = useSliderStore(s => s.end)
   const sliderStart = useSliderStore(s => s.start)
 
-  updateRelevantData(query, { filter: [foodFilter, prepFilter, characterFilter].filter(x => x.length) }, { end: sliderEnd ?? 0, start: sliderStart ?? 0 })
+  updateRelevantData(query, { filter: [foodFilter, prepFilter, characterFilter, dragonFilter].filter(x => x.length) }, { end: sliderEnd ?? 0, start: sliderStart ?? 0 })
   return <></>
 }
