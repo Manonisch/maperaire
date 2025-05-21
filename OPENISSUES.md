@@ -29,6 +29,10 @@
 
 # Last changes
 
+- [x] Smoother complex paths, steep angles should not be visible on maps
+- [x] QMD - Fill in missing data
+- [x] QMD - Map with Dragons journeys, using the portraits from gazette
+
 - [x] QMC - offset distance bug
 - [x] QMC - Add better path comparison visualisation
 - [x] QMC - visualize weakness of paths

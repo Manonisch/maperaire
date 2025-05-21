@@ -8,9 +8,10 @@ I started this map as a base visualisation to show specific map based data from 
 ### Available Overlays: 
 - The 'Food' project, exploring which foods were explicitly mentioned to be devoured by Temeraire or friends during the course of the service. (95% done)
 - The 'Side Characters' project. Maps showing the journeys different major side characters joining Laurence and Temeraire during the books. (98% done) -> showcases 4 side characters. More can be added but would need a new protrait and potentially a limit
+-  The 'Dragons journey' project. Maps showing the journeys different major dragon characters joining Laurence and Temeraire during the books (done) -> showcases 6 dragons characters. More can be added but would need a new protrait and a limit on the filter.
+
 
 ### Upcoming Overlays:
-- Side Dragons Overlay? -> Same as Side Charactors but for the dragons?
 
 ## Map Features
 - Shows a world map showcasing the (aproximated) locations mentioned over the course of the books.
@@ -22,6 +23,7 @@ I started this map as a base visualisation to show specific map based data from 
 Overlay depending filters:
 - Food: Filter by food and food preparation
 - Side Characters: Filter by SideCharacter
+- Dragon Characters: Filter by Dragon
 
 ## Note
 
