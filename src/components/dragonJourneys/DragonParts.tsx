@@ -1,13 +1,15 @@
 import { memo, useMemo } from "react";
-import {
-  CharacterLocationData,
-  useDataPointsStore,
-} from "../../stores";
+import { CharacterLocationData, useDataPointsStore } from "../../stores";
 import { useBidiHighlight } from "../../hooks/useBidiHighlight";
 import { getChapterList, isBehindGlobe, updateBoundingBox } from "../utils";
 import { DragonColors, DragonWeakColors } from "./DragonStatics";
 import * as d3 from "d3";
-import { reduceCharInPoints, offsetSinglePathSegment, dealWithComplexPaths, createPathStringFromCoords } from "../characterjourneys/CharacterParts";
+import {
+  reduceCharInPoints,
+  offsetSinglePathSegment,
+  dealWithComplexPaths,
+  createPathStringFromCoords,
+} from "../characterjourneys/CharacterParts";
 
 export const DragonVisualisation = memo(
   ({ projection, path }: { projection: d3.GeoProjection; path: any }) => {
@@ -77,7 +79,7 @@ function DragonPaths({
               : DragonWeakColors[label.label]
           }
           strokeWidth={3}
-          opacity={1}
+          opacity={0.7}
           d={pathString || undefined}
           style={{
             cursor: "pointer",
@@ -174,9 +176,7 @@ const DragonCircles = memo(
 );
 
 export const SingleDragonBarChart = memo(() => {
-  const dragonChapterData = useDataPointsStore(
-    (s) => s.dragonChapterData
-  );
+  const dragonChapterData = useDataPointsStore((s) => s.dragonChapterData);
 
   if (!dragonChapterData) {
     return null;
@@ -188,9 +188,7 @@ export const SingleDragonBarChart = memo(() => {
 
   const data = getChapterList();
   const data_last = data.length == 0 ? 0 : data.length - 1;
-  const dragonCounts = dragonChapterData.map(
-    (elem) => elem.labels[0].count
-  );
+  const dragonCounts = dragonChapterData.map((elem) => elem.labels[0].count);
 
   const xScale = d3
     .scaleLinear([0, data_last], [margin, width - margin])

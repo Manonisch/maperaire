@@ -288,11 +288,30 @@ export function dealWithComplexPaths(path: number[]): number[] {
 
     //Find the intersection between this path segment and the next
     const interSectPoint = getIntersection(offsetStarterPath, offTestPathNext);
+
+    // If angle is too steep draw a simplified line
+    const theAngle = getAngle(
+      { x: offsetStarterPath[0] - interSectPoint[0], y: offsetStarterPath[1] - interSectPoint[1] },
+      { x: offTestPathNext[0] - interSectPoint[0], y: offTestPathNext[1] - interSectPoint[1] }
+    );
+
+    if (theAngle < 35 || theAngle > 325) {
+      newPoints.push(offsetStarterPath[2], offsetStarterPath[3]);
+      offsetStarterPath = offTestPathNext;
+      continue;
+    }
     newPoints.push(...interSectPoint);
     offsetStarterPath = offTestPathNext;
   }
   newPoints.push(offsetStarterPath[2], offsetStarterPath[3])
   return newPoints;
+}
+
+const getAngle = ({ x: x1, y: y1 }: Record<string, number>, { x: x2, y: y2 }: Record<string, number>) => {
+  const dot = x1 * x2 + y1 * y2
+  const det = x1 * y2 - y1 * x2
+  const angle = Math.atan2(det, dot) / Math.PI * 180
+  return (angle + 360) % 360
 }
 
 export function offsetSinglePathSegment(
