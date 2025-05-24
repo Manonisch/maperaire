@@ -137,6 +137,7 @@ export function getAllCoords() {
 }
 
 export function isBehindGlobe(coords: number[] | undefined, projection: d3.GeoProjection) {
+  return false;
   if (!coords) {
     return true;
   }
