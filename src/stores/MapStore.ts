@@ -6,7 +6,7 @@ type MapType = "globe" | "flatmap";
 export interface MapStore {
   mapType: MapType;
   toggleMapType(): void;
-  isVisible(coords: number[] | undefined, projection: d3.GeoProjection, log?: boolean): boolean;
+  isVisible(coords: number[] | undefined, projection: d3.GeoProjection): boolean;
 }
 
 export const useMap = create<MapStore>((set, get) => ({
@@ -15,7 +15,7 @@ export const useMap = create<MapStore>((set, get) => ({
     const mapType = get().mapType === 'globe' ? 'flatmap' : 'globe';
     set({ mapType });
   },
-  isVisible: (coords: number[] | undefined, projection: d3.GeoProjection, log?: boolean) => {
+  isVisible: (coords: number[] | undefined, projection: d3.GeoProjection) => {
     if (get().mapType !== 'globe') {
         return true;
     }

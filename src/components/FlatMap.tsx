@@ -1,7 +1,6 @@
 
-import { useState, useEffect, useRef, memo } from "react";
+import { useState, useEffect, useRef } from "react";
 import * as d3 from 'd3';
-import versor from 'versor';
 import { getPointerCoords } from "./utils";
 import { useQuery } from "../stores";
 import { BaseMap, OSMLink, TheSlider } from "./mapParts";
@@ -33,9 +32,7 @@ export const FlatMap = (() => {
 
     projection.translate([0, 0]);
 
-    let v0 = 0;
     let r0 = projection.rotate();
-    let q0 = versor(r0);
     let lon0 = 0;
 
     let zoomEndTimeout = setTimeout(() => { });
@@ -54,9 +51,7 @@ export const FlatMap = (() => {
         const projectedCoords = projection.invert(coords);
         if (!projectedCoords) return;
         lon0 = projectedCoords[0];
-        v0 = versor.cartesian([projectedCoords[0], [0]]);
         r0 = projection.rotate();
-        q0 = versor(r0);
       })
       .on('zoom', (ev: d3.D3ZoomEvent<Element, unknown>) => {
         if (!isMoving) {
