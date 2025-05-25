@@ -10,13 +10,13 @@ import { BookMapParts } from "./mapParts/BookMapParts";
 import { CharacterVisualisation, SingleFilterBarChart } from "./characterjourneys/CharacterParts";
 import { DragonVisualisation, SingleDragonBarChart } from "./dragonJourneys/DragonParts";
 
-export const FlatMap = memo(() => {
+export const FlatMap = (() => {
   const [isMoving, setIsMoving] = useState(false);
   const svgRef = useRef<SVGSVGElement>(null);
 
   const [projection] = useState(d3.geoNaturalEarth1)
-  projection.translate([0, 0]);
   const unityScale = projection.scale();
+
   const [trick17a, trick17] = useState(0);
   const path = d3.geoPath(projection);
   const query = useQuery(s => s.query)
@@ -25,11 +25,11 @@ export const FlatMap = memo(() => {
   useEffect(() => {
     if (!svgRef.current) return;
 
+    projection.translate([0, 0]);
+
     let v0 = 0;
     let r0 = projection.rotate();
     let q0 = versor(r0);
-
-
     let lon0 = 0;
 
     let zoomEndTimeout = setTimeout(() => { });
@@ -37,9 +37,11 @@ export const FlatMap = memo(() => {
     const bb = svgRef.current.getBoundingClientRect();
     trick17(Math.random());
 
-    const zoomBehaviour = d3.zoom<SVGSVGElement, unknown>()
+    let zoomBehaviour: d3.ZoomBehavior<SVGSVGElement, unknown>;
+    zoomBehaviour = d3.zoom<SVGSVGElement, unknown>()
       .scaleExtent([1, 30])
       .extent([[0, 0], [bb.width, bb.height]])
+      .translateExtent([[0, -280], [0, 280]])
       .on('start', (ev: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
         if (!projection.invert) return;
         const coords = getPointerCoords(ev.sourceEvent.target, ev);
@@ -57,13 +59,15 @@ export const FlatMap = memo(() => {
         }
 
         const { k, y: ty } = ev.transform;
-        const coords_px = getPointerCoords(ev.sourceEvent.target, ev);
+        const [px, py] = getPointerCoords(svgRef.current, ev);
+        const coords_px: [number, number] = [px, py > 250 ? 250 : py < -250 ? -250 : py];
 
         projection.scale(k * unityScale);
 
         const [lon1] = projection.rotate(r0).invert!(coords_px)!;
         projection.rotate([r0[0] + lon1 - lon0, r0[1], r0[2]]);
-        projection.translate([0, ty]);
+
+        projection.translate([0, ty - bb.height / 2]);
 
         trick17(Math.random());
       })
@@ -78,9 +82,11 @@ export const FlatMap = memo(() => {
 
   return (
     <>
-      <svg width='80vw' height='75vh' viewBox="-500 -250 1000 500" className="d-block m-auto" stroke='#aaa' fill='#d7dbd0' ref={svgRef} style={{
+      <svg width='95vw' height='75vh' viewBox="-500 -250 1000 500" className="d-block m-auto" stroke='#aaa' fill='#d7dbd0' ref={svgRef} style={{
         margin: 'auto', display: 'block'
-      }} onMouseDown={(event) => { event.preventDefault() }}>
+      }} onClick={(event) => {
+        event.preventDefault()
+      }}>
         <defs>
           <filter id='shadow' colorInterpolationFilters="sRGB">
             <feDropShadow dx="0" dy="0" stdDeviation="1" floodOpacity="0.2" floodColor='orange' />

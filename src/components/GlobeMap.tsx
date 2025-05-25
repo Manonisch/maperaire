@@ -9,11 +9,9 @@ import { BookMapParts } from "./mapParts/BookMapParts";
 import { CharacterVisualisation, SingleFilterBarChart } from "./characterjourneys/CharacterParts";
 
 export const GlobeMap = memo(() => {
-  const [isMoving, _] = useState(true);
-  const setIsMoving = (a: boolean) => {}
+  const [isMoving, setIsMoving] = useState(false);
   const svgRef = useRef<SVGSVGElement>(null);
 
-  // const [projection] = useState(d3.geoNaturalEarth1)
   const [projection] = useState(d3.geoOrthographic)
   const unityScale = projection.scale();
   const [trick17a, trick17] = useState(0);
@@ -52,7 +50,7 @@ export const GlobeMap = memo(() => {
 
         var scale = ev.transform.k * unityScale;
         projection.scale(scale);
-        const coords = getPointerCoords(ev.sourceEvent.target, ev);
+        const coords = getPointerCoords(svgRef.current, ev);
         var v1 = versor.cartesian(projection.rotate(r0).invert?.(coords)),
           q1 = versor.multiply(q0, versor.delta(v0, v1)),
           rotation = versor.rotation(q1);

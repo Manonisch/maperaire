@@ -10,7 +10,7 @@ export interface MapStore {
 }
 
 export const useMap = create<MapStore>((set, get) => ({
-  mapType: "globe",
+  mapType: "flatmap",
   toggleMapType: () => {
     const mapType = get().mapType === 'globe' ? 'flatmap' : 'globe';
     set({ mapType });

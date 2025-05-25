@@ -43,18 +43,8 @@ export const TopBar = memo(() => {
       setGhostyLines(s => !s)
       setGhostLinesEnabled(!ghostyLines)
     }} ghostyLines={ghostyLines} />
-    <span style={{
-      fontSize: '14px', color: '#555', paddingInlineStart: '10px', padding: '4px',
-      background: 'antiquewhite',
-      margin: '2px'
-    }}>
-      <MapTypeButton />
-      <span style={{ fontWeight: 'bold' }}>Move the Globe</span>
-      by dragging with the mouse, zoom via scroll wheel. Hover on points to
-      <span style={{ fontWeight: 'bold' }}> see more information</span>.
-      To <span style={{ fontWeight: 'bold' }}> Filter </span>
-      drag and move the handles on the bottom axis.
-    </span>
+    <MapTypeButton />
+    <UsageHint />
     <TriggerUpdateRelevantData />
   </div>
 })
@@ -84,4 +74,18 @@ function MapTypeButton() {
     onClick={toggleMapType}>
     {mapType}
   </button>
+}
+
+function UsageHint() {
+  return <span style={{
+    fontSize: '14px', color: '#555', paddingInlineStart: '10px', padding: '4px',
+    background: 'antiquewhite',
+    margin: '2px'
+  }}>
+    <span style={{ fontWeight: 'bold' }}>Move the Globe</span>
+    by dragging with the mouse, zoom via scroll wheel. Hover on points to
+    <span style={{ fontWeight: 'bold' }}>see more information</span>.
+    To <span style={{ fontWeight: 'bold' }}>Filter</span>
+    drag and move the handles on the bottom axis.
+  </span>
 }
