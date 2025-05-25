@@ -7,6 +7,7 @@ import { BaseMap, OSMLink, TheSlider } from "./mapParts";
 import { FoodVisualisation } from "./foodQuery";
 import { BookMapParts } from "./mapParts/BookMapParts";
 import { CharacterVisualisation, SingleFilterBarChart } from "./characterjourneys/CharacterParts";
+import { DragonVisualisation, SingleDragonBarChart } from "./dragonJourneys/DragonParts";
 
 export const GlobeMap = memo(() => {
   const [isMoving, setIsMoving] = useState(false);
@@ -65,8 +66,6 @@ export const GlobeMap = memo(() => {
         // TODO: by passing in coordinates we can move rotate the mape to center the area
         // projection.rotate([137, -64, 0]);
 
-        console.log(projection.rotate());
-
         clearTimeout(zoomEndTimeout);
         zoomEndTimeout = setTimeout(() => {
           setIsMoving(false);
@@ -79,7 +78,7 @@ export const GlobeMap = memo(() => {
 
   return (
     <>
-      <svg width='95vw' height='75vh' viewBox="40 0 900 500" className="d-block m-auto" stroke='#aaa' fill='#d7dbd0' ref={svgRef} style={{ margin: 'auto', display: 'block' }} onMouseDown={(event) => { event.preventDefault() }}>
+      <svg key="1" width='80vw' height='80vh' viewBox="40 0 900 500" className="d-block m-auto" stroke='#aaa' fill='#d7dbd0' ref={svgRef} style={{ margin: 'auto', display: 'block' }} onMouseDown={(event) => { event.preventDefault() }}>
         <defs>
           <filter id='shadow' colorInterpolationFilters="sRGB">
             <feDropShadow dx="0" dy="0" stdDeviation="1" floodOpacity="0.2" floodColor='orange' />
@@ -100,11 +99,14 @@ export const GlobeMap = memo(() => {
           <BookMapParts projection={projection} path={path} />
           {query === 'Food' ? <FoodVisualisation projection={projection} path={path} /> : null}
           {query === 'Characters' ? <CharacterVisualisation projection={projection} path={path} /> : null}
+          {query === 'Dragons' ? <DragonVisualisation projection={projection} path={path} /> : null}
         </g>
         <OSMLink />
       </svg>
       <TheSlider />
       {query === 'Characters' ? <SingleFilterBarChart /> : null}
+      {query === 'Dragons' ? <SingleDragonBarChart /> : null}
+
     </>
   );
 });
