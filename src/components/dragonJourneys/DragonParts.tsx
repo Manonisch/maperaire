@@ -54,18 +54,39 @@ function DragonPaths({
 
     return pathEntry.labels.map((label, labelIndex) => {
       if (labelIndex > 0 && pathString) {
-        const poothos = pathString
-          .split(/L|M|,/i)
-          .filter((coord) => !!coord)
-          .map((elem) => Number.parseFloat(elem));
+        const multiple = pathString.split('M').filter((coord) => !!coord);
+        if (multiple.length > 1) {
+          pathString = '';
+          multiple.forEach(partString => {
+            const poothos = partString
+              .split(/L|,/i)
+              .filter((coord) => !!coord)
+              .map((elem) => Number.parseFloat(elem));
 
-        if (poothos.length === 4) {
-          //transform that positions
-          const flatOffsetPath = offsetSinglePathSegment(poothos);
-          pathString = createPathStringFromCoords(flatOffsetPath);
-        } else if (pathEntry.coords.length > 4) {
-          const complexPathString = dealWithComplexPaths(poothos);
-          pathString = createPathStringFromCoords(complexPathString)
+            if (poothos.length === 4) {
+              //transform that positions
+              const flatOffsetPath = offsetSinglePathSegment(poothos);
+              pathString.concat(createPathStringFromCoords(flatOffsetPath));
+            } else if (pathEntry.coords.length > 4) {
+              const complexPathString = dealWithComplexPaths(poothos);
+              pathString.concat(createPathStringFromCoords(complexPathString));
+            }
+          })
+        }
+        else {
+          const poothos = pathString
+            .split(/L|M|,/i)
+            .filter((coord) => !!coord)
+            .map((elem) => Number.parseFloat(elem));
+
+          if (poothos.length === 4) {
+            //transform that positions
+            const flatOffsetPath = offsetSinglePathSegment(poothos);
+            pathString = createPathStringFromCoords(flatOffsetPath);
+          } else if (pathEntry.coords.length > 4) {
+            const complexPathString = dealWithComplexPaths(poothos);
+            pathString = createPathStringFromCoords(complexPathString)
+          }
         }
       }
 
