@@ -78,7 +78,7 @@ export const GlobeMap = memo(() => {
 
   return (
     <>
-      <svg key="1" width='80vw' height='80vh' viewBox="40 0 900 500" className="d-block m-auto" stroke='#aaa' fill='#d7dbd0' ref={svgRef} style={{ margin: 'auto', display: 'block' }} onMouseDown={(event) => { event.preventDefault() }}>
+      <svg key="1" width='95vw' height='80vh' viewBox="40 0 900 500" className="d-block m-auto" stroke='#aaa' fill='#d7dbd0' ref={svgRef} style={{ margin: 'auto', display: 'block' }} onMouseDown={(event) => { event.preventDefault() }}>
         <defs>
           <filter id='shadow' colorInterpolationFilters="sRGB">
             <feDropShadow dx="0" dy="0" stdDeviation="1" floodOpacity="0.2" floodColor='orange' />

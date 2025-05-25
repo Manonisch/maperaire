@@ -88,7 +88,7 @@ export const FlatMap = (() => {
 
   return (
     <>
-      <svg width='95vw' height='75vh' viewBox="-500 -250 1000 500" className="d-block m-auto" stroke='#aaa' fill='#d7dbd0' ref={svgRef} style={{
+      <svg width='95vw' height='80vh' viewBox="-500 -250 1000 500" className="d-block m-auto" stroke='#aaa' fill='#d7dbd0' ref={svgRef} style={{
         margin: 'auto', display: 'block'
       }} onClick={(event) => {
         event.preventDefault()
