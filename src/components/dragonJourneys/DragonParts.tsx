@@ -1,7 +1,7 @@
 import { memo, useMemo } from "react";
-import { CharacterLocationData, useDataPointsStore } from "../../stores";
+import { CharacterLocationData, useDataPointsStore, useMap } from "../../stores";
 import { useBidiHighlight } from "../../hooks/useBidiHighlight";
-import { getChapterList, isBehindGlobe, updateBoundingBox } from "../utils";
+import { getChapterList, updateBoundingBox } from "../utils";
 import { DragonColors, DragonWeakColors } from "./DragonStatics";
 import * as d3 from "d3";
 import {
@@ -105,11 +105,12 @@ const DragonCircles = memo(
       bidiHighlightMouseOver,
       bidiHighlightMouseLeave,
     } = useBidiHighlight("label");
+    const isVisible = useMap(s => s.isVisible);
 
     const singleCharPoints = reduceCharInPoints(charPoints);
 
     return singleCharPoints.map((charPoint, pointIndex) => {
-      if (isBehindGlobe(charPoint.coords, projection)) {
+      if (!isVisible(charPoint.coords, projection)) {
         return;
       }
 

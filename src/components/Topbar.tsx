@@ -6,6 +6,7 @@ import { useWorldDataStore } from "../stores/WorldDataStore";
 import { useDataPointsStore } from "../stores/DataPointsStore";
 import { useFoodMapStore, useSliderStore } from "../stores";
 import { useCharacterMapStore } from "../stores/CharacterMapStore";
+import { useMap } from "../stores/MapStore";
 import { useDragonMapStore } from "../stores/DragonMapStore";
 
 export const TopBar = memo(() => {
@@ -47,7 +48,8 @@ export const TopBar = memo(() => {
       background: 'antiquewhite',
       margin: '2px'
     }}>
-      <span style={{ fontWeight: 'bold' }}>Move the Globe </span>
+      <MapTypeButton />
+      <span style={{ fontWeight: 'bold' }}>Move the Globe</span>
       by dragging with the mouse, zoom via scroll wheel. Hover on points to
       <span style={{ fontWeight: 'bold' }}> see more information</span>.
       To <span style={{ fontWeight: 'bold' }}> Filter </span>
@@ -71,4 +73,15 @@ const TriggerUpdateRelevantData = () => {
 
   updateRelevantData(query, { filter: [foodFilter, prepFilter, characterFilter, dragonFilter].filter(x => x.length) }, { end: sliderEnd ?? 0, start: sliderStart ?? 0 })
   return <></>
+}
+
+function MapTypeButton() {
+  const mapType = useMap(s => s.mapType);
+  const toggleMapType = useMap(s => s.toggleMapType);
+
+  return <button
+    style={{ width: '52px', height: '26px', borderRadius: '6px', border: 'unset', backgroundColor: '#e7e5e4', color: 'oklch(26.8% 0.007 34.298)', margin: '2px' }}
+    onClick={toggleMapType}>
+    {mapType}
+  </button>
 }

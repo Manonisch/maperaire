@@ -136,16 +136,6 @@ export function getAllCoords() {
   return theLocLabels;
 }
 
-export function isBehindGlobe(coords: number[] | undefined, projection: d3.GeoProjection) {
-  return false;
-  if (!coords) {
-    return true;
-  }
-  const invertedProj = projection.invert?.([600, 300]) as [number, number];
-  const gdist = d3.geoDistance([coords[1], coords[0]], invertedProj);
-  return gdist >= 1.57;
-}
-
 export function updateBoundingBox(bb: number[], x1: number, y1: number, x2: number, y2: number) {
   bb[0] = Math.min(bb[0], x1);
   bb[1] = Math.min(bb[1], y1);

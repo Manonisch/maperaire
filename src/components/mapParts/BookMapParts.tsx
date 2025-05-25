@@ -1,7 +1,7 @@
 import { memo, SVGProps } from "react";
-import { useQuery, useWorldDataStore } from "../../stores";
+import { useMap, useQuery, useWorldDataStore } from "../../stores";
 import { useDataPointsStore } from "../../stores/DataPointsStore";
-import { getStrokeColor, geoRefs, isBehindGlobe } from "../utils";
+import { getStrokeColor, geoRefs } from "../utils";
 import { AllData } from "./GhostLines";
 import { FunnyEntry } from "../types";
 
@@ -15,6 +15,7 @@ export const BookMapParts = memo(function BookMapParts({
   const locations = useDataPointsStore((s) => s.locations);
   const ghostLinesEnabled = useWorldDataStore((s) => s.ghostLinesEnabled);
   const query = useQuery((s) => s.query);
+  const isVisible = useMap(s => s.isVisible);
 
   const thePoints = locations.filter((label) => label.type === "point");
   const thePaths = locations.filter(
@@ -84,7 +85,7 @@ export const BookMapParts = memo(function BookMapParts({
         );
       })}
       {thePoints.map((point, index) => {
-        if (isBehindGlobe(point.coords, projection)) {
+        if (!isVisible(point.coords, projection)) {
           return null;
         }
         const [x, y] = projection([point.coords[1], point.coords[0]]) ?? [0, 0];

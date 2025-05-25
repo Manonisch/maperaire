@@ -2,69 +2,47 @@ import { useState, useEffect, useRef, memo } from "react";
 import * as d3 from 'd3';
 import versor from 'versor';
 import { getPointerCoords } from "./utils";
-import { TopBar } from "./Topbar";
 import { useQuery } from "../stores";
 import { BaseMap, OSMLink, TheSlider } from "./mapParts";
-import { FoodOverlay, FoodVisualisation } from "./foodQuery";
+import { FoodVisualisation } from "./foodQuery";
 import { BookMapParts } from "./mapParts/BookMapParts";
-import { CharacterOverlay } from "./characterjourneys/CharacterOverlay";
 import { CharacterVisualisation, SingleFilterBarChart } from "./characterjourneys/CharacterParts";
-import { DragonOverlay } from "./dragonJourneys/DragonOverlay";
-import { DragonVisualisation, SingleDragonBarChart } from "./dragonJourneys/DragonParts";
 
-export function TheMapChart() {
-  const query = useQuery(s => s.query)
-
-  return <div>
-    <TopBar />
-    {query === 'Food' && <FoodOverlay />}
-    {query === 'Characters' && <CharacterOverlay />}
-    {query === 'Dragons' && <DragonOverlay />}
-    <Marks />
-  </div>
-}
-
-export const Marks = memo(() => {
-  const [isMoving, setIsMoving] = useState(false);
+export const GlobeMap = memo(() => {
+  const [isMoving, _] = useState(true);
+  const setIsMoving = (a: boolean) => {}
   const svgRef = useRef<SVGSVGElement>(null);
 
-  const [projection] = useState(d3.geoNaturalEarth1)
+  // const [projection] = useState(d3.geoNaturalEarth1)
+  const [projection] = useState(d3.geoOrthographic)
   const unityScale = projection.scale();
   const [trick17a, trick17] = useState(0);
-  const path = d3.geoPath(projection);
-  const r = 4;
+
   const query = useQuery(s => s.query)
+
   trick17a;
 
   useEffect(() => {
     if (!svgRef.current) return;
 
-    projection.translate([0, 0]);
-
     let v0 = 0;
     let r0 = projection.rotate();
     let q0 = versor(r0);
 
-
-    let lon0 = 0;
-
     let zoomEndTimeout = setTimeout(() => { });
-
-    const bb = svgRef.current.getBoundingClientRect();
-    trick17(Math.random());
 
     const zoomBehaviour = d3.zoom<SVGSVGElement, unknown>()
       .scaleExtent([1, 30])
-      .extent([[0, 0], [bb.width, bb.height]])
       .on('start', (ev: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
         if (!projection.invert) return;
         const coords = getPointerCoords(ev.sourceEvent.target, ev);
         const projectedCoords = projection.invert(coords);
         if (!projectedCoords) return;
-        lon0 = projectedCoords[0];
-        v0 = versor.cartesian([projectedCoords[0], [0]]);
+        v0 = versor.cartesian(projectedCoords);
         r0 = projection.rotate();
         q0 = versor(r0);
+        // setIsMoving(true);
+        // clearTimeout(zoomEndTimeout);
       })
       .on('zoom', (ev: d3.D3ZoomEvent<Element, unknown>) => {
         if (!isMoving) {
@@ -72,18 +50,25 @@ export const Marks = memo(() => {
           setIsMoving(true);
         }
 
-        const {k, y: ty} = ev.transform;
-        const coords_px = getPointerCoords(ev.sourceEvent.target, ev);
+        var scale = ev.transform.k * unityScale;
+        projection.scale(scale);
+        const coords = getPointerCoords(ev.sourceEvent.target, ev);
+        var v1 = versor.cartesian(projection.rotate(r0).invert?.(coords)),
+          q1 = versor.multiply(q0, versor.delta(v0, v1)),
+          rotation = versor.rotation(q1);
 
-        projection.scale(k * unityScale);
+        // rotation[1] = 0; // Don't rotate on Y axis
+        rotation[2] = 0; // Don't rotate on Z axis, pole axis
 
-        const [lon1] = projection.rotate(r0).invert!(coords_px)!;
-        projection.rotate([r0[0] + lon1 - lon0, r0[1], r0[2]]);
-        projection.translate([0, ty]);
-
+        projection.rotate(rotation);
         trick17(Math.random());
       })
       .on('end', () => {
+        // TODO: by passing in coordinates we can move rotate the mape to center the area
+        // projection.rotate([137, -64, 0]);
+
+        console.log(projection.rotate());
+
         clearTimeout(zoomEndTimeout);
         zoomEndTimeout = setTimeout(() => {
           setIsMoving(false);
@@ -92,11 +77,11 @@ export const Marks = memo(() => {
     d3.select(svgRef.current).call((sel) => zoomBehaviour(sel));
   }, [svgRef, projection]);
 
+  const path = d3.geoPath(projection);
+
   return (
     <>
-      <svg key="1" width='80vw' height='75vh' viewBox="-500 -250 1000 500" className="d-block m-auto" stroke='#aaa' fill='#d7dbd0' ref={svgRef} style={{
-         border: '1px solid red',
-         margin: 'auto', display: 'block' }} onMouseDown={(event) => { event.preventDefault() }}>
+      <svg width='95vw' height='75vh' viewBox="40 0 900 500" className="d-block m-auto" stroke='#aaa' fill='#d7dbd0' ref={svgRef} style={{ margin: 'auto', display: 'block' }} onMouseDown={(event) => { event.preventDefault() }}>
         <defs>
           <filter id='shadow' colorInterpolationFilters="sRGB">
             <feDropShadow dx="0" dy="0" stdDeviation="1" floodOpacity="0.2" floodColor='orange' />
@@ -117,22 +102,11 @@ export const Marks = memo(() => {
           <BookMapParts projection={projection} path={path} />
           {query === 'Food' ? <FoodVisualisation projection={projection} path={path} /> : null}
           {query === 'Characters' ? <CharacterVisualisation projection={projection} path={path} /> : null}
-          {query === 'Dragons' ? <DragonVisualisation projection={projection} path={path} /> : null}
         </g>
         <OSMLink />
-        <circle cx="0" cy="0" r={r} fill="fuchsia" />
-        <circle cx="-500" cy="0" r={r} fill="blue" />
-        <circle cx="-500" cy="-250" r={r} fill="blue" />
-        <circle cx="-500" cy="250" r={r} fill="blue" />
-
-        <circle cx="500" cy="0" r={r} fill="blue" />
-        <circle cx="500" cy="-250" r={r} fill="blue" />
-        <circle cx="500" cy="250" r={r} fill="blue" />
       </svg>
       <TheSlider />
       {query === 'Characters' ? <SingleFilterBarChart /> : null}
-      {query === 'Dragons' ? <SingleDragonBarChart /> : null}
-
     </>
   );
 });

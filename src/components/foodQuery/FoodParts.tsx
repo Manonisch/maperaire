@@ -1,9 +1,9 @@
 import *  as d3 from "d3";
 import { memo } from "react";
-import { updateBoundingBox, isBehindGlobe } from "../utils";
+import { updateBoundingBox } from "../utils";
 import { countFoodInPoint, getAllKindsOfFood, getFoodColors } from "./foodUtils";
 import { getPathLengthLookup } from 'svg-getpointatlength'
-import { LocationData, MinimalGroupedData, useDataPointsStore } from "../../stores";
+import { LocationData, MinimalGroupedData, useDataPointsStore, useMap } from "../../stores";
 import { useBidiHighlight } from "../../hooks/useBidiHighlight";
 import { foodColorMap, foodGroups, foodIconMap, groupParentFoods, groupParentIconFoods } from "./FoodStatics";
 
@@ -26,11 +26,12 @@ export const FoodVisualisation = memo(({ projection, path }: { projection: d3.Ge
 
 const FoodCircles = memo(({ foodPoints, foodColors, projection }: { foodPoints: LocationData[], foodColors: Record<string, string>, projection: d3.GeoProjection }) => {
   const { interestingLabel, bidiHighlightMouseOver, bidiHighlightMouseLeave } = useBidiHighlight('label');
+  const isVisible = useMap(s => s.isVisible);
 
   const groupedFoodPoints = countFoodInPoint(foodPoints);
 
   return groupedFoodPoints.map((foodPoint, pointIndex) => {
-    if (isBehindGlobe(foodPoint.coords, projection)) {
+    if (!isVisible(foodPoint.coords, projection)) {
       return;
     }
 
