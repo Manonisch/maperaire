@@ -70,9 +70,12 @@ function MapTypeButton() {
   const toggleMapType = useMap(s => s.toggleMapType);
 
   return <button
-    style={{ width: '52px', height: '26px', borderRadius: '6px', border: 'unset', backgroundColor: '#e7e5e4', color: 'oklch(26.8% 0.007 34.298)', margin: '2px' }}
+    style={{ width: `${26 * 3}px`, height: '26px', borderRadius: '6px', border: 'unset', backgroundColor: '#e7e5e4', color: 'oklch(26.8% 0.007 34.298)', margin: '2px' }}
     onClick={toggleMapType}>
-    {mapType}
+    {{
+      globe: 'Show Map',
+      flatmap: 'Show Globe',
+    }[mapType]}
   </button>
 }
 
