@@ -1,11 +1,7 @@
 import { memo, useMemo } from "react";
-import {
-  CharacterLocationData,
-  LabelAssociation,
-  useDataPointsStore,
-} from "../../stores";
+import { CharacterLocationData, LabelAssociation, useDataPointsStore, useMap } from "../../stores";
 import { useBidiHighlight } from "../../hooks/useBidiHighlight";
-import { getChapterList, isBehindGlobe, updateBoundingBox } from "../utils";
+import { getChapterList, updateBoundingBox } from "../utils";
 import { CharacterColors, CharacterWeakColors } from "./CharacterStatics";
 import * as d3 from "d3";
 
@@ -126,11 +122,12 @@ export const CharacterCircles = memo(
       bidiHighlightMouseOver,
       bidiHighlightMouseLeave,
     } = useBidiHighlight("label");
+    const isVisible = useMap(s => s.isVisible);
 
     const singleCharPoints = reduceCharInPoints(charPoints);
 
     return singleCharPoints.map((charPoint, pointIndex) => {
-      if (isBehindGlobe(charPoint.coords, projection)) {
+      if (!isVisible(charPoint.coords, projection)) {
         return;
       }
 
