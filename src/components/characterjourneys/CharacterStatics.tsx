@@ -5,18 +5,18 @@ import { DeergameIcon } from "../../assets/deergame"
 import { LiverIcon } from "../../assets/liver"
 
 export const CharacterColors = {
-  Granby: "rgb(229, 11, 11)",
-  John: "rgb(229, 11, 11)",
+  Granby: "rgb(207, 77, 51)",
+  John: "rgb(207, 77, 51)",
   Jane: "rgb(18, 142, 12)",
-  Tharkay: "rgb(132, 9, 185)",
+  Tharkay: "rgb(171, 39, 186)",
   Tenzing: "rgb(132, 9, 185)",
   Riley: "rgb(227, 172, 46)",
   Tom: "rgb(227, 172, 46)"
 } as Record<string, string>
 
 export const CharacterWeakColors = {
-  Granby: "rgb(234, 86, 86)",
-  John: "rgb(234, 86, 86)",
+  Granby: "rgb(216, 108, 86)",
+  John: "rgb(216, 108, 86)",
   Jane: "rgb(91, 191, 86)",
   Tharkay: "rgb(181, 105, 213)",
   Tenzing: "rgb(181, 105, 213)",

@@ -10,22 +10,22 @@ import { CharacterVisualisation, SingleFilterBarChart } from "./characterjourney
 import { DragonVisualisation, SingleDragonBarChart } from "./dragonJourneys/DragonParts";
 
 export const FlatMap = (() => {
-  const [isMoving, setIsMoving] = useState(false);
   const svgRef = useRef<SVGSVGElement>(null);
+  const query = useQuery(s => s.query)
 
+  const [isMoving, setIsMoving] = useState(false);
   const [projection] = useState(d3.geoNaturalEarth1)
+  const [resetTranslate, setResetTranslate] = useState(true);
+  const [_, trick17] = useState(0);
+
   const unityScale = projection.scale();
 
-  const [resetTranslate, setResetTranslate] = useState(true);
   if (resetTranslate) {
     projection.translate([0, 0]);
     setResetTranslate(false);
   }
 
-  const [trick17a, trick17] = useState(0);
   const path = d3.geoPath(projection);
-  const query = useQuery(s => s.query)
-  trick17a;
 
   useEffect(() => {
     if (!svgRef.current) return;

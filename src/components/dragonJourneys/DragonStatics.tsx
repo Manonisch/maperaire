@@ -1,5 +1,5 @@
 export const DragonColors = {
-  Iskierka: "rgb(126, 43, 43)",
+  Iskierka: "rgb(153, 37, 37)",
   Perscitia: "rgb(54, 145, 129)",
   Lily: "rgb(46, 101, 196)",
   Maximus: "rgb(227, 152, 46)",
@@ -8,7 +8,7 @@ export const DragonColors = {
 } as Record<string, string>
 
 export const DragonWeakColors = {
-  Iskierka: "rgb(126, 43, 43)",
+  Iskierka: "rgb(153, 37, 37)",
   Perscitia: "rgb(54, 145, 129)",
   Lily: "rgb(46, 101, 196)",
   Maximus: "rgb(227, 152, 46)",

@@ -25,11 +25,8 @@ export const BaseMap = memo(function BaseMap({ path, isMoving }: { path: any, is
 
   return (
     <>
-      {/* {void projection.translate([zoomTransform.x, zoomTransform.y])} */}
-      {/* {projection.rotate([MousePosition.x + 30 / 60, -MousePosition.y, 0])} */}
       <path key="3" className="sphere" d={path({ type: 'Sphere' }) || undefined} />
       <path key="4" className="graticule" d={path(graticule()) || undefined} stroke='#ccc' />
-      {/* <path className="rivers" d={path({ }) || undefined} stroke='#ddd' /> */}
       {isMoving ?
         data.hundred.land.features.map((feature: d3.GeoPermissibleObjects, index: number) => (
           <path key={"5+" + index} className="feature" fill='#dfd6c9' d={path(feature) || undefined} stroke='#c9c2af' strokeWidth={6} strokeLinejoin='round' />
