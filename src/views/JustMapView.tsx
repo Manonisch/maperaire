@@ -1,5 +1,5 @@
-import { FlatMap } from "../components/FlatMap";
-import { GlobeMap } from "../components/GlobeMap";
+import { FlatMap } from "../components/coreMap/FlatMap";
+import { GlobeMap } from "../components/coreMap/GlobeMap";
 import { FoodOverlay } from "../components/foodQuery";
 import { CharacterOverlay } from "../components/characterjourneys/CharacterOverlay";
 import { TopBar } from "../components/Topbar";

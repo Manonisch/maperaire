@@ -1,6 +1,6 @@
 import { PropsWithChildren, HTMLProps } from "react";
 import { JustMapView } from "./views/JustMapView"
-import { SourcesView } from "./views/attributation";
+import { SourcesView } from "./views/SourcesView";
 import { usePage } from "./stores/PageStore";
 import { useWorldData } from "./components/utils";
 import { useWorldDataStore } from "./stores/WorldDataStore";

@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef, memo } from "react";
 import * as d3 from 'd3';
 import versor from 'versor';
-import { getPointerCoords } from "./utils";
-import { useQuery } from "../stores";
-import { BaseMap, OSMLink, TheSlider } from "./mapParts";
-import { FoodVisualisation } from "./foodQuery";
-import { BookMapParts } from "./mapParts/BookMapParts";
-import { CharacterVisualisation, SingleFilterBarChart } from "./characterjourneys/CharacterParts";
-import { DragonVisualisation, SingleDragonBarChart } from "./dragonJourneys/DragonParts";
+import { getPointerCoords } from "../utils";
+import { useQuery } from "../../stores";
+import { BaseMap, OSMLink, TheSlider } from ".";
+import { FoodVisualisation } from "../foodQuery";
+import { BookMapParts } from "./BookMapParts";
+import { CharacterVisualisation, SingleFilterBarChart } from "../characterjourneys/CharacterParts";
+import { DragonVisualisation, SingleDragonBarChart } from "../dragonJourneys/DragonParts";
 
 export const GlobeMap = memo(() => {
   const [isMoving, setIsMoving] = useState(false);
